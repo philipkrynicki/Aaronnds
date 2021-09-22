@@ -36,7 +36,7 @@ module.exports = function(app){
   })
 
   // Fetches a list
-  app.params('list', (req, res, next, id) => {
+  app.param('list', (req, res, next, id) => {
     List.findById(id)
     .populate({
       path: 'cards'
@@ -53,7 +53,7 @@ module.exports = function(app){
   })
 
   // Fetches a card
-  app.params('card', (req, res, next, id) => {
+  app.param('card', (req, res, next, id) => {
     Card.findById(id)
     .populate({
       path: 'comments'
@@ -70,7 +70,7 @@ module.exports = function(app){
   })
 
   // Fetches a comment
-  app.params('comment', (req, res, next, id) => {
+  app.param('comment', (req, res, next, id) => {
     Comment.findById(id)
     .populate('user')
     .exec((err, comment) => {
