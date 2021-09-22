@@ -25,8 +25,10 @@ module.exports = function(app){
       }
     })
     .exec((err, board) => {
-      if(!board) 
-        req.error = '404'; // give the request an error property if the board isn't found
+      if(!board) {
+        res.writeHead(404, 'Board not found'); // Send 404 if the board isn't found
+        return res.end();
+      }
       else if (err)
         throw err;
       else
@@ -42,8 +44,10 @@ module.exports = function(app){
       path: 'cards'
     })
     .exec((err, list) => {
-      if (!list)
-        req.error = '404';
+      if(!list) {
+        res.writeHead(404, 'List not found');
+        return res.end();
+      }
       else if (err)
         throw err;
       else
@@ -59,8 +63,10 @@ module.exports = function(app){
       path: 'comments'
     })
     .exec((err, card) => {
-      if (!card)
-        req.error = '404';
+      if(!card) {
+        res.writeHead(404, 'Card not found');
+        return res.end();
+      }
       else if (err)
         throw err;
       else
@@ -74,8 +80,10 @@ module.exports = function(app){
     Comment.findById(id)
     .populate('user')
     .exec((err, comment) => {
-      if (!comment)
-        req.error = '404';
+      if(!comment) {
+        res.writeHead(404, 'Comment not found');
+        return res.end();
+      }
       else if (err)
         throw err;
       else
