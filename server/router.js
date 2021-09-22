@@ -2,7 +2,8 @@ const express = require("express");
 const app = express();
 const cors = require('cors');
 const FakeData = require('./controllers/initial-data');
-const Boards = require('./controllers/boards')
+const Boards = require('./controllers/boards');
+const Cards = require('./controllers/cards');
 
 app.use(cors());
 
@@ -12,4 +13,6 @@ module.exports = function(app){
   app.delete('/api/boards/:board', Boards.deleteBoard);
   app.put('/api/boards/:board', Boards.putBoard);
   app.get('/generate-initial-data', FakeData.generateFakeData);
+
+  app.get('/api/lists/:list/cards', Cards.getCards);
 };
