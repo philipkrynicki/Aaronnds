@@ -1,5 +1,4 @@
 const Board = require('../models/board');
-const Card = require('../models/card');
 
 exports.getBoards = (req, res) => {
   Board.find({})
