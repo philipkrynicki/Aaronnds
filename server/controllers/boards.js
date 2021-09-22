@@ -11,22 +11,12 @@ exports.getBoards = (req, res) => {
 }
 
 exports.getBoard = (req, res) => {
-  Board.findById(req.params.board)
-    .populate({
-      path: 'lists',
-      populate: {
-        path: 'cards',
-        model: 'Card'
-      }
-    })
-    .exec((err, board) => {
-      if(!board) {
-        res.sendStatus(404)
-      } else if (err) {
-        next(err)
-      }
-      res.status(200).json(board)
-    })
+  if (req.error === '404') {
+    res.writeHead(404, 'Board not found');
+    res.end();
+  }
+
+  res.status(200).json(req.board);
 }
 
 exports.deleteBoard = (req, res) => {
