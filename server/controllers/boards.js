@@ -14,7 +14,7 @@ exports.getBoard = (req, res) => {
   // If the board wasn't found, the req will have an error property 
   if (req.error === '404') {
     res.writeHead(404, 'Board not found');
-    res.end();
+    return res.end();
   }
 
   res.status(200).json(req.board);
