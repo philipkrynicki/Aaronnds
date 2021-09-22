@@ -3,10 +3,12 @@ const app = express();
 const cors = require('cors');
 const FakeData = require('./controllers/initial-data');
 const Boards = require('./controllers/boards');
+const Cards = require('./controllers/cards')
 const Board = require('./models/board');
 const List = require('./models/list');
 const Card = require('./models/card');
 const Comment = require('./models/comment');
+
 
 app.use(cors());
 
@@ -63,6 +65,7 @@ module.exports = function(app){
       path: 'comments'
     })
     .exec((err, card) => {
+
       if(!card) {
         res.writeHead(404, 'Card not found');
         return res.end();
@@ -98,4 +101,10 @@ module.exports = function(app){
   app.delete('/api/boards/:board', Boards.deleteBoard);
   app.put('/api/boards/:board', Boards.updateBoardName);
   app.get('/generate-initial-data', FakeData.generateFakeData);
+
+  app.get('/api/lists/:list/cards', Cards.getCards);
+  app.get('/api/cards/:card', Cards.getCard);
+  app.post('/api/lists/:list/cards', Cards.postCard);
+  app.delete('/api/cards/:card', Cards.deleteCard);
+  app.put('/api/cards/:card', Cards.updateCard);
 };
