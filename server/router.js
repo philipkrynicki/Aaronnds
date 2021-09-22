@@ -27,8 +27,10 @@ module.exports = function(app){
       }
     })
     .exec((err, board) => {
-      if(!board) 
-        req.error = '404'; // give the request an error property if the board isn't found
+      if(!board) {
+        res.writeHead(404, 'Board not found'); // Send 404 if the board isn't found
+        return res.end();
+      }
       else if (err)
         throw err;
       else
@@ -44,8 +46,10 @@ module.exports = function(app){
       path: 'cards'
     })
     .exec((err, list) => {
-      if (!list)
-        req.error = '404';
+      if(!list) {
+        res.writeHead(404, 'List not found');
+        return res.end();
+      }
       else if (err)
         throw err;
       else
@@ -61,8 +65,9 @@ module.exports = function(app){
       path: 'comments'
     })
     .exec((err, card) => {
-      if (!card) {
-        res.status(404).send("Card not found");
+
+      if(!card) {
+        res.writeHead(404, 'Card not found');
         return res.end();
       }
       else if (err)
@@ -78,8 +83,10 @@ module.exports = function(app){
     Comment.findById(id)
     .populate('user')
     .exec((err, comment) => {
-      if (!comment)
-        req.error = '404';
+      if(!comment) {
+        res.writeHead(404, 'Comment not found');
+        return res.end();
+      }
       else if (err)
         throw err;
       else
@@ -92,7 +99,7 @@ module.exports = function(app){
   app.get('/api/workspace/boards', Boards.getBoards);
   app.get('/api/boards/:board', Boards.getBoard);
   app.delete('/api/boards/:board', Boards.deleteBoard);
-  app.put('/api/boards/:board', Boards.putBoard);
+  app.put('/api/boards/:board', Boards.updateBoardName);
   app.get('/generate-initial-data', FakeData.generateFakeData);
 
   app.get('/api/lists/:list/cards', Cards.getCards);
