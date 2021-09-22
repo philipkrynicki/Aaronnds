@@ -2,7 +2,7 @@ const faker = require('faker');
 const User = require('../models/user');
 const Workspace = require('../models/workspace');
 const Board = require('../models/board');
-const List = require('../models/List');
+const List = require('../models/list');
 const Card = require('../models/card');
 const Comment = require('../models/comment');
 
