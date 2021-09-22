@@ -88,6 +88,6 @@ module.exports = function(app){
   app.get('/api/workspace/boards', Boards.getBoards);
   app.get('/api/boards/:board', Boards.getBoard);
   app.delete('/api/boards/:board', Boards.deleteBoard);
-  app.put('/api/boards/:board', Boards.putBoard);
+  app.put('/api/boards/:board', Boards.updateBoardName);
   app.get('/generate-initial-data', FakeData.generateFakeData);
 };
