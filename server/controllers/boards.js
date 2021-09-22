@@ -39,6 +39,7 @@ exports.postBoard = (req, res) => {
   let board = new Board({
     name: req.body.name,
     lists: [],
+    //hardcoded workspace
     workspace: '614b86c5580ac7c251e58d32'
   });
   Workspace.findOne({_id:'614b86c5580ac7c251e58d32'}, (err, workspace) => {
