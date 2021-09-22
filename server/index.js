@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const router = require('./router');
+
 mongoose.connect("mongodb://localhost/aaronnds");
 
 const app = express();
