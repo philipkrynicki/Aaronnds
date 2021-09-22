@@ -104,6 +104,7 @@ module.exports = function(app){
   app.put('/api/boards/:board', Boards.updateBoardName);
 
   app.delete('/api/lists/:list', Lists.deleteList);
+  app.put('/api/lists/:list', Lists.updateListName);
 
   app.get('/api/lists/:list/cards', Cards.getCards);
   app.get('/api/cards/:card', Cards.getCard);
