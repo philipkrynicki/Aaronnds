@@ -35,17 +35,17 @@ exports.updateBoardName = (req, res) => {
 }
 
 exports.postBoard = (req, res) => {
+  const sample = Workspace.findOne()
   let board = new Board({
     name: req.body.name,
     lists: [],
-    workspace: Workspace.find()
+    workspace: '614b86c5580ac7c251e58d32'
   });
-  Workspace.find()
-  .exec((err, workspace) => {
-    if (err) return next(err);
-    workspace.boards.push(board)
-    workspace.boards.save()
-    res.status(200).send(board)
-  });
+  Workspace.findOne({_id:'614b86c5580ac7c251e58d32'}, (err, workspace) => {
+    board.save()
+    workspace.boards.push(board);
+    workspace.save();
+    res.status(200).send(board);
+  })
 };
 

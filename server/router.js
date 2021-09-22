@@ -4,7 +4,6 @@ const cors = require('cors');
 const FakeData = require('./controllers/initial-data');
 const Boards = require('./controllers/boards')
 const Lists = require('./controllers/lists')
-const Boards = require('./controllers/boards');
 const Board = require('./models/board');
 const List = require('./models/list');
 const Card = require('./models/card');
