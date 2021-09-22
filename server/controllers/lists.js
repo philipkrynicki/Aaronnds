@@ -17,7 +17,7 @@ exports.postList = (req, res) => {
   req.board.save()
   newList.save()
   res.status(200).send(newList)
-const List = require('../models/list');
+}
 
 exports.deleteList = (req, res) => {
   List.deleteOne({_id: req.list._id})
@@ -40,5 +40,4 @@ exports.updateListName = (req, res) => {
   } else {
     res.status(400).send('Request must include name');
   }
-  
 }
