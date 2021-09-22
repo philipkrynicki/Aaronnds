@@ -2,15 +2,17 @@ const express = require("express");
 const app = express();
 const cors = require('cors');
 const FakeData = require('./controllers/initial-data');
-const Boards = require('./controllers/boards')
+const Boards = require('./controllers/boards');
 const Board = require('./models/board');
 const List = require('./models/list');
 const Card = require('./models/card');
+const Comment = require('./models/comment');
 
 app.use(cors());
 
 module.exports = function(app){
-  // Router params
+
+  // ROUTER PARAMS
 
   // Fetches a board
   app.param('board', (req, res, next, id) => {
@@ -67,7 +69,22 @@ module.exports = function(app){
     })
   })
 
-  // Routes
+  // Fetches a comment
+  app.params('comment', (req, res, next, id) => {
+    Comment.findById(id)
+    .populate('user')
+    .exec((err, comment) => {
+      if (!comment)
+        req.error = '404';
+      else if (err)
+        throw err;
+      else
+        req.comment = comment;
+      next();
+    })
+  })
+
+  // ROUTES
   app.get('/api/workspace/boards', Boards.getBoards);
   app.get('/api/boards/:board', Boards.getBoard);
   app.delete('/api/boards/:board', Boards.deleteBoard);
