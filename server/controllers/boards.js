@@ -77,7 +77,7 @@ exports.postList = (req, res) => {
   let list = new List({
     name: req.body.name,
     cards: [],
-    board: {}
+    board: req.params.id
   })
 }
 
