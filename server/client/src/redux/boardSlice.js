@@ -10,6 +10,36 @@ export const getBoardsAsync = createAsyncThunk(
     }
   }
 )
+export const addBoardAsync = createAsyncThunk(
+  'boards/addBoardsAsync',
+  async (payload) => {
+    const response = await fetch('api post address', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({name: payload.name})
+    });
+
+    if(response.ok) {
+      const board = await response.json();
+      return { board };
+    }
+  }
+);
+
+export const deleteBoardAsync = createAsyncThunk(
+  'boards/deleteBoardAsync',
+  async (payload) => {
+    const response = await fetch('api delete address', {
+      method: 'DELETE',
+    });
+
+    if(response.ok) {
+      return { id: payload.id};
+    }
+  }
+) 
 
 const boardSlice = createSlice({
   name: 'boards',
@@ -27,6 +57,12 @@ const boardSlice = createSlice({
   extraReducers: {
     [getBoardsAsync.fulfilled]: (state, action) => {
       return action.payload.boards
+    },
+    [addBoardAsync.fulfilled]: (state, action) => {
+      state.push(action.payload.board)
+    },
+    [deleteBoardAsync.fulfilled]: (state, action) => {
+      return state.filter((board) => board.id !== action.payload.id);
     }
   }
 });
