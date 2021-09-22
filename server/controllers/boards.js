@@ -21,14 +21,15 @@ exports.getBoard = (req, res) => {
 }
 
 exports.deleteBoard = (req, res) => {
-  Board.deleteOne({_id: req.params.board})
+  if (req.error === '404') {
+    res.writeHead(404, 'Board not found');
+    return res.end();
+  }
+
+  Board.deleteOne({_id: req.board._id})
     .exec((err, board) => {
-      if(!board) {
-        res.sendStatus(404);
-      } else if (err) {
-        next(err)
-      }
-      res.status(200).send("Board deleted")
+      if (err) throw err;
+      res.status(200).send("Board deleted");
     });
 };
 
