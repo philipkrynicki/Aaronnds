@@ -4,13 +4,14 @@ const cors = require('cors');
 const FakeData = require('./controllers/initial-data');
 const Boards = require('./controllers/boards')
 const Board = require('./models/board');
+const List = require('./models/list');
 
 app.use(cors());
 
 module.exports = function(app){
+  // Router params
 
-  // The :board param fetches a board if it exists
-  // returns 404 if it doesn't
+  // Fetches a board
   app.param('board', (req, res, next, id) => {
     Board.findById(id)
     .populate({
@@ -22,15 +23,33 @@ module.exports = function(app){
     })
     .exec((err, board) => {
       if(!board) 
-        req.error = '404';
+        req.error = '404'; // give the request an error property if the board isn't found
       else if (err)
         throw err;
       else
-        req.board = board;
+        req.board = board; // attach the found board to the request
       next();
     })
   })
 
+  // Fetches a list
+  app.params('list', (req, res, next, id) => {
+    List.findById(id)
+    .populate({
+      path: 'cards'
+    })
+    .exec((err, list) => {
+      if (!list)
+        req.error = '404';
+      else if (err)
+        throw err;
+      else
+        req.list = list;
+      next();
+    })
+  })
+
+  // Routes
   app.get('/api/workspace/boards', Boards.getBoards);
   app.get('/api/boards/:board', Boards.getBoard);
   app.delete('/api/boards/:board', Boards.deleteBoard);
