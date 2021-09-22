@@ -1,5 +1,6 @@
 const Board = require('../models/board');
 const Card = require('../models/card');
+const Workspace = require('../models/workspace')
 
 exports.getBoards = (req, res) => {
   Board.find({})
@@ -39,9 +40,12 @@ exports.postBoard = (req, res) => {
     lists: [],
     workspace: Workspace.find()
   });
-  board.save((err, newBoard) => {
+  Workspace.find()
+  .exec((err, workspace) => {
     if (err) return next(err);
-    res.status(200).send(newBoard);
+    workspace.boards.push(board)
+    workspace.boards.save()
+    res.status(200).send(board)
   });
 };
 

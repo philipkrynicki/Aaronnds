@@ -99,10 +99,9 @@ module.exports = function(app){
   app.post('/api/workspace/boards', Boards.postBoard)
   app.get('/api/boards/:board', Boards.getBoard);
   app.delete('/api/boards/:board', Boards.deleteBoard);
-  app.put('/api/boards/:board', Boards.putBoard);
+  app.put('/api/boards/:board', Boards.updateBoardName);
   app.get('/api/boards/:board/lists', Lists.getLists)
   app.post('/api/boards/:board/lists', Lists.postList)
 
-  app.put('/api/boards/:board', Boards.updateBoardName);
   app.get('/generate-initial-data', FakeData.generateFakeData);
 };
