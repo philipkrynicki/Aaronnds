@@ -3,6 +3,8 @@ const List = require('../models/list');
 
 // Get all cards for a list
 exports.getCards = (req, res) => {
+  //figure out how to get invalid list id to stop crashing server
+
   Card
   .find({list: req.params.list})
   .exec((err, cards) => {
@@ -12,13 +14,7 @@ exports.getCards = (req, res) => {
 }
 
 exports.getCard = (req, res) => {
-  Card.findById(req.params.card)
-    .populate("comments")
-    .exec((err, card) => {
-      if (!card) res.sendStatus(404);
-      if (err) throw err;
-      res.status(200).json(card);
-    })
+  res.status(200).json(req.card);
 }
 
 exports.postCard = (req, res) => {
@@ -30,16 +26,30 @@ exports.postCard = (req, res) => {
     comments: [],
     list: req.params.list
   })
-  List.findById(req.params.list)
-    .exec((err, list) => {
-    list.cards.push(newCard);
-    list.save();
 
-    newCard.save((err, card) => {
-      if (err) {
-        next(err)
-      }
-      res.status(200).json(card);
+  req.list.cards.push(newCard);
+  req.list.save();
+
+  newCard.save((err, card) => {
+    if (err) next(err)
+    res.status(200).json(card);
+  })
+}
+
+exports.deleteCard = (req, res) => {
+  Card.deleteOne({_id: req.params.card})
+    .exec((err, card) => {
+      if (err) next(err)
+      res.status(200).send("Card deleted")
     })
+}
+
+exports.updateCard = (req, res) => {
+  const update = req.body;
+
+  Card.findOneAndUpdate({_id: req.params.card}, update, { new: true })
+    .exec((err, updatedCard) => {
+      if (err) next(err)
+      res.status(200).json(updatedCard)
     })
 }

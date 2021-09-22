@@ -3,10 +3,12 @@ const app = express();
 const cors = require('cors');
 const FakeData = require('./controllers/initial-data');
 const Boards = require('./controllers/boards');
+const Cards = require('./controllers/cards')
 const Board = require('./models/board');
 const List = require('./models/list');
 const Card = require('./models/card');
 const Comment = require('./models/comment');
+
 
 app.use(cors());
 
@@ -59,8 +61,10 @@ module.exports = function(app){
       path: 'comments'
     })
     .exec((err, card) => {
-      if (!card)
-        req.error = '404';
+      if (!card) {
+        res.status(404).send("Card not found");
+        return res.end();
+      }
       else if (err)
         throw err;
       else
@@ -93,5 +97,7 @@ module.exports = function(app){
 
   app.get('/api/lists/:list/cards', Cards.getCards);
   app.get('/api/cards/:card', Cards.getCard);
-  app.post('/api/lists/:list/cards', Cards.postCard)
+  app.post('/api/lists/:list/cards', Cards.postCard);
+  app.delete('/api/cards/:card', Cards.deleteCard);
+  app.put('/api/cards/:card', Cards.updateCard);
 };
