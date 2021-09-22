@@ -1,4 +1,6 @@
 const Board = require('../models/board');
+const Card = require('../models/card');
+const Workspace = require('../models/workspace')
 
 exports.getBoards = (req, res) => {
   Board.find({})
@@ -29,4 +31,22 @@ exports.updateBoardName = (req, res) => {
       if (err) throw err;
       res.status(200).json(updatedBoard)
     })
+
 }
+
+exports.postBoard = (req, res) => {
+  const sample = Workspace.findOne()
+  let board = new Board({
+    name: req.body.name,
+    lists: [],
+    //hardcoded workspace
+    workspace: '614b86c5580ac7c251e58d32'
+  });
+  Workspace.findOne({_id:'614b86c5580ac7c251e58d32'}, (err, workspace) => {
+    board.save()
+    workspace.boards.push(board);
+    workspace.save();
+    res.status(200).send(board);
+  })
+};
+
