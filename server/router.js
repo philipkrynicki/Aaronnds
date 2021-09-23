@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
-const FakeData = require('./controllers/initial-data');
+
 const GenerateUser = require('./util/generate-user');
+const GenerateData = require('./util/generate-data');
 
 const Boards = require('./controllers/boards');
 const Lists = require('./controllers/lists');
@@ -100,7 +101,7 @@ module.exports = function(app) {
   })
 
   // ROUTES
-  app.get('/generate-initial-data', FakeData.generateFakeData);
+  app.get('/generate-boards', GenerateData.generateBoards);
   app.get('/generate-user', GenerateUser.generateUser);
 
   app.get('/api/workspace/boards', Boards.getBoards);
