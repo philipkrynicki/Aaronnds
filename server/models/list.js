@@ -7,6 +7,11 @@ const listSchema = new Schema({
   board: {type: Schema.Types.ObjectId, ref: 'Board'}
 })
 
+listSchema.pre('deleteOne', {document: false, query: true}, async function(next) {
+  const list = await this.model.findOne(this.getFilter());
+  list.model('Card').deleteMany({list: list._id}, next); 
+})
+
 listSchema.pre('deleteMany', {document: false, query: true}, async function(next) {
   const lists = await this.model.find(this.getFilter());
 

@@ -7,4 +7,6 @@ const commentSchema = new Schema({
   card: {type: Schema.Types.ObjectId, ref: 'Card'}
 })
 
+// TODO: remove comment references from users when deleting multiple comments
+
 module.exports = mongoose.model('Comment', commentSchema);

@@ -17,7 +17,6 @@ cardSchema.pre('deleteMany', {document: false, query: true}, async function(next
     return card._id;
   })
 
-  // Delete all cards that reference any of the ids
   cards[0].model('Comment').deleteMany({card: {'$in': ids}}, next);
 })
 
