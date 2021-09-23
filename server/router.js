@@ -8,6 +8,7 @@ const Lists = require('./controllers/lists');
 const Cards = require('./controllers/cards');
 const Comments = require('./controllers/comments');
 const Labels = require('./controllers/labels');
+const Activities = require('./controllers/activities')
 
 const Board = require('./models/board');
 const List = require('./models/list');
@@ -126,4 +127,8 @@ module.exports = function(app) {
   app.put('/api/comments/:comment', Comments.updateComment);
 
   app.get('/api/cards/:card/labels', Labels.getLabels);
+
+
+  app.get('/api/cards/:card/activity', Activities.getActivity);
+  app.post('/api/cards/:card/activity', Activities.postActivity)
 };
