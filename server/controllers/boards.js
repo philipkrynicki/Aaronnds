@@ -24,7 +24,13 @@ exports.deleteBoard = (req, res) => {
 };
 
 exports.updateBoardName = (req, res) => {
-  const update = req.body;
+
+  if (!req.body.name) {
+    res.status(400).send("No name param included in request body")
+    return res.end();
+  } 
+
+  const update = req.body.name;
 
   Board.findOneAndUpdate({_id: req.board._id}, update, { new: true })
     .exec((err, updatedBoard) => {
@@ -37,6 +43,11 @@ exports.updateBoardName = (req, res) => {
 // Changed this function to use findOne(), which will fetch the only workspace in the db
 // The hardcoded id threw an error because the ids will be different for each local db
 exports.postBoard = (req, res) => {
+  if (!req.body.name) {
+    res.status(400).send("No name included in request body")
+    return res.end();
+  } 
+  
   Workspace.findOne()
   .exec((err, workspace) => {
     const board = new Board({

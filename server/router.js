@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const cors = require('cors');
 const FakeData = require('./controllers/initial-data');
 
 const Boards = require('./controllers/boards');
@@ -15,8 +14,6 @@ const List = require('./models/list');
 const Card = require('./models/card');
 const Comment = require('./models/comment');
 const User = require("./models/user");
-
-app.use(cors());
 
 module.exports = function(app) {
 

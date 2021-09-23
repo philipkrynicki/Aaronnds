@@ -9,11 +9,17 @@ exports.getLists = (req, res) => {
 };
 
 exports.postList = (req, res) => {
+  if (!req.body.name) {
+    res.status(400).send("No list name included in request")
+    return res.end();
+  } 
+
   let newList = new List({
     name: req.body.name,
     cards: [],
     board: req.board._id
   })
+  
   req.board.lists.push(newList)
   req.board.save()
   newList.save()
