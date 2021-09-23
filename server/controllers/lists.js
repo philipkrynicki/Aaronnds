@@ -2,6 +2,7 @@ const List = require('../models/list')
 
 exports.getLists = (req, res) => {
   List.find({board: req.board._id})
+  .populate('cards')
   .exec((err, lists) => {
     res.status(200).json(lists);
   })
