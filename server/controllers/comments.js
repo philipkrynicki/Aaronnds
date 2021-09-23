@@ -27,11 +27,15 @@ exports.postComment = async (req, res) => {
 }
 
 exports.deleteComment = (req, res) => {
-  Comment.deleteOne({_id: req.params.card})
-    .exec((err, comment) => {
+  Comment.deleteOne({_id: req.comment._id})
+  .then(() => {
+
+    User.updateOne({_id: req.comment.user}, {'$pull': {'comments': req.comment._id}})
+    .exec(err => {
       if (err) next(err)
       res.status(200).send("Comment deleted")
     })
+  })
 }
 
 exports.updateComment = (req, res) => {
