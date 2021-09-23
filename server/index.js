@@ -1,11 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const router = require('./router');
+const cors = require('cors');
 
 mongoose.connect("mongodb://localhost/aaronnds");
 
 const app = express();
-
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 

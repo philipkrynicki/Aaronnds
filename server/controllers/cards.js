@@ -18,6 +18,11 @@ exports.getCard = (req, res) => {
 }
 
 exports.postCard = (req, res) => {
+  if (!req.body.name) {
+    res.status(400).send("No name included in request")
+    return res.end();
+  } 
+
   let newCard = new Card({
     name: req.body.name,
     description: req.body.description,
@@ -45,6 +50,10 @@ exports.deleteCard = (req, res) => {
 }
 
 exports.updateCard = (req, res) => {
+  if (!req.body.name || !req.body.description) {
+    res.status(400).send("No update information included in request body")
+    return res.end();
+  } 
   const update = req.body;
 
   Card.findOneAndUpdate({_id: req.params.card}, update, { new: true })

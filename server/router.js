@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-const cors = require('cors');
 const FakeData = require('./controllers/initial-data');
 
 const Boards = require('./controllers/boards');
@@ -8,14 +7,13 @@ const Lists = require('./controllers/lists');
 const Cards = require('./controllers/cards');
 const Comments = require('./controllers/comments');
 const Labels = require('./controllers/labels');
+const Activities = require('./controllers/activities')
 
 const Board = require('./models/board');
 const List = require('./models/list');
 const Card = require('./models/card');
 const Comment = require('./models/comment');
 const User = require("./models/user");
-
-app.use(cors());
 
 module.exports = function(app) {
 
@@ -128,4 +126,8 @@ module.exports = function(app) {
   app.get('/api/cards/:card/labels', Labels.getLabels);
   app.post('/api/cards/:card/labels', Labels.postLabel)
   app.delete('/api/cards/:card/labels', Labels.deleteLabel)
+
+
+  app.get('/api/cards/:card/activity', Activities.getActivity);
+  app.post('/api/cards/:card/activity', Activities.postActivity)
 };
