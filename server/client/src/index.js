@@ -35,8 +35,8 @@ const App = () => {
 ReactDOM.render(
   <BrowserRouter>
   <React.StrictMode>
-    <Provider store={store}></Provider>
-    <App />
+    <Provider store={store}><App /></Provider>
+    
   </React.StrictMode>
   </BrowserRouter>,
   document.getElementById('root')
