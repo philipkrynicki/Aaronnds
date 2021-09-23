@@ -1,74 +1,23 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from "axios";
 
-export const getBoardsAsync = createAsyncThunk(
-  'boards/getBoardsAsync',
-  async () => {
-    const response = await fetch('http://localhost:5000/api/workspace/boards');
-    
-    if (response.ok) {
-      const boards = await response.json();
-      console.log(boards)
-      return { boards }
-    }
-  }
-)
-export const addBoardAsync = createAsyncThunk(
-  'boards/addBoardsAsync',
-  async (payload) => {
-    const response = await fetch('http://localhost:5000/api/boards/:board', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({name: payload.name})
-    });
+export const getBoardAsync = createAsyncThunk(
+  'board/getBoardAsync',
+  async (boardId) => {
+    const response = await axios.get(`http://localhost:5000/api/boards/${boardId}`);
+    return { response }
+  })
 
-    if(response.ok) {
-      const board = await response.json();
-      return { board };
-    }
-  }
-);
-
-export const deleteBoardAsync = createAsyncThunk(
-  'boards/deleteBoardAsync',
-  async (payload) => {
-    const response = await fetch('http://localhost:5000/api/boards/:board', {
-      method: 'DELETE',
-    });
-
-    if(response.ok) {
-      return { id: payload.id};
-    }
-  }
-) 
-
-const boardsSlice = createSlice({
-  name: 'boards',
-  initialState: [],
-  reducers: {
-    addBoard: (state, action) => {
-      const newBoard = {
-        name: action.payload.name,
+  const boardSlice = createSlice({
+    name:'board',
+    initialState: {},
+    reducers: {},
+    extraReducers: {
+      [getBoardAsync.fulfilled]: (state, action) => {
+        console.log(action.payload.response.data)
+        return action.payload.data
       }
-      state.push(newBoard);
-    },
-
-  },
-  extraReducers: {
-    [getBoardsAsync.fulfilled]: (state, action) => {
-      return action.payload.boards
-    },
-    [addBoardAsync.fulfilled]: (state, action) => {
-      state.push(action.payload.board)
-    },
-    [deleteBoardAsync.fulfilled]: (state, action) => {
-      return state.filter((board) => board.id !== action.payload.id);
     }
-  }
-});
+  })
 
-
-export const { addBoard } = boardsSlice.actions;
-
-export default boardsSlice.reducer;
+ export default boardSlice.reducer; 
