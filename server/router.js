@@ -2,13 +2,17 @@ const express = require("express");
 const app = express();
 const cors = require('cors');
 const FakeData = require('./controllers/initial-data');
+
 const Boards = require('./controllers/boards');
 const Lists = require('./controllers/lists');
-const Cards = require('./controllers/cards')
+const Cards = require('./controllers/cards');
+const Comments = require('./controllers/comments');
+
 const Board = require('./models/board');
 const List = require('./models/list');
 const Card = require('./models/card');
 const Comment = require('./models/comment');
+const User = require("./models/user");
 
 app.use(cors());
 
@@ -114,4 +118,9 @@ module.exports = function(app){
   app.post('/api/lists/:list/cards', Cards.postCard);
   app.delete('/api/cards/:card', Cards.deleteCard);
   app.put('/api/cards/:card', Cards.updateCard);
+
+  app.post('/api/cards/:card/comments', Comments.postComment)
+  app.get('/api/cards/:card/comments', Comments.getComments)
+  app.delete('/api/comments/:comment', Comments.deleteComment)
+  app.put('/api/comments/:comment', Comments.updateComment)
 };
