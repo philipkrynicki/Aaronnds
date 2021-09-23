@@ -10,6 +10,11 @@ const cardSchema = new Schema({
   list: {type: Schema.Types.ObjectId, ref: 'List'},
 })
 
+cardSchema.pre('deleteOne', {document: false, query: true}, async function(next) {
+  const card = await this.model.findOne(this.getFilter());
+  card.model('Comment').deleteMany({card: card._id}, next); 
+})
+
 cardSchema.pre('deleteMany', {document: false, query: true}, async function(next) {
   const cards = await this.model.find(this.getFilter());
 
