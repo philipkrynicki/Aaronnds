@@ -1,5 +1,6 @@
 const Board = require('../models/board');
 const Card = require('../models/card');
+const Workspace = require('../models/workspace')
 
 exports.getBoards = (req, res) => {
   Board.find({})
@@ -30,4 +31,24 @@ exports.updateBoardName = (req, res) => {
       if (err) throw err;
       res.status(200).json(updatedBoard)
     })
+
 }
+
+// Changed this function to use findOne(), which will fetch the only workspace in the db
+// The hardcoded id threw an error because the ids will be different for each local db
+exports.postBoard = (req, res) => {
+  Workspace.findOne()
+  .exec((err, workspace) => {
+    const board = new Board({
+      name: req.body.name,
+      lists: [],
+      workspace: workspace._id
+    });
+
+    board.save()
+    workspace.boards.push(board);
+    workspace.save();
+    res.status(200).send(board);
+  })
+};
+
