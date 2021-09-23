@@ -3,6 +3,6 @@ import { boardReducer } from './boardSlice'
 
 export default configureStore({
   reducer: {
-    boards: boardReducer,
+
   }
 });
