@@ -34,15 +34,17 @@ exports.updateBoardName = (req, res) => {
 
 }
 
+// Changed this function to use findOne(), which will fetch the only workspace in the db
+// The hardcoded id threw an error because the ids will be different for each local db
 exports.postBoard = (req, res) => {
-  const sample = Workspace.findOne()
-  let board = new Board({
-    name: req.body.name,
-    lists: [],
-    //hardcoded workspace
-    workspace: '614b86c5580ac7c251e58d32'
-  });
-  Workspace.findOne({_id:'614b86c5580ac7c251e58d32'}, (err, workspace) => {
+  Workspace.findOne()
+  .exec((err, workspace) => {
+    const board = new Board({
+      name: req.body.name,
+      lists: [],
+      workspace: workspace._id
+    });
+
     board.save()
     workspace.boards.push(board);
     workspace.save();
