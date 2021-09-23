@@ -42,11 +42,15 @@ exports.postCard = (req, res) => {
 }
 
 exports.deleteCard = (req, res) => {
-  Card.deleteOne({_id: req.params.card})
+  Card.deleteOne({_id: req.card._id})
+  .then(() => {
+
+    List.updateOne({_id: req.card.list}, {'$pull': {'cards': req.card._id}})
     .exec((err, card) => {
       if (err) next(err)
       res.status(200).send("Card deleted")
     })
+  })
 }
 
 exports.updateCard = (req, res) => {

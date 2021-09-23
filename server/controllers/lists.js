@@ -1,4 +1,5 @@
 const List = require('../models/list')
+const Board = require('../models/board');
 
 exports.getLists = (req, res) => {
   List.find({board: req.board._id})
@@ -28,9 +29,13 @@ exports.postList = (req, res) => {
 
 exports.deleteList = (req, res) => {
   List.deleteOne({_id: req.list._id})
-  .exec(err => {
-    if (err) throw err;
-    res.status(200).send("List deleted");
+  .then(() => {
+
+    Board.updateOne({_id: req.list.board}, {'$pull': {'lists': req.list._id}})
+    .exec(err => {
+      if (err) throw err;
+      res.status(200).send("List deleted");
+    })
   })
 }
 
