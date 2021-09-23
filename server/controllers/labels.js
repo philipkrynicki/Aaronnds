@@ -5,15 +5,19 @@ exports.getLabels = (req, res) => {
 exports.postLabel = (req, res) => {
   const newLabel = req.body.label
   if (!newLabel) {
-    res.status(400).send('Label required')
-    res.end()
-  } 
-  req.card.labels.push(req.body.label);
-  
-  req.card.save((err, card) => {
-    if (err) throw err;
-    res.status(200).json(card.labels);
-  })
+      res.status(400).send('Label required')
+    }
+  if (newLabel) {
+    if (req.card.labels.includes(req.body.label)) {
+      res.send('Label already exists')
+    }
+    else {  
+      req.card.labels.push(req.body.label);
+      req.card.save((err, card) => {
+      if (err) throw err;
+      res.status(200).json(card.labels);
+    })}
+  }
 }
 
 exports.deleteLabel = (req, res) => {
