@@ -34,10 +34,11 @@ const App = () => {
 
 ReactDOM.render(
   <BrowserRouter>
-  <React.StrictMode>
-    <Provider store={store}><App /></Provider>
-    
-  </React.StrictMode>
+    <React.StrictMode>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </React.StrictMode>
   </BrowserRouter>,
   document.getElementById('root')
 );
