@@ -1,6 +1,7 @@
 const Board = require('../models/board');
-const Card = require('../models/card');
-const Workspace = require('../models/workspace')
+const Workspace = require('../models/workspace');
+const List = require('../models/list');
+const CascadeDelete = require('../util/cascading-deletes');
 
 exports.getBoards = (req, res) => {
   Board.find({})
