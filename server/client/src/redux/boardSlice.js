@@ -3,9 +3,10 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 export const getBoardsAsync = createAsyncThunk(
   'boards/getBoardsAsync',
   async () => {
-    const response = await fetch('api address');
+    const response = await fetch('/api/workspace/boards');
     if (response.ok) {
       const boards = await response.json();
+      console.log(boards)
       return { boards }
     }
   }
@@ -41,7 +42,7 @@ export const deleteBoardAsync = createAsyncThunk(
   }
 ) 
 
-const boardSlice = createSlice({
+const boardsSlice = createSlice({
   name: 'boards',
   initialState: [],
   reducers: {
@@ -67,6 +68,7 @@ const boardSlice = createSlice({
   }
 });
 
-export const { addBoard } =boardSlice.actions;
 
-export default boardSlice.reducer;
+export const { addBoard } = boardsSlice.actions;
+
+export default boardsSlice.reducer;
