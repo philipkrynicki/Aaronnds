@@ -8,8 +8,8 @@ const boardSchema = new Schema({
 })
 
 boardSchema.pre('deleteOne', {document: false, query: true}, async function(next) {
-  const board = await this.model.findOne(this.getFilter());
-  board.model('List').deleteMany({board: board._id}, next);
+  const board = await this.model.findOne(this.getFilter()); // Get the board from the deleteOne() query
+  board.model('List').deleteMany({board: board._id}, next); // Delete all lists that reference this board
 })
 
 module.exports = mongoose.model('Board', boardSchema);
