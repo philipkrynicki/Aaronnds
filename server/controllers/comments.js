@@ -6,6 +6,11 @@ exports.getComments = (req, res) => {
 }
 
 exports.postComment = async (req, res) => {
+  if (!req.body.text) {
+    res.status(400).send("No comment text included in request")
+    return res.end();
+  } 
+
   const user = await User.findOne({})
  
   const newComment = new Comment({
@@ -13,7 +18,7 @@ exports.postComment = async (req, res) => {
     user: user._id,
     card: req.card._id
   });
-  
+
   user.comments.push(newComment);
   user.save();
 
@@ -35,7 +40,12 @@ exports.deleteComment = (req, res) => {
 }
 
 exports.updateComment = (req, res) => {
-  const update = req.body;
+  if (!req.body.text) {
+    res.status(400).send("No comment text included in request")
+    return res.end();
+  } 
+
+  const update = req.body.text;
 
   Comment.findOneAndUpdate({ _id: req.params.comment }, update, { new: true })
     .exec((err, updatedComment) => {
