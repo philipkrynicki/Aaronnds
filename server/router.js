@@ -7,6 +7,7 @@ const Boards = require('./controllers/boards');
 const Lists = require('./controllers/lists');
 const Cards = require('./controllers/cards');
 const Comments = require('./controllers/comments');
+const Labels = require('./controllers/labels');
 
 const Board = require('./models/board');
 const List = require('./models/list');
@@ -16,7 +17,7 @@ const User = require("./models/user");
 
 app.use(cors());
 
-module.exports = function(app){
+module.exports = function(app) {
 
   // ROUTER PARAMS
 
@@ -119,8 +120,10 @@ module.exports = function(app){
   app.delete('/api/cards/:card', Cards.deleteCard);
   app.put('/api/cards/:card', Cards.updateCard);
 
-  app.post('/api/cards/:card/comments', Comments.postComment)
-  app.get('/api/cards/:card/comments', Comments.getComments)
-  app.delete('/api/comments/:comment', Comments.deleteComment)
-  app.put('/api/comments/:comment', Comments.updateComment)
+  app.post('/api/cards/:card/comments', Comments.postComment);
+  app.get('/api/cards/:card/comments', Comments.getComments);
+  app.delete('/api/comments/:comment', Comments.deleteComment);
+  app.put('/api/comments/:comment', Comments.updateComment);
+
+  app.get('/api/cards/:card/labels', Labels.getLabels);
 };
