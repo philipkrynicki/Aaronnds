@@ -1,49 +1,25 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 export const getListsAsync = createAsyncThunk(
-  'boards/getListsAsync',
-  async () => {
-    const response = await fetch('http://localhost:5000/api/boards/:board/lists', {
-      method: 'GET',
+  'lists/getListsAsync',
+  async (id) => {
+    const response = await axios.get(`http://localhost:5000/api/boards/${id}/lists`);
+    return { response }
+  })
 
-    }
-    );
-    
-    if (response.ok) {
-      const lists = await response.json();
-      console.log(lists)
-      return { lists }
-    }
-  }
-)
 export const addListAsync = createAsyncThunk(
-  'boards/addListAsync',
-  async (payload) => {
-    const response = await fetch('http://localhost:5000//api/boards/:board/lists', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({name: payload.name})
-    });
+  'lists/addListAsync',
+  async (id) => {
+    const response = await axios.post(`http://localhost:5000//api/boards/${id}/lists`)
+    return {response}
+  });
 
-    if(response.ok) {
-      const list = await response.json();
-      return { list };
-    }
-  }
-);
-
-export const deleteListAsync = createAsyncThunk(
-  'Lists/deleteListAsync',
-  async (payload) => {
-    const response = await fetch('http://localhost:5000/api/lists/:list', {
-      method: 'DELETE',
-    });
-
-    if(response.ok) {
-      return { id: payload.id};
-    }
+  export const deleteListAsync = createAsyncThunk(
+    'lists/deleteListAsync',
+  async (id) => {
+    const response = await axios.delete(`http://localhost:5000/api/lists/${id}`)
+    return {response}
   }
 ) 
 
@@ -53,13 +29,14 @@ const listsSlice = createSlice({
   reducers: { },
   extraReducers: {
     [getListsAsync.fulfilled]: (state, action) => {
-      return action.payload.lists
+      console.log(action.payload.response.data)
+      return action.payload.response.lists
     },
     [addListAsync.fulfilled]: (state, action) => {
-      state.push(action.payload.list)
+      state.push(action.payload.response.list)
     },
     [deleteListAsync.fulfilled]: (state, action) => {
-      return state.filter((list) => list.id !== action.payload.id);
+      return state.filter((list) => list.id !== action.payload.response.id);
     }
   }
 });

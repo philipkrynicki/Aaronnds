@@ -1,7 +1,9 @@
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { useEffect } from "react";
-import { getBoardsAsync } from "../redux/boardSlice";
+import { getBoardsAsync } from "../redux/boardsSlice";
+import { getListsAsync } from "../redux/listSlice";
+import { getBoardAsync } from "../redux/boardSlice";
 
 const BoardsAll = () => {
 
@@ -13,8 +15,11 @@ const BoardsAll = () => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getBoardsAsync());
-    console.log('hi');
+    dispatch(getBoardAsync('614c9943031daf259b69f59e'));
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(getListsAsync('614c9943031daf259b69f59e'));
   }, [dispatch])
 
   return (
