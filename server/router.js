@@ -2,14 +2,9 @@ const express = require("express");
 const app = express();
 const cors = require('cors');
 const FakeData = require('./controllers/initial-data');
-<<<<<<< HEAD
-const Boards = require('./controllers/boards')
-const Lists = require('./controllers/lists')
-=======
 const Boards = require('./controllers/boards');
 const Lists = require('./controllers/lists');
 const Cards = require('./controllers/cards')
->>>>>>> master
 const Board = require('./models/board');
 const List = require('./models/list');
 const Card = require('./models/card');
@@ -108,11 +103,9 @@ module.exports = function(app){
   app.get('/api/boards/:board', Boards.getBoard);
   app.delete('/api/boards/:board', Boards.deleteBoard);
   app.put('/api/boards/:board', Boards.updateBoardName);
+  
   app.get('/api/boards/:board/lists', Lists.getLists)
   app.post('/api/boards/:board/lists', Lists.postList)
-
-  app.get('/generate-initial-data', FakeData.generateFakeData);
-
   app.delete('/api/lists/:list', Lists.deleteList);
   app.put('/api/lists/:list', Lists.updateListName);
 
