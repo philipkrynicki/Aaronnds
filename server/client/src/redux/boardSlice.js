@@ -3,12 +3,11 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 export const getBoardsAsync = createAsyncThunk(
   'boards/getBoardsAsync',
   async () => {
-    const response = await fetch('https://localhost:5000/api/workspace/boards');
+    const response = await fetch('http://localhost:5000/api/workspace/boards');
     
     if (response.ok) {
       const boards = await response.json();
       console.log(boards)
-      console.log('hello')
       return { boards }
     }
   }
@@ -16,7 +15,7 @@ export const getBoardsAsync = createAsyncThunk(
 export const addBoardAsync = createAsyncThunk(
   'boards/addBoardsAsync',
   async (payload) => {
-    const response = await fetch('api post address', {
+    const response = await fetch('http://localhost:5000/api/boards/:board', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -34,7 +33,7 @@ export const addBoardAsync = createAsyncThunk(
 export const deleteBoardAsync = createAsyncThunk(
   'boards/deleteBoardAsync',
   async (payload) => {
-    const response = await fetch('api delete address', {
+    const response = await fetch('http://localhost:5000/api/boards/:board', {
       method: 'DELETE',
     });
 
@@ -50,7 +49,6 @@ const boardsSlice = createSlice({
   reducers: {
     addBoard: (state, action) => {
       const newBoard = {
-        id: Math.floor(1000 + Math.random() * 9000),
         name: action.payload.name,
       }
       state.push(newBoard);
