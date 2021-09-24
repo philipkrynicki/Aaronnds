@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from "react-router";
 import { useEffect } from "react";
 import { getBoardsAsync } from "../redux/boardSlice";
@@ -7,56 +7,57 @@ const BoardsAll = () => {
 
   const history = useHistory();
 
-  const boardClickHandler = () => {
-    history.push(`/board/id`);
-  }
-
   const dispatch = useDispatch();
+
+  const boards = useSelector(state => state.boards);
+
   useEffect(() => {
     dispatch(getBoardsAsync());
     console.log('hi');
-  }, [dispatch])
+  }, [dispatch]);
+
+  const boardClickHandler = (id) => (event) => {
+    history.push(`/board/${id}`);
+  };
+
+  const newBoardClickHandler = () => {
+    console.log('Adding new board!');
+  };
+
+  const renderBoards = () => {
+
+    return (
+      <div className="row">
+        
+        {boards.map((board) => {
+          return (
+            <div className="col-md-4 d-flex justify-content-center" key={board._id}>
+              <div className="board-comp d-flex align-items-center justify-content-center" onClick={boardClickHandler(board._id)}>
+                <h2>
+                  {board.name}
+                </h2>
+              </div>
+            </div>
+          )
+        })}
+      
+
+        <div className="col-md-4 d-flex justify-content-center">
+          <div className="new-board-comp d-flex align-items-center justify-content-center" onClick={newBoardClickHandler}>
+              <h2>
+                <strong>+ </strong>Add board
+              </h2>
+          </div>
+        </div>
+    
+      </div>
+    )
+  };
 
   return (
-    <div className="row">
-
-      <div className="col-md-4">
-        <h4 onClick={boardClickHandler}>
-          [[ Board 1 ]]
-        </h4>
+      <div>
+        {renderBoards()}
       </div>
-
-      <div className="col-md-4">
-        <h4 onClick={boardClickHandler}>
-          [[ Board 2 ]]
-        </h4>
-      </div>
-
-      <div className="col-md-4">
-        <h4 onClick={boardClickHandler}>
-          [[ Board 3 ]]
-        </h4>
-      </div>
-
-      <div className="col-md-4">
-        <h4 onClick={boardClickHandler}>
-          [[ Board 4 ]]
-        </h4>
-      </div>
-
-      <div className="col-md-4">
-        <h4 onClick={boardClickHandler}>
-          [[ Board 5 ]]
-        </h4>
-      </div>
-
-      <div className="col-md-4">
-        <h4 className="text-success">
-          (~Add Board~)
-        </h4>
-      </div>
-
-    </div>
   );
 }
 

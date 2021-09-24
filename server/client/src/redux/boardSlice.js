@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 export const getBoardsAsync = createAsyncThunk(
   'boards/getBoardsAsync',
   async () => {
-    const response = await fetch('https://localhost:5000/api/workspace/boards');
+    const response = await fetch('http://localhost:5000/api/workspace/boards');
     
     if (response.ok) {
       const boards = await response.json();
@@ -13,6 +13,7 @@ export const getBoardsAsync = createAsyncThunk(
     }
   }
 )
+
 export const addBoardAsync = createAsyncThunk(
   'boards/addBoardsAsync',
   async (payload) => {

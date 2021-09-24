@@ -1,13 +1,81 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.navbar-row {
+  border: solid black;
+  background-color: rgb(216, 214, 214);
+}
+
+.nav-home-btn {
+  cursor: pointer;
+}
+
+.board-comp {
+  border: solid black;
+  height: 150px;
+  width: 250px;
+  background-color: rgb(19, 98, 218);
+  color: white;
+  cursor: pointer;
+}
+
+.new-board-comp {
+  border: dotted black;
+  height: 150px;
+  width: 250px;
+  background-color: rgb(204, 248, 204);
+  cursor: pointer;
+}
+
+.homescreen-title {
+  margin-top: 25px;
+  margin-bottom: 50px;
+}
+
+.boards-all-row {
+  margin-top: 50px;
+}
+
+.board-ind-title {
+  margin-top: 25px;
+  margin-bottom: 50px;
+}
+
+.list-comp {
+  border: solid black;
+  background-color: rgb(216, 214, 214);
+}
+
+.new-list-comp {
+  border: dotted black;
+  background-color: rgb(204, 248, 204);
+  cursor: pointer;
+}
+
+.login-title {
+  font-size: 90px;
+}
+
+.login-username-input {
+  margin-top: 10px;
+}
+
+.login-password-input {
+  margin-top: 10px;
+}
+
+.container {
+  background-color: rgb(245, 244, 244);
+  border: solid thin black;
 }

@@ -3,16 +3,21 @@ import ListsAll from './lists-all.js';
 const BoardIndividual = () => {
 
   return (
-    <div className="row">
-      <div className="col">
-        <div className="text-center">
-
-          <h2 className="text-info">
-            [ """" INDIVIDUAL BOARD PAGE """" ]
+    <div>
+      <div className="row">
+        <div className="col">
+      
+          <h2 className="board-ind-title text-center">
+            <strong>EXAMPLE BOARD A</strong>
           </h2>
 
           <ListsAll />
-          
+
+          <br></br>
+          <br></br>
+          <br></br>
+          <br></br>
+            
         </div>
       </div>
     </div>
