@@ -1,4 +1,5 @@
 const Comment = require('../models/comment');
+const Card = require('../models/card');
 const User = require('../models/user');
 
 exports.getComments = (req, res) => {
@@ -35,11 +36,15 @@ exports.deleteComment = (req, res) => {
   Comment.deleteOne({_id: req.comment._id})
   .then(() => {
 
-    User.updateOne({_id: req.comment.user}, {'$pull': {'comments': req.comment._id}})
-    .exec(err => {
-      if (err) next(err)
-      res.status(200).send("Comment deleted")
+    Card.updateOne({_id: req.comment.card}, {'$pull': {'comments': req.comment._id}})
+    .then(() => {
+      User.updateOne({_id: req.comment.user}, {'$pull': {'comments': req.comment._id}})
+      .exec(err => {
+        if (err) next(err)
+        res.status(200).send("Comment deleted")
+      })
     })
+
   })
 }
 
