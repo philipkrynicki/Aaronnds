@@ -3,10 +3,18 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getBoardAsync = createAsyncThunk(
   'board/getBoardAsync',
-  async (boardId) => {
-    const response = await axios.get(`http://localhost:5000/api/boards/${boardId}`);
+  async (board) => {
+    const response = await axios.get(`http://localhost:5000/api/boards/${board.id}`);
     return { response }
   })
+
+export const editBoardAsync = createAsyncThunk(
+  'board/editBoardAsync',
+  async (board) => {
+    const response = await axios.put(`/api/boards/${board.id}`, board);
+    return { response }
+  }
+)
 
   const boardSlice = createSlice({
     name:'board',
@@ -14,8 +22,7 @@ export const getBoardAsync = createAsyncThunk(
     reducers: {},
     extraReducers: {
       [getBoardAsync.fulfilled]: (state, action) => {
-        console.log(action.payload.response.data)
-        return action.payload.data
+        return action.payload.response.data
       }
     }
   })

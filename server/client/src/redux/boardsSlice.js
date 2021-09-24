@@ -10,15 +10,15 @@ export const getBoardsAsync = createAsyncThunk(
 
 export const addBoardAsync = createAsyncThunk(
   'boards/addBoardsAsync',
-  async (id) => {
-    const response = await axios.post(`http://localhost:5000/api/boards/${id}`)
+  async (board) => {
+    const response = await axios.post('http://localhost:5000/api/boards/', board)
     return {response}
   });
 
 export const deleteBoardAsync = createAsyncThunk(
   'boards/deleteBoardAsync',
-  async (id) => {
-    const response = await axios.delete(`http://localhost:5000/api/boards/${id}`)
+  async (board) => {
+    const response = await axios.delete(`http://localhost:5000/api/boards/${board.id}`)
     return {response}
   }
 ) 
@@ -43,6 +43,7 @@ const boardsSlice = createSlice({
       state.push(action.payload.response.data)
     },
     [deleteBoardAsync.fulfilled]: (state, action) => {
+      //endpoint returning 'deleted board' should we re get boards here to re render what the db has? 
       return state.filter((board) => board.id !== action.payload.response.data);
     }
   }
