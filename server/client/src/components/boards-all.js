@@ -3,6 +3,10 @@ import { useHistory } from "react-router";
 import { useEffect, useState } from "react";
 import { getBoardsAsync, addBoardAsync } from "../redux/boardsSlice";
 import { Modal, Button } from "react-bootstrap";
+import { getListsAsync } from '../redux/listSlice';
+import { getBoardAsync } from '../redux/boardSlice';
+import { getCardsAsync } from '../redux/cardsSlice';
+
 
 const BoardsAll = () => {
   const [show, setShow] = useState(false);
@@ -14,7 +18,6 @@ const BoardsAll = () => {
   useEffect(() => {
     dispatch(getBoardsAsync());
   }, [dispatch]);
-
   const boards = useSelector(state => state.boards);
 
   const handleModalClose = () => setShow(false);
@@ -30,6 +33,8 @@ const BoardsAll = () => {
   }
 
   const boardClickHandler = (id) => (event) => {
+    dispatch(getBoardAsync(id));
+    dispatch(getListsAsync(id));
     history.push(`/board/${id}`);
   };
 
