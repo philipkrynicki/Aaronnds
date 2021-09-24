@@ -41,8 +41,9 @@ exports.deleteComment = (req, res) => {
       User.updateOne({_id: req.comment.user}, {'$pull': {'comments': req.comment._id}})
       .exec(err => {
         if (err) next(err)
-        res.status(200).send("Comment deleted")
+        res.status(200).send(req.comment._id)
       })
+
     })
 
   })

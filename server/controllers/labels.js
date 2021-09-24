@@ -24,6 +24,6 @@ exports.deleteLabel = (req, res) => {
   req.card.labels.pull(req.body.label)
   req.card.save((err, card) => {
     if (err) throw err;
-    res.status(200).json(card.labels);
+    res.status(200).json(req.body.label);
   })
 }

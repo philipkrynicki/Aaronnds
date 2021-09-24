@@ -48,7 +48,7 @@ exports.deleteCard = (req, res) => {
     List.updateOne({_id: req.card.list}, {'$pull': {'cards': req.card._id}})
     .exec((err, card) => {
       if (err) next(err)
-      res.status(200).send("Card deleted")
+      res.status(200).send(req.card._id)
     })
   })
 }

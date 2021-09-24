@@ -10,8 +10,8 @@ export const getListsAsync = createAsyncThunk(
 
 export const addListAsync = createAsyncThunk(
   'lists/addListAsync',
-  async (id) => {
-    const response = await axios.post(`http://localhost:5000//api/boards/${id}/lists`)
+  async (boardId, list) => {
+    const response = await axios.post(`http://localhost:5000//api/boards/${boardId}/lists`, list)
     return {response}
   });
 
@@ -19,7 +19,7 @@ export const addListAsync = createAsyncThunk(
     'lists/deleteListAsync',
   async (id) => {
     const response = await axios.delete(`http://localhost:5000/api/lists/${id}`)
-    return {response}
+    return { response }
   }
 ) 
 
@@ -29,13 +29,13 @@ const listsSlice = createSlice({
   reducers: { },
   extraReducers: {
     [getListsAsync.fulfilled]: (state, action) => {
-      console.log(action.payload.response.data)
-      return action.payload.response.lists
+      return action.payload.response.data
     },
     [addListAsync.fulfilled]: (state, action) => {
-      state.push(action.payload.response.list)
+      state.push(action.payload.response.data)
     },
     [deleteListAsync.fulfilled]: (state, action) => {
+      //same as boardsSlice question
       return state.filter((list) => list.id !== action.payload.response.id);
     }
   }
