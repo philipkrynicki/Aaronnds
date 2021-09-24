@@ -1,6 +1,3 @@
-const express = require("express");
-const app = express();
-
 const GenerateUser = require('./util/generate-user');
 const GenerateData = require('./util/generate-data');
 
@@ -15,7 +12,6 @@ const Board = require('./models/board');
 const List = require('./models/list');
 const Card = require('./models/card');
 const Comment = require('./models/comment');
-const User = require("./models/user");
 
 module.exports = function(app) {
 
@@ -129,7 +125,6 @@ module.exports = function(app) {
   app.get('/api/cards/:card/labels', Labels.getLabels);
   app.post('/api/cards/:card/labels', Labels.postLabel)
   app.delete('/api/cards/:card/labels', Labels.deleteLabel)
-
 
   app.get('/api/cards/:card/activity', Activities.getActivity);
   app.post('/api/cards/:card/activity', Activities.postActivity)
