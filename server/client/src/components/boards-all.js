@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { getBoardsAsync } from "../redux/boardsSlice";
 import { getListsAsync } from '../redux/listSlice';
 import { getBoardAsync } from '../redux/boardSlice';
+import { getCardsAsync } from '../redux/cardsSlice';
 
 const BoardsAll = () => {
 
@@ -17,6 +18,9 @@ const BoardsAll = () => {
     dispatch(getBoardsAsync());
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(getCardsAsync('614c9943031daf259b69f59f'));
+  }, [dispatch]);
 
   const boardClickHandler = (id) => (event) => {
     dispatch(getBoardAsync(id));

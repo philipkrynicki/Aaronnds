@@ -5,14 +5,16 @@ export const getBoardsAsync = createAsyncThunk(
   'boards/getBoardsAsync',
   async () => {
     const response = await axios.get('http://localhost:5000/api/workspace/boards');
-    return { response }
+    const data = response.data
+    return { data }
   })
 
 export const addBoardAsync = createAsyncThunk(
-  'boards/addBoardsAsync',
+  'boards/addBoardAsync',
   async (board) => {
     const response = await axios.post('http://localhost:5000/api/workspace/boards/', board)
-    return {response}
+    const data = response.data
+    return { data }
   });
 
 
@@ -31,10 +33,10 @@ const boardsSlice = createSlice({
   },
   extraReducers: {
     [getBoardsAsync.fulfilled]: (state, action) => {
-      return action.payload.response.data
+      return action.payload.data
     },
     [addBoardAsync.fulfilled]: (state, action) => {
-      state.push(action.payload.response.data)
+      state.push(action.payload.data)
     },
   }
 });

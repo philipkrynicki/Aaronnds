@@ -5,14 +5,16 @@ export const getBoardAsync = createAsyncThunk(
   'board/getBoardAsync',
   async (id) => {
     const response = await axios.get(`http://localhost:5000/api/boards/${id}`);
-    return { response }
+    const data = response.data
+    return { data }
   })
 
 export const editBoardAsync = createAsyncThunk(
   'board/editBoardAsync',
   async (board) => {
     const response = await axios.put(`/api/boards/${board.id}`, board);
-    return { response }
+    const data = response.data
+    return { data }
   }
 )
 
@@ -20,7 +22,8 @@ export const deleteBoardAsync = createAsyncThunk(
   'boards/deleteBoardAsync',
   async (board) => {
     const response = await axios.delete(`http://localhost:5000/api/boards/${board.id}`)
-    return {response}
+    const data = response.data
+    return { data }
   }
 ) 
 
@@ -32,14 +35,14 @@ export const deleteBoardAsync = createAsyncThunk(
     reducers: {},
     extraReducers: {
       [getBoardAsync.fulfilled]: (state, action) => {
-        return action.payload.response.data
+        return action.payload.data
       },
       [editBoardAsync.fulfilled]: (state, action) => {
-        return action.payload.response.data
+        return action.payload.data
       },
       [deleteBoardAsync.fulfilled]: (state, action) => {
-        //endpoint returning 'deleted board' should we re get boards here to re render what the db has? 
-        return state.filter((board) => board.id !== action.payload.response.data);
+        //may have to use history.push to put you back at workspace page from board individual page
+        return state.filter((board) => board.id !== action.payload.data.id);
       }
     }
   })
