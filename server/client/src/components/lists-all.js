@@ -1,7 +1,9 @@
 import { useSelector } from "react-redux";
 
 const ListsAll = () => {
+  const board = useSelector(state => state.board)
   const lists = useSelector(state => state.lists)
+  console.log(board)
 
   const renderLists = () => {
     return (
@@ -19,10 +21,11 @@ const ListsAll = () => {
       </div>
     )
   }
+
   return (
-    <>
+    <div>
       {renderLists()}
-    </>
+    </div>
   );
 }
 

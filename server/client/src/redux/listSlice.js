@@ -29,7 +29,6 @@ const listsSlice = createSlice({
   reducers: { },
   extraReducers: {
     [getListsAsync.fulfilled]: (state, action) => {
-      console.log(action.payload.response.data)
       return action.payload.response.data
     },
     [addListAsync.fulfilled]: (state, action) => {
