@@ -16,6 +16,14 @@ export const editBoardAsync = createAsyncThunk(
   }
 )
 
+export const deleteBoardAsync = createAsyncThunk(
+  'boards/deleteBoardAsync',
+  async (board) => {
+    const response = await axios.delete(`http://localhost:5000/api/boards/${board.id}`)
+    return {response}
+  }
+) 
+
   const boardSlice = createSlice({
     name:'board',
     initialState: {
@@ -24,8 +32,14 @@ export const editBoardAsync = createAsyncThunk(
     reducers: {},
     extraReducers: {
       [getBoardAsync.fulfilled]: (state, action) => {
-        console.log(action.payload.response.data)
         return action.payload.response.data
+      },
+      [editBoardAsync.fulfilled]: (state, action) => {
+        return action.payload.response.data
+      },
+      [deleteBoardAsync.fulfilled]: (state, action) => {
+        //endpoint returning 'deleted board' should we re get boards here to re render what the db has? 
+        return state.filter((board) => board.id !== action.payload.response.data);
       }
     }
   })
