@@ -2,6 +2,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from "react-router";
 import { useEffect } from "react";
 import { getBoardsAsync } from "../redux/boardsSlice";
+import { getListsAsync } from '../redux/listSlice';
+import { getBoardAsync } from '../redux/boardSlice';
 
 const BoardsAll = () => {
 
@@ -15,7 +17,10 @@ const BoardsAll = () => {
     dispatch(getBoardsAsync());
   }, [dispatch]);
 
+
   const boardClickHandler = (id) => (event) => {
+    dispatch(getBoardAsync(id));
+    dispatch(getListsAsync(id));
     history.push(`/board/${id}`);
   };
 
