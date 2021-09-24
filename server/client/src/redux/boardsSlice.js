@@ -15,8 +15,6 @@ export const addBoardAsync = createAsyncThunk(
     const response = await axios.post('http://localhost:5000/api/workspace/boards/', board)
     const data = response.data
     return { data }
-  });
-
 
 
 const boardsSlice = createSlice({
