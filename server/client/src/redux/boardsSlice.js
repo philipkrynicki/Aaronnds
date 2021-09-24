@@ -9,9 +9,9 @@ export const getBoardsAsync = createAsyncThunk(
   })
 
 export const addBoardAsync = createAsyncThunk(
-  'boards/addBoardsAsync',
+  'boards/addBoardAsync',
   async (board) => {
-    const response = await axios.post('http://localhost:5000/api/boards/', board)
+    const response = await axios.post('http://localhost:5000/api/workspace/boards/', board)
     return {response}
   });
 

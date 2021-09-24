@@ -22,26 +22,17 @@ const Login = () => {
 
       <div className="row login-input-row">
         <div className="col-md-4 offset-4">
+      
+          <input type="email" className="form-control login-username-input" placeholder="Username" />
+      
+          <input type="password" className="form-control login-password-input" placeholder="Password" />
 
-          <div className="row login-username-input">
-            <input type="email" className="form-control" placeholder="Username" />
-          </div>
-
-          <div className="row login-password-input">
-            <input type="password" className="form-control" placeholder="Password" />
-          </div>
-
-          <br></br>
-          
-          <div className="row signin-button">
-            <button type="button" className="btn btn-primary" onClick={loginClickHandler}>Sign In</button>
-          </div>
+          <button type="button" className="btn btn-primary login-button" onClick={loginClickHandler}>Sign In</button>
 
           <br></br>
           <br></br>
           <br></br>
           <br></br>
-          
 
         </div>
       </div>

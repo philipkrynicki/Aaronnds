@@ -25,6 +25,7 @@ code {
   border: solid black;
   height: 150px;
   width: 250px;
+  margin-bottom: 50px;
   background-color: rgb(19, 98, 218);
   color: white;
   cursor: pointer;
@@ -48,7 +49,7 @@ code {
 }
 
 .board-ind-title {
-  margin-top: 25px;
+  margin-top: 30px;
   margin-bottom: 50px;
 }
 
@@ -75,7 +76,48 @@ code {
   margin-top: 10px;
 }
 
+.login-button {
+  margin-top: 10px;
+  width: 100%;
+}
+
 .container {
   background-color: rgb(245, 244, 244);
   border: solid thin black;
+  margin-top: 10px;
+}
+
+.edit-icon {
+  height: 25px;
+  width: 25px;
+  margin-right: 40px;
+  mix-blend-mode: multiply;
+}
+
+.delete-icon {
+  height: 25px;
+  width: 25px;
+  mix-blend-mode: multiply;
+}
+
+.sm-edit-icon {
+  height: 20px;
+  width: 20px;
+  margin-right: 20px;
+  mix-blend-mode: multiply;
+}
+
+.sm-delete-icon {
+  height: 20px;
+  width: 20px;
+  margin-right: 5px;
+  mix-blend-mode: multiply;
+}
+
+.homescreen-edit-icon-col {
+  padding-top: 35px;
+}
+
+.board-ind-title-icons-col {
+  padding-bottom: 20px;
 }
