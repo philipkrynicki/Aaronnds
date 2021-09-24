@@ -1,6 +1,5 @@
 const Board = require('../models/board');
-const Card = require('../models/card');
-const Workspace = require('../models/workspace')
+const Workspace = require('../models/workspace');
 
 exports.getBoards = (req, res) => {
   Board.find({})
@@ -16,11 +15,18 @@ exports.getBoard = (req, res) => {
 }
 
 exports.deleteBoard = (req, res) => {
+  // deleteOne triggers middleware on the board schema (located in models/board.js) which deletes all lists refrenced by this board
+
   Board.deleteOne({_id: req.board._id})
-    .exec((err, board) => {
-      if (err) throw err;
+  .then(() => {
+
+    // This code is what removes the board from the workspace's board referenes
+    Workspace.updateOne({_id: req.board.workspace}, {'$pull': {'boards': req.board._id}})
+    .exec(err => {
+      if (err) throw err
       res.status(200).send("Board deleted");
-    });
+    })  
+  })  
 };
 
 exports.updateBoardName = (req, res) => {
