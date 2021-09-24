@@ -15,11 +15,7 @@ const BoardsAll = () => {
 
   useEffect(() => {
     dispatch(getBoardsAsync());
-    console.log('hi');
   }, [dispatch]);
-  
-    dispatch(getBoardAsync('614c9943031daf259b69f59e'));
-  }, [dispatch])
 
   useEffect(() => {
     dispatch(getListsAsync('614c9943031daf259b69f59e'));
