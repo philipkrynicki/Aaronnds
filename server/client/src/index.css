@@ -125,3 +125,12 @@ code {
 .board-ind-title-icons-col {
   padding-bottom: 20px;
 }
+
+.card-listview {
+  border-style: dotted;
+  border-radius: 5px;
+  border-color: rgb(20, 20, 199);
+  border-width: thin;
+  margin: 5px;
+  background-color: whitesmoke;
+}

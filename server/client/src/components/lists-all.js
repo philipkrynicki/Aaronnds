@@ -16,11 +16,19 @@ const ListsAll = () => {
                 <div className="row">
                   <div className="col">
                     <h5><strong>{list.name}</strong></h5>
-                    <CardsAll />
                  </div>
                  <div className="col text-end">
                   <img src={editIconUrl} alt="edit" className="sm-edit-icon" />
                   <img src={deleteIconUrl} alt="delete" className="sm-delete-icon" />
+                </div>
+                <div className="row">
+                  <div className="col">
+                    {list.cards.map((card) => {
+                        return(
+                          <div className="card-listview " key={card._id}>{card.name}</div>
+                        )
+                      })}
+                  </div>
                 </div>
                </div>
               </div>
