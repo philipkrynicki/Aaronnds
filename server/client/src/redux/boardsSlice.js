@@ -1,5 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import socket from '../socket-connect';
+
+// Listen for when a new board is posted
+// All socket listeners may be moved to their own file(s) in the future
+socket.on('newBoard', board => {
+  console.log(board);
+})
 
 export const getBoardsAsync = createAsyncThunk(
   'boards/getBoardsAsync',
