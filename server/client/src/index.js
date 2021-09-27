@@ -11,8 +11,14 @@ import Navbar from './components/navbar.js';
 import Homescreen from './components/home-screen.js';
 import BoardIndividual from './components/board-individual.js';
 import Login from './components/login.js';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistStore } from 'redux-persist';
+
+let persistor = persistStore(store);
 
 const App = () => {
+  
+  
   return (
     <div className="container">
 
@@ -36,7 +42,9 @@ ReactDOM.render(
   <BrowserRouter>
     <React.StrictMode>
       <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
         <App />
+        </PersistGate>
       </Provider>
     </React.StrictMode>
   </BrowserRouter>,
