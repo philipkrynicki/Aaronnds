@@ -56,12 +56,15 @@ code {
 .list-comp {
   border: solid black;
   background-color: rgb(216, 214, 214);
+  padding-left: 5px;
 }
 
 .new-list-comp {
   border: dotted black;
   background-color: rgb(204, 248, 204);
   cursor: pointer;
+  padding-left: 5px;
+  height: 32px;
 }
 
 .login-title {
@@ -124,4 +127,29 @@ code {
 
 .board-ind-title-icons-col {
   padding-bottom: 20px;
+}
+
+.card-listview {
+  border-style: dotted;
+  border-radius: 5px;
+  border-color: rgb(20, 20, 199);
+  border-width: thin;
+  margin: 5px;
+  background-color: whitesmoke;
+  cursor: pointer;
+}
+
+.new-card-link {
+  border-style: dotted;
+  border-radius: 5px;
+  border-color: rgb(20, 20, 199);
+  border-width: thin;
+  margin: 5px;
+  background-color: rgb(238, 248, 152);
+  cursor: pointer;
+}
+
+.col-listname {
+  height: 27px;
+  overflow: auto;
 }
