@@ -5,6 +5,11 @@ import { io } from 'socket.io-client';
 // Connect to the socket on the backend server
 const socket = io('http://localhost:5000', {transports: ['websocket']});
 
+// This code will be moved
+socket.on('updatedBoard', updatedBoard => {
+  console.log(updatedBoard);
+})
+
 export const getBoardAsync = createAsyncThunk(
   'board/getBoardAsync',
   async (board) => {
