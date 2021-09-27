@@ -145,3 +145,8 @@ code {
   background-color: rgb(238, 248, 152);
   cursor: pointer;
 }
+
+.col-listname {
+  height: 27px;
+  overflow: auto;
+}
