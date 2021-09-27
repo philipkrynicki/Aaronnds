@@ -1,11 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import socket from '../socket-connect';
+import store from './store'
 
 // Listen for when a new board is posted
 // All socket listeners may be moved to their own file(s) in the future
 socket.on('newBoard', board => {
-  console.log(board);
+  // console.log(board);
+  store.dispatch(addBoardAsync(board));
 })
 
 export const getBoardsAsync = createAsyncThunk(
@@ -19,8 +21,15 @@ export const getBoardsAsync = createAsyncThunk(
 export const addBoardAsync = createAsyncThunk(
   'boards/addBoardAsync',
   async (board) => {
-    const response = await axios.post('http://localhost:5000/api/workspace/boards/', board)
-    const data = response.data
+
+    let data = {};
+
+    if (board.hasOwnProperty('_id')) {
+      data = board;
+    } else {
+      const response = await axios.post('http://localhost:5000/api/workspace/boards/', board)
+      data = response.data;    
+    }
     return { data }
   }
 )
