@@ -21,15 +21,7 @@ export const addBoardAsync = createAsyncThunk(
 const boardsSlice = createSlice({
   name: 'boards',
   initialState: [],
-  reducers: {
-    addBoard: (state, action) => {
-      const newBoard = {
-        name: action.payload.name,
-      }
-      state.push(newBoard);
-    },
-
-  },
+  reducers: {},
   extraReducers: {
     [getBoardsAsync.fulfilled]: (state, action) => {
       return action.payload.data

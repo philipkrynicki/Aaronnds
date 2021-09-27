@@ -1,7 +1,6 @@
 
 import { editIconUrl, deleteIconUrl } from '../constants/constants.js';
 import { useSelector } from "react-redux";
-import CardsAll from "./cards-all";
 
 const ListsAll = () => {
   const lists = useSelector(state => state.lists);
