@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = require('./router');
 const cors = require('cors');
-const passport = require("passport");
+const passport = require('passport');
 
 mongoose.connect("mongodb://localhost/aaronnds");
 
