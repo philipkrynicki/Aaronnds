@@ -4,7 +4,11 @@ import { useSelector } from "react-redux";
 import CardsAll from "./cards-all";
 
 const ListsAll = () => {
-  const lists = useSelector(state => state.lists)
+  const lists = useSelector(state => state.lists);
+
+  const handleNewCard = () => {
+    
+  }
 
   const renderLists = () => {
     return (
@@ -28,6 +32,7 @@ const ListsAll = () => {
                           <div className="card-listview " key={card._id}>{card.name}</div>
                         )
                       })}
+                    <div className="new-card-link" onClick={handleNewCard()}>+ Add Card</div>
                   </div>
                 </div>
                </div>
