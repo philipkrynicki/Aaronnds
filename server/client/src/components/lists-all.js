@@ -1,16 +1,13 @@
 
 import { editIconUrl, deleteIconUrl } from '../constants/constants.js';
-import { useDispatch, useSelector } from "react-redux";
-import CardsAll from "./cards-all";
-import { useEffect } from 'react';
-import { getListsAsync } from '../redux/listSlice.js';
+import { useSelector } from "react-redux";
 
+const ListsAll = () => {
+  const lists = useSelector(state => state.lists);
 
-const ListsAll = (props) => {
-  const lists = useSelector(state => state.lists)
-
- 
-
+  const handleNewCard = () => {
+    
+  }
 
   const renderLists = () => {
     return (
@@ -22,11 +19,20 @@ const ListsAll = (props) => {
                 <div className="row">
                   <div className="col">
                     <h5><strong>{list.name}</strong></h5>
-                    <CardsAll />
                  </div>
                  <div className="col text-end">
                   <img src={editIconUrl} alt="edit" className="sm-edit-icon" />
                   <img src={deleteIconUrl} alt="delete" className="sm-delete-icon" />
+                </div>
+                <div className="row">
+                  <div className="col">
+                    {list.cards.map((card) => {
+                        return(
+                          <div className="card-listview " key={card._id}>{card.name}</div>
+                        )
+                      })}
+                    <div className="new-card-link" onClick={handleNewCard()}>+ Add Card</div>
+                  </div>
                 </div>
                </div>
               </div>
