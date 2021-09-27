@@ -55,7 +55,7 @@ exports.postBoard = (req, res) => {
   if (!req.body.name) {
     res.status(400).send("No name included in request body")
     return res.end();
-  } 
+  }
   
   Workspace.findOne()
   .exec((err, workspace) => {
@@ -64,6 +64,8 @@ exports.postBoard = (req, res) => {
       lists: [],
       workspace: workspace._id
     });
+
+    req.app.get('io').emit('newBoard', board);
 
     board.save()
     workspace.boards.push(board);
