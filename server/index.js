@@ -20,3 +20,7 @@ const server = app.listen(5000, () => {
 
 const io = socket(server);
 app.set('io', io);
+
+io.on('connection', socket => {
+  console.log('Socket connected: ', socket.id);
+})
