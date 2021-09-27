@@ -14,11 +14,11 @@ const ListsAll = () => {
             <div className="col-md-3" key={list._id}>
               <div className="col list-comp">
                 <div className="row">
-                  <div className="col">
+                  <div className="col-8 col-listname">
                     <h5><strong>{list.name}</strong></h5>
                     <CardsAll />
                  </div>
-                 <div className="col text-end">
+                 <div className="col-4 text-end">
                   <img src={editIconUrl} alt="edit" className="sm-edit-icon" />
                   <img src={deleteIconUrl} alt="delete" className="sm-delete-icon" />
                 </div>
@@ -27,6 +27,11 @@ const ListsAll = () => {
             </div>
           )
         })}
+        <div className="col-md-3">
+          <div className="col new-list-comp">
+            <h5><strong>+ Add list</strong></h5>
+          </div>
+        </div>
       </div>
     )
   }
