@@ -24,6 +24,7 @@ const BoardIndividual = () => {
   const renderBoardDetail = (board) => {
     return (
     <div className="row">
+      <div className="col-md-4"></div>
       <div className="col-md-4">
         <h2 className="board-ind-title text-center">
           <strong>{board.name}</strong>
