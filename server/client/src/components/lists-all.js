@@ -1,10 +1,16 @@
 
 import { editIconUrl, deleteIconUrl } from '../constants/constants.js';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CardsAll from "./cards-all";
+import { useEffect } from 'react';
+import { getListsAsync } from '../redux/listSlice.js';
 
-const ListsAll = () => {
+
+const ListsAll = (props) => {
   const lists = useSelector(state => state.lists)
+
+ 
+
 
   const renderLists = () => {
     return (
