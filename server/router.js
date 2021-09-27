@@ -1,3 +1,7 @@
+const express = require("express");
+const app = express();
+const passport = require('passport');
+const passportService = require('./services/passport');
 const GenerateUser = require('./util/generate-user');
 const GenerateData = require('./util/generate-data');
 
@@ -6,12 +10,16 @@ const Lists = require('./controllers/lists');
 const Cards = require('./controllers/cards');
 const Comments = require('./controllers/comments');
 const Labels = require('./controllers/labels');
-const Activities = require('./controllers/activities')
+const Activities = require('./controllers/activities');
+const Authentication = require('./controllers/authentication');
 
 const Board = require('./models/board');
 const List = require('./models/list');
 const Card = require('./models/card');
 const Comment = require('./models/comment');
+
+const requireAuth = passport.authenticate('jwt', { session: false });
+const requireSignin = passport.authenticate('local', { session: false });
 
 module.exports = function(app) {
 
@@ -88,7 +96,7 @@ module.exports = function(app) {
         res.writeHead(404, 'Comment not found');
         return res.end();
       }
-      else if (err)
+      else if (err) 
         throw err;
       else
         req.comment = comment;
@@ -96,6 +104,7 @@ module.exports = function(app) {
     })
   })
 
+  //To-do: Add requireAuth middleware to appropriate routes once frontend is ready for that
   // ROUTES
   app.get('/generate-boards', GenerateData.generateBoards);
   app.get('/generate-user', GenerateUser.generateUser);
@@ -127,5 +136,9 @@ module.exports = function(app) {
   app.delete('/api/cards/:card/labels', Labels.deleteLabel)
 
   app.get('/api/cards/:card/activity', Activities.getActivity);
-  app.post('/api/cards/:card/activity', Activities.postActivity)
+  app.post('/api/cards/:card/activity', Activities.postActivity);
+
+  app.post('/auth/login', requireSignin, Authentication.login);
+  app.post('/auth/logout', Authentication.logout)
+
 };
