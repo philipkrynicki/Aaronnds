@@ -17,7 +17,6 @@ const Board = require('./models/board');
 const List = require('./models/list');
 const Card = require('./models/card');
 const Comment = require('./models/comment');
-const User = require("./models/user");
 
 const requireAuth = passport.authenticate('jwt', { session: false });
 const requireSignin = passport.authenticate('local', { session: false });
@@ -135,7 +134,6 @@ module.exports = function(app) {
   app.get('/api/cards/:card/labels', Labels.getLabels);
   app.post('/api/cards/:card/labels', Labels.postLabel)
   app.delete('/api/cards/:card/labels', Labels.deleteLabel)
-
 
   app.get('/api/cards/:card/activity', Activities.getActivity);
   app.post('/api/cards/:card/activity', Activities.postActivity);
