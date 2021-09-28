@@ -145,3 +145,11 @@ code {
   background-color: rgb(238, 248, 152);
   cursor: pointer;
 }
+
+.hide {
+  display: none;
+}
+
+.new-card-btn {
+  align-items: center;
+}

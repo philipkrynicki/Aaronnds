@@ -1,13 +1,37 @@
-
 import { editIconUrl, deleteIconUrl } from '../constants/constants.js';
 import { useSelector } from "react-redux";
-import CardsAll from "./cards-all";
+import { useState } from 'react';
 
 const ListsAll = () => {
-  const lists = useSelector(state => state.lists);
+  const lists = useSelector(state => state.lists); 
+  const [addNewCard, setAddNewCard] = useState(false)
+  const newCardLink = (list) => {
+    return (
+      <div className="new-card-link" id={list._id} onClick={handleNewCard}>+ Add Card</div>      
+    )
+  };
+  
+  const newCardForm = (list) => {
+    return (      
+      <div className="card-listview">        
+        <input type="text" className="form-control" placeholder="Enter card title"></input>
+        <button type="button" className="button btn btn-primary new-card-btn" onClick={handleCardSubmit}>Add Card</button>
+      </div>     
+    )
+  }
 
   const handleNewCard = () => {
+    setAddNewCard(true)
+
+  };
+
+  const handleCardSubmit = () => {
     
+    setAddNewCard(false)
+  }
+
+  const viewCardDetail = () => {
+    //link to Card Detail component or delete function and include link in the jsx?
   }
 
   const renderLists = () => {
@@ -29,10 +53,12 @@ const ListsAll = () => {
                   <div className="col">
                     {list.cards.map((card) => {
                         return(
-                          <div className="card-listview " key={card._id}>{card.name}</div>
+                          <div className="card-listview " key={card._id} onClick={viewCardDetail(card._id)}>{card.name}</div>
                         )
                       })}
-                    <div className="new-card-link" onClick={handleNewCard()}>+ Add Card</div>
+                      
+                      {addNewCard ? newCardForm(list): newCardLink(list)}
+                    
                   </div>
                 </div>
                </div>
