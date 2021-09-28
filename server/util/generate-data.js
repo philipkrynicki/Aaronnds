@@ -50,6 +50,7 @@ const generateCards = (listId) => {
   return cardArr;
 }
 
+// Generate three random boards as long as there's a workspace in the db
 exports.generateBoards = (req, res) => {
 
   Workspace.findOne()

@@ -1,22 +1,27 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import ListsAll from './lists-all.js';
 import { editIconUrl, deleteIconUrl } from '../constants/constants.js';
 import { Modal, Button } from "react-bootstrap";
 import { useState } from 'react';
+import { editBoardAsync } from "../redux/boardSlice";
 
 
 
 const BoardIndividual = () => {
   const [show, setShow] = useState(false);
+  const [updatedBoardName, setUpdatedBoardName] = useState("");
+  const dispatch = useDispatch();
   const handleModalShow = () => setShow(true);
   const handleModalClose = () => setShow(false);
   const handleModalEdit = () => {
-    //  Still needs implementation
     setShow(false);
+    dispatch(editBoardAsync({name: updatedBoardName}));
+    setUpdatedBoardName("");
   }
   const newBoardInputChangeHandler = (e) => {
-    //  Philip working on this.  Still needs functionality
-    // setNewBoardName(e.target.value)
+    
+    setUpdatedBoardName(e.target.value)
+    console.log(updatedBoardName);
   }
   const board = useSelector(state => state.board)
 
@@ -24,6 +29,7 @@ const BoardIndividual = () => {
   const renderBoardDetail = (board) => {
     return (
     <div className="row">
+      <div className="col-md-4"></div>
       <div className="col-md-4">
         <h2 className="board-ind-title text-center">
           <strong>{board.name}</strong>
@@ -43,7 +49,7 @@ const BoardIndividual = () => {
         <Modal show={show} onHide={handleModalClose}>
           <Modal.Header closeButton><Modal.Title>Edit the name of this board:</Modal.Title></Modal.Header>
           <Modal.Body>
-            <input type="text" className="form-control" value={board.name} placeholder="New board title" onChange={newBoardInputChangeHandler} />
+            <input type="text" className="form-control" placeholder="New board title" onChange={newBoardInputChangeHandler} />
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary text-center" onClick={handleModalEdit}>
