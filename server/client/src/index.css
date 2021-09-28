@@ -157,3 +157,8 @@ code {
   height: 27px;
   overflow: auto;
 }
+
+.cancel-card {
+  margin-left: 5px;
+  font-size: larger;
+}

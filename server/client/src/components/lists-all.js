@@ -1,33 +1,44 @@
 import { editIconUrl, deleteIconUrl } from '../constants/constants.js';
 import { useSelector } from "react-redux";
 import { useState } from 'react';
+import { addCardAsync } from '../redux/cardsSlice.js';
 
 const ListsAll = () => {
   const lists = useSelector(state => state.lists); 
-  const [addNewCard, setAddNewCard] = useState(false)
+  const [addNewCard, setAddNewCard] = useState(false);
+  const [newCardTitle, setNewCardTitle] = useState('');
+
   const newCardLink = (list) => {
     return (
-      <div className="new-card-link" id={list._id} onClick={handleNewCard}>+ Add Card</div>      
+      <div className="new-card-link" id={list._id} onClick={handleNewCardToggle}>+ Add Card</div>      
     )
   };
   
   const newCardForm = (list) => {
     return (      
-      <div className="card-listview">        
-        <input type="text" className="form-control" placeholder="Enter card title"></input>
-        <button type="button" className="button btn btn-primary new-card-btn" onClick={handleCardSubmit}>Add Card</button>
+      <div className="card-listview" id={list._id}>            
+        <input type="text" className="form-control" placeholder="Enter card title" onChange={(e) => setNewCardTitle(e.target.value)}></input>
+        <button type="button" className="button btn btn-primary btn-sm new-card-btn" onClick={handleCardSubmit}>Add Card</button>  
+        <a className="cancel-card" href="#" onClick={cancelNewCard}>X</a>      
       </div>     
     )
   }
+  const cancelNewCard = () => {
+    setAddNewCard(false);
+  }
 
-  const handleNewCard = () => {
+  const handleNewCardToggle = () => {
+    
     setAddNewCard(true)
-
   };
 
-  const handleCardSubmit = () => {
-    
+  const handleCardSubmit = (list) => { 
+    if (newCardTitle === "") {
+      return alert("Please enter a name for your card")
+    } 
+
     setAddNewCard(false)
+    dispatchEvent(addCardAsync({name: newCardTitle}))
   }
 
   const viewCardDetail = () => {
@@ -57,7 +68,7 @@ const ListsAll = () => {
                         )
                       })}
                       
-                      {addNewCard ? newCardForm(list): newCardLink(list)}
+                      {addNewCard ? newCardForm(list._id): newCardLink(list)}
                     
                   </div>
                 </div>
