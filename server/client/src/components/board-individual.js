@@ -14,6 +14,7 @@ const BoardIndividual = () => {
     //  Still needs implementation
     setShow(false);
   }
+  
   const newBoardInputChangeHandler = (e) => {
     //  Philip working on this.  Still needs functionality
     // setNewBoardName(e.target.value)

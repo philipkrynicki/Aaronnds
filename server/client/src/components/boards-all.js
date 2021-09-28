@@ -5,7 +5,6 @@ import { getBoardsAsync, addBoardAsync } from "../redux/boardsSlice";
 import { Modal, Button } from "react-bootstrap";
 import { getListsAsync } from '../redux/listSlice';
 import { getBoardAsync } from '../redux/boardSlice';
-import { getCardsAsync } from '../redux/cardsSlice';
 
 
 const BoardsAll = () => {
