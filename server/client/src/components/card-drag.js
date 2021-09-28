@@ -14,7 +14,9 @@ function CardDrag ({id, name}) {
   }
 
   return (
-    <div className="card-listview " ref={drag} onClick={viewCardDetail(id)}>{name}</div>
+    <div className="col">
+      <div className="col card-listview" ref={drag} onClick={viewCardDetail(id)}>{name}</div>
+    </div>
   ) 
 }
 
