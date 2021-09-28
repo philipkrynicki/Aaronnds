@@ -15,7 +15,7 @@ const BoardIndividual = () => {
   const handleModalClose = () => setShow(false);
   const handleModalEdit = () => {
     setShow(false);
-    dispatch(editBoardAsync({name: updatedBoardName}));
+    dispatch(editBoardAsync({id: id, name: updatedBoardName}));
     setUpdatedBoardName("");
   }
   
@@ -25,7 +25,9 @@ const BoardIndividual = () => {
     console.log(updatedBoardName);
   }
   const board = useSelector(state => state.board)
-
+  // useEffect(() => {
+    //   dispatch(getBoardAsync(id));
+    // }, [dispatch]);
 
   const renderBoardDetail = (board) => {
     return (
