@@ -39,7 +39,7 @@ exports.updateBoardName = (req, res) => {
   const update = req.body.name;
   const io = req.app.get('io');
 
-  Board.findOneAndUpdate({_id: req.board._id}, update, { new: true })
+  Board.findOneAndUpdate({_id: req.board._id}, {name: update}, {new: true})
     .exec((err, updatedBoard) => {
       if (err) throw err;
 
