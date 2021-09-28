@@ -3,6 +3,7 @@ import axios from 'axios';
 import _ from 'lodash';
 import socket from '../socket-connect';
 import store from './store'
+import { apiUrl } from "../constants/constants";
 
 // Listen for when a new board is posted
 // All socket listeners may be moved to their own file(s) in the future
@@ -13,7 +14,7 @@ socket.on('newBoard', board => {
 export const getBoardsAsync = createAsyncThunk(
   'boards/getBoardsAsync',
   async () => {
-    const response = await axios.get('http://localhost:5000/api/workspace/boards');
+    const response = await axios.get(`${apiUrl}/workspace/boards`);
     const data = response.data
     return { data }
   })
@@ -28,7 +29,7 @@ export const addBoardAsync = createAsyncThunk(
     if (board.hasOwnProperty('_id')) {
       data = board;
     } else {
-      const response = await axios.post('http://localhost:5000/api/workspace/boards/', board)
+      const response = await axios.post(`${apiUrl}/workspace/boards/`, board)
       data = response.data;    
     }
     return { data }

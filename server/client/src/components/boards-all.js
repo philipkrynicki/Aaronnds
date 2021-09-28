@@ -2,9 +2,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from "react-router";
 import { useEffect, useState } from "react";
 import { getBoardsAsync, addBoardAsync } from "../redux/boardsSlice";
+import { plusIconUrl } from '../constants/constants.js';
 import { Modal, Button } from "react-bootstrap";
-import { getListsAsync } from '../redux/listSlice';
-import { getBoardAsync } from '../redux/boardSlice';
+
 
 
 const BoardsAll = () => {
@@ -17,6 +17,7 @@ const BoardsAll = () => {
   useEffect(() => {
     dispatch(getBoardsAsync());
   }, [dispatch]);
+
   const boards = useSelector(state => state.boards);
 
   const handleModalClose = () => setShow(false);
@@ -31,8 +32,6 @@ const BoardsAll = () => {
   }
 
   const boardClickHandler = (id) => (event) => {
-    dispatch(getBoardAsync(id));
-    dispatch(getListsAsync(id));
     history.push(`/board/${id}`);
   };
 
@@ -61,9 +60,10 @@ const BoardsAll = () => {
       
         <div className="col-md-4 d-flex justify-content-center">
           <div className="new-board-comp d-flex align-items-center justify-content-center" onClick={handleModalShow}>
-              <h2>
-                <strong>+ </strong>Add board
-              </h2>
+            
+              <img src={plusIconUrl} alt="add" className="plus-icon" />
+              <h2>Add board</h2>
+              
           </div>
         </div>
     

@@ -2,12 +2,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import ListsAll from './lists-all.js';
 import { editIconUrl, deleteIconUrl } from '../constants/constants.js';
 import { Modal, Button } from "react-bootstrap";
-import { useState } from 'react';
-import { editBoardAsync } from "../redux/boardSlice";
+import { useState, useEffect } from 'react';
+import { editBoardAsync, getBoardAsync } from "../redux/boardSlice";
 
 
 
-const BoardIndividual = () => {
+const BoardIndividual = (props) => {
   const [show, setShow] = useState(false);
   const [updatedBoardName, setUpdatedBoardName] = useState("");
   const dispatch = useDispatch();
@@ -15,7 +15,7 @@ const BoardIndividual = () => {
   const handleModalClose = () => setShow(false);
   const handleModalEdit = () => {
     setShow(false);
-    dispatch(editBoardAsync({id: id, name: updatedBoardName}));
+    dispatch(editBoardAsync({name: updatedBoardName}));
     setUpdatedBoardName("");
   }
   
@@ -25,9 +25,10 @@ const BoardIndividual = () => {
     console.log(updatedBoardName);
   }
   const board = useSelector(state => state.board)
-  // useEffect(() => {
-    //   dispatch(getBoardAsync(id));
-    // }, [dispatch]);
+  
+  useEffect(() => {
+    dispatch(getBoardAsync(props.match.params.id));
+    }, [dispatch, props.match.params.id]);
 
   const renderBoardDetail = (board) => {
     return (
@@ -70,7 +71,7 @@ const BoardIndividual = () => {
         <div className="col align-items-center">
           {renderBoardDetail(board)}   
           {renderEditBoardModal()}      
-          <ListsAll />
+          <ListsAll boardId={board._id} />
         </div>
 
       </div>

@@ -1,18 +1,19 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { apiUrl } from "../constants/constants";
 
 export const getListsAsync = createAsyncThunk(
   'lists/getListsAsync',
   async (id) => {
-    const response = await axios.get(`http://localhost:5000/api/boards/${id}/lists`);
+    const response = await axios.get(`${apiUrl}/boards/${id}/lists`);
     const data = response.data
     return { data }
   })
 
 export const addListAsync = createAsyncThunk(
   'lists/addListAsync',
-  async (newListObj) => {
-    const response = await axios.post(`http://localhost:5000/api/boards/${newListObj.boardId}/lists`, newListObj.name)
+  async (newListObject) => {
+    const response = await axios.post(`http://localhost:5000/api/boards/${newListObject.id}/lists`, newListObject.nameObj)
     const data = response.data
     return { data }
   });
@@ -20,7 +21,7 @@ export const addListAsync = createAsyncThunk(
   export const deleteListAsync = createAsyncThunk(
     'lists/deleteListAsync',
   async (id) => {
-    const response = await axios.delete(`http://localhost:5000/api/lists/${id}`)
+    const response = await axios.delete(`${apiUrl}/lists/${id}`)
     const data = response.data
     return { data }
   }
