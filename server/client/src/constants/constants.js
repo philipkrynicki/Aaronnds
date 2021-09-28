@@ -7,3 +7,5 @@ export const xIconUrl = 'https://cdn0.iconfinder.com/data/icons/controls-and-nav
 export const tripleDotIconUrl = 'https://static.thenounproject.com/png/658625-200.png';
 
 export const plusIconUrl = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxeULuRWwvnYOLAaHXZOOgbFQMfZfxej5GLw&usqp=CAU';
+
+export const apiUrl = 'http://localhost:5000/api';
