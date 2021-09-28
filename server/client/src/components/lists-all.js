@@ -10,7 +10,7 @@ const ListsAll = (props) => {
   const lists = useSelector(state => state.lists); 
   const [addNewCard, setAddNewCard] = useState(false);
   const [newCardTitle, setNewCardTitle] = useState('');
-  
+  const [currentListID, setCurrentListID] = useState('');
 
   const dispatch = useDispatch();
 
@@ -41,7 +41,7 @@ const ListsAll = (props) => {
 
   const newCardLink = (list) => {
     return (
-      <div className="new-card-link" id={list._id} onClick={handleNewCardToggle}>+ Add Card</div>      
+      <div className="new-card-link" id={list._id} onClick={() => handleNewCardToggle({list})}>+ Add Card</div>      
     )
   };
   
@@ -49,7 +49,7 @@ const ListsAll = (props) => {
     return (      
       <div className="card-listview" id={list._id}>            
         <input type="text" className="form-control" placeholder="Enter card title" onChange={(e) => setNewCardTitle(e.target.value)}></input>
-        <button type="button" className="button btn btn-primary btn-sm new-card-btn" onClick={handleCardSubmit}>Add Card</button>  
+        <button type="button" className="button btn btn-primary btn-sm new-card-btn" onClick={() => handleCardSubmit({list})}>Add Card</button>  
         <a className="cancel-card" href="#" onClick={cancelNewCard}>X</a>      
       </div>     
     )
@@ -58,17 +58,21 @@ const ListsAll = (props) => {
     setAddNewCard(false);
   }
 
-  const handleNewCardToggle = () => {
-    
+  const handleNewCardToggle = (list) => {
+    console.log(list)
+    setCurrentListID(list.list._id)
     setAddNewCard(true)
   };
 
   const handleCardSubmit = (list) => { 
+
+    console.log(list)
     if (newCardTitle === "") {
       return alert("Please enter a name for your card")
-    } 
+    }     
 
     setAddNewCard(false)
+    //pass list.list._id in creating new card
     dispatchEvent(addCardAsync({name: newCardTitle}))
   }
 
@@ -127,7 +131,7 @@ const ListsAll = (props) => {
                         )
                       })}
                       
-                      {addNewCard ? newCardForm(list._id): newCardLink(list)}
+                      {addNewCard && list._id === currentListID ? newCardForm(list._id): newCardLink(list)}
                     
                   </div>
                 </div>
