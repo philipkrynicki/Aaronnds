@@ -37,11 +37,14 @@ exports.updateBoardName = (req, res) => {
   } 
 
   const update = req.body.name;
+  const io = req.app.get('io');
 
   Board.findOneAndUpdate({_id: req.board._id}, update, { new: true })
     .exec((err, updatedBoard) => {
       if (err) throw err;
-      res.status(200).json(updatedBoard)
+
+      io.emit('updatedBoard', JSON.stringify(updatedBoard));
+      res.status(200).json(updatedBoard);
     })
 
 }
@@ -52,7 +55,7 @@ exports.postBoard = (req, res) => {
   if (!req.body.name) {
     res.status(400).send("No name included in request body")
     return res.end();
-  } 
+  }
   
   Workspace.findOne()
   .exec((err, workspace) => {
@@ -61,6 +64,8 @@ exports.postBoard = (req, res) => {
       lists: [],
       workspace: workspace._id
     });
+
+    req.app.get('io').emit('newBoard', board);
 
     board.save()
     workspace.boards.push(board);

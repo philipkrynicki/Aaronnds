@@ -1,10 +1,8 @@
 
-import { editIconUrl, deleteIconUrl, xIconUrl, tripleDotIconUrl, plusIconUrl } from '../constants/constants.js';
+import { xIconUrl, tripleDotIconUrl, plusIconUrl } from '../constants/constants.js';
 import { useDispatch, useSelector } from "react-redux";
-import CardsAll from "./cards-all";
 import { useEffect, useState } from 'react';
 import { getListsAsync, addListAsync } from '../redux/listSlice.js';
-
 
 const ListsAll = (props) => {
   const [showNewListInput, setShowNewListInput] = useState(false);
@@ -39,6 +37,10 @@ const ListsAll = (props) => {
     console.log('Display edit/remove list modal')
   }
 
+  const handleNewCard = () => {
+    
+  }
+
   const renderNewListButton = () => {
     if (showNewListInput === true) {
       return (
@@ -65,6 +67,7 @@ const ListsAll = (props) => {
       </div>
     )
   }
+ 
 
   const renderLists = () => {
     return (
@@ -77,10 +80,19 @@ const ListsAll = (props) => {
                 <div className="row">
                   <div className="col-10 col-listname">
                     <h5 className="listname-text"><strong>{list.name}</strong></h5>
-                    <CardsAll />
                  </div>
                  <div className="col-2 text-end">
                   <img src={tripleDotIconUrl} alt="edit" className="sm-3dot-icon" onClick={listDotClickHandler} />
+                </div>
+                <div className="row">
+                  <div className="col">
+                    {list.cards.map((card) => {
+                        return(
+                          <div className="card-listview " key={card._id}>{card.name}</div>
+                        )
+                      })}
+                    <div className="new-card-link" onClick={handleNewCard()}>+ Add Card</div>
+                  </div>
                 </div>
                </div>
               </div>

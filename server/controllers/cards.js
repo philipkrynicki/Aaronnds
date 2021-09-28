@@ -3,7 +3,6 @@ const List = require('../models/list');
 
 // Get all cards for a list
 exports.getCards = (req, res) => {
-  //figure out how to get invalid list id to stop crashing server
 
   Card
   .find({list: req.params.list})

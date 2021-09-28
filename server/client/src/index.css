@@ -180,3 +180,22 @@ code {
 .new-list-input-button {
   margin-right: 15px;
 }
+.card-listview {
+  border-style: dotted;
+  border-radius: 5px;
+  border-color: rgb(20, 20, 199);
+  border-width: thin;
+  margin: 5px;
+  background-color: whitesmoke;
+  cursor: pointer;
+}
+
+.new-card-link {
+  border-style: dotted;
+  border-radius: 5px;
+  border-color: rgb(20, 20, 199);
+  border-width: thin;
+  margin: 5px;
+  background-color: rgb(238, 248, 152);
+  cursor: pointer;
+}

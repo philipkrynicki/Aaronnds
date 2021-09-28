@@ -6,7 +6,6 @@ import { plusIconUrl } from '../constants/constants.js';
 import { Modal, Button } from "react-bootstrap";
 import { getListsAsync } from '../redux/listSlice';
 import { getBoardAsync } from '../redux/boardSlice';
-import { getCardsAsync } from '../redux/cardsSlice';
 
 
 const BoardsAll = () => {
@@ -48,15 +47,18 @@ const BoardsAll = () => {
       <div className="row">
         
         {boards.map((board) => {
-          return (
-            <div className="col-md-4 d-flex justify-content-center" key={board._id}>
-              <div className="board-comp d-flex align-items-center justify-content-center" onClick={boardClickHandler(board._id)}>
-                <h2>
-                  {board.name}
-                </h2>
+          if (board) {
+            return (
+              <div className="col-md-4 d-flex justify-content-center" key={board._id}>
+                <div className="board-comp d-flex align-items-center justify-content-center" onClick={boardClickHandler(board._id)}>
+                  <h2>
+                    {board.name}
+                  </h2>
+                </div>
               </div>
-            </div>
-          )
+            )   
+          }
+          return <div></div>
         })}
       
         <div className="col-md-4 d-flex justify-content-center">
