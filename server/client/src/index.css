@@ -56,15 +56,23 @@ code {
 .list-comp {
   border: solid black;
   background-color: rgb(216, 214, 214);
-  padding-left: 5px;
+  padding-left: 10px;
+  margin-bottom: 50px;
 }
 
 .new-list-comp {
   border: dotted black;
   background-color: rgb(204, 248, 204);
   cursor: pointer;
-  padding-left: 5px;
-  height: 32px;
+  padding-left: 10px;
+}
+
+.listname-text {
+  margin-top: 3px;
+}
+
+.add-listname-text {
+  margin-top: 3px;
 }
 
 .login-title {
@@ -105,20 +113,44 @@ code {
   cursor: pointer;
 }
 
-.sm-edit-icon {
-  height: 20px;
-  width: 20px;
-  margin-right: 20px;
-  mix-blend-mode: multiply;
-  cursor: pointer;
-}
-
-.sm-delete-icon {
+.sm-x-icon {
   height: 20px;
   width: 20px;
   margin-right: 5px;
   mix-blend-mode: multiply;
   cursor: pointer;
+}
+
+.dot3-icon {
+  height: 32px;
+  width: 32px;
+  margin-right: 5px;
+  mix-blend-mode: multiply;
+  cursor: pointer;
+}
+
+.sm-3dot-icon {
+  height: 32px;
+  width: 32px;
+  margin-right: 5px;
+  mix-blend-mode: multiply;
+  cursor: pointer;
+}
+
+.plus-icon {
+  height: 50px;
+  width: 50px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  mix-blend-mode: multiply;
+}
+
+.sm-plus-icon {
+  height: 25px;
+  width: 25px;
+  margin-top: 4px;
+  margin-right: 5px;
+  mix-blend-mode: multiply;
 }
 
 .homescreen-edit-icon-col {
@@ -129,7 +161,22 @@ code {
   padding-bottom: 20px;
 }
 
-.col-listname {
-  height: 27px;
-  overflow: auto;
+.new-list-input-col-outer {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border: dotted black;
+  background-color: rgb(216, 214, 214);
+}
+
+.new-list-input-col-inner {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.new-list-input-field {
+  margin-bottom: 5px;
+}
+
+.new-list-input-button {
+  margin-right: 15px;
 }

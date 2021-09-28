@@ -11,8 +11,8 @@ export const getListsAsync = createAsyncThunk(
 
 export const addListAsync = createAsyncThunk(
   'lists/addListAsync',
-  async (boardId, list) => {
-    const response = await axios.post(`http://localhost:5000/api/boards/${boardId}/lists`, list)
+  async (newListObject) => {
+    const response = await axios.post(`http://localhost:5000/api/boards/${newListObject.id}/lists`, newListObject.nameObj)
     const data = response.data
     return { data }
   });
