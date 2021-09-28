@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 import { getBoardsAsync, addBoardAsync } from "../redux/boardsSlice";
 import { plusIconUrl } from '../constants/constants.js';
 import { Modal, Button } from "react-bootstrap";
-import { getListsAsync } from '../redux/listSlice';
-import { getBoardAsync } from '../redux/boardSlice';
+
 
 
 const BoardsAll = () => {
@@ -33,8 +32,6 @@ const BoardsAll = () => {
   }
 
   const boardClickHandler = (id) => (event) => {
-    dispatch(getBoardAsync(id));
-    dispatch(getListsAsync(id));
     history.push(`/board/${id}`);
   };
 

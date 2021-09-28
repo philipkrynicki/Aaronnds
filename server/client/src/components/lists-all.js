@@ -1,6 +1,5 @@
-
+import { useSelector, useDispatch  } from "react-redux";
 import { xIconUrl, tripleDotIconUrl, plusIconUrl } from '../constants/constants.js';
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from 'react';
 import { getListsAsync, addListAsync } from '../redux/listSlice.js';
 
@@ -11,6 +10,10 @@ const ListsAll = (props) => {
   const lists = useSelector(state => state.lists)
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getListsAsync(props.boardId));
+  }, [dispatch, props.boardId]);
 
   const addListClickHandler = () => {
     setShowNewListInput(true);
@@ -70,20 +73,28 @@ const ListsAll = (props) => {
  
 
   const renderLists = () => {
-    return (
-      <div className="row">
-        {lists.map((list) => {
-
-          return (
-            <div className="col-md-3" key={list._id}>
-              <div className="col list-comp">
-                <div className="row">
-                  <div className="col-10 col-listname">
-                    <h5 className="listname-text"><strong>{list.name}</strong></h5>
-                 </div>
-                 <div className="col-2 text-end">
-                  <img src={tripleDotIconUrl} alt="edit" className="sm-3dot-icon" onClick={listDotClickHandler} />
-                </div>
+    if (lists.length === 0) {
+      return (
+      <div className="col-md-3">
+        <div className="col new-list-comp">
+          <h5><strong>+ Add list</strong></h5>
+        </div>
+      </div>
+    )
+    } else {
+      return (
+        <div className="row">
+          {lists.map((list) => {
+            return (
+              <div className="col-md-3" key={list._id}>
+                <div className="col list-comp">
+                  <div className="row">
+                    <div className="col-8 col-listname">
+                      <h5><strong>{list.name}</strong></h5>
+                   </div>
+                   <div className="col-4 text-end">
+                    <img src={tripleDotIconUrl} alt="edit" className="sm-3dot-icon" onClick={listDotClickHandler} />
+                   </div>
                 <div className="row">
                   <div className="col">
                     {list.cards.map((card) => {
@@ -93,18 +104,14 @@ const ListsAll = (props) => {
                       })}
                     <div className="new-card-link" onClick={handleNewCard()}>+ Add Card</div>
                   </div>
+                 </div>
                 </div>
-               </div>
               </div>
             </div>
-          )
-        })}
-
-        {renderNewListButton()}
-
-      </div>
-    )
-  }
+            )})}
+              {renderNewListButton()}
+          </div>
+      )}}
 
   return (
     <div>
