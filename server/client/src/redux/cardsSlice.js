@@ -12,8 +12,8 @@ export const getCardsAsync = createAsyncThunk(
 
 export const addCardAsync = createAsyncThunk(
   'cards/addCardAsync',
-  async (listId, card) => {
-    const response = await axios.post(`${apiUrl}/lists/${listId}/cards`, card)
+  async (newCardObj) => {
+    const response = await axios.post(`${apiUrl}/api/lists/${newCardObj.listId}/cards`, newCardObj.name)
     const data = response.data
     return { data }
   });
