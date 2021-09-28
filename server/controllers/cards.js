@@ -41,7 +41,7 @@ exports.postCard = (req, res) => {
 }
 
 // Move a card across lists
-exports.moveCard = async (req, res) => {
+exports.moveCard = (req, res) => {
   const originListId = req.list._id;
   const cardId = req.card._id;
   const destinationListId = req.body.destinationList;
