@@ -1,8 +1,10 @@
 import { useSelector, useDispatch  } from "react-redux";
 import { xIconUrl, tripleDotIconUrl, plusIconUrl } from '../constants/constants.js';
 import { useEffect, useState } from 'react';
+import { useDrop } from "react-dnd";
 import { getListsAsync, addListAsync } from '../redux/listSlice.js';
-import { addCardAsync } from '../redux/cardsSlice.js';
+import { addCardAsync, editCardAsync } from '../redux/cardsSlice.js';
+import CardDrag from './card-drag';
 
 const ListsAll = (props) => {
   const [showNewListInput, setShowNewListInput] = useState(false);
@@ -80,9 +82,14 @@ const ListsAll = (props) => {
     dispatchEvent(addCardAsync({name: newCardTitle}))
   }
 
-  const viewCardDetail = () => {
-    //link to Card Detail component or delete function and include link in the jsx?
-  }
+  const [{isover}, drop] = useDrop(() => ({
+    accept: "card",
+    drop: (item) => editCardAsync(item.id),
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+    }),
+  }));
+
 
   const renderNewListButton = () => {
     if (showNewListInput === true) {
@@ -115,10 +122,8 @@ const ListsAll = (props) => {
   const renderLists = () => {
     if (lists.length === 0) {
       return (
-      <div className="col-md-3">
-        <div className="col new-list-comp">
-          <h5><strong>+ Add list</strong></h5>
-        </div>
+      <div>
+       {renderNewListButton()}
       </div>
     )
     } else {
@@ -139,7 +144,7 @@ const ListsAll = (props) => {
                   <div className="col">
                     {list.cards.map((card) => {
                         return(
-                          <div className="card-listview " key={card._id} onClick={viewCardDetail(card._id)}>{card.name}</div>
+                          <CardDrag key={card._id} id={card._id} name={card.name}/>
                         )
                       })}
                       
