@@ -35,7 +35,7 @@ const listsSlice = createSlice({
     [getListsAsync.fulfilled]: (state, action) => {
       return action.payload.data
     },
-    [addListAsync.fulfilled]: (state, action) => {
+    [addListAsync.fulfilled]: (state, action) => {    
       state.push(action.payload.data)
     },
     [deleteListAsync.fulfilled]: (state, action) => {

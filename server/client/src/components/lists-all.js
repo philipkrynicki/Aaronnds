@@ -8,7 +8,7 @@ const ListsAll = (props) => {
   const [showNewListInput, setShowNewListInput] = useState(false);
   const [newListName, setNewListName] = useState ("");
   const [addNewCard, setAddNewCard] = useState(false);
-  const [newCardTitle, setNewCardTitle] = useState('');
+  const [newCardName, setNewCardName] = useState('');
   const [currentListID, setCurrentListID] = useState('');
 
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ const ListsAll = (props) => {
   const newCardForm = (list) => {
     return (      
       <div className="card-listview" id={list._id}>            
-        <input type="text" className="form-control" placeholder="Enter card title" onChange={(e) => setNewCardTitle(e.target.value)}></input>
+        <input type="text" className="form-control" placeholder="Enter card title" onChange={(e) => setNewCardName(e.target.value)}></input>
         <button type="button" className="button btn btn-primary btn-sm new-card-btn" onClick={() => handleCardSubmit({list})}>Add Card</button>  
         <a className="cancel-card" href="#" onClick={cancelNewCard}>X</a>      
       </div>     
@@ -59,21 +59,17 @@ const ListsAll = (props) => {
   }
 
   const handleNewCardToggle = (list) => {
-    console.log(list)
     setCurrentListID(list.list._id)
     setAddNewCard(true)
   };
 
   const handleCardSubmit = (list) => { 
-
-    console.log(list)
-    if (!newCardTitle) {
+    if (!newCardName) {
       return alert("Please enter a name for your card")
-    }     
-
-    setAddNewCard(false)
-    //pass list.list._id in creating new card
-    dispatchEvent(addCardAsync({name: newCardTitle}))
+    }         
+    dispatch(addCardAsync({listID: currentListID, nameObj: {name: newCardName}}));
+    setNewCardName("");
+    setAddNewCard(false);    
   }
 
   const viewCardDetail = () => {

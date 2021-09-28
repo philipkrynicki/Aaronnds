@@ -24,7 +24,7 @@ exports.postCard = (req, res) => {
 
   let newCard = new Card({
     name: req.body.name,
-    description: req.body.description,
+    description: req.body.description || null,
     activities: [],
     labels: [],
     comments: [],
@@ -37,7 +37,7 @@ exports.postCard = (req, res) => {
   newCard.save((err, card) => {
     if (err) next(err)
     res.status(200).json(card);
-  })
+  })  
 }
 
 exports.deleteCard = (req, res) => {
