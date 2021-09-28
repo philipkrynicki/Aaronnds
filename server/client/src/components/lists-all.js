@@ -7,12 +7,12 @@ import { addCardAsync } from '../redux/cardsSlice.js';
 const ListsAll = (props) => {
   const [showNewListInput, setShowNewListInput] = useState(false);
   const [newListName, setNewListName] = useState ("");
-  const lists = useSelector(state => state.lists); 
   const [addNewCard, setAddNewCard] = useState(false);
   const [newCardTitle, setNewCardTitle] = useState('');
   const [currentListID, setCurrentListID] = useState('');
 
   const dispatch = useDispatch();
+  const lists = useSelector(state => state.lists); 
 
   const addListClickHandler = () => {
     setShowNewListInput(true);
@@ -67,7 +67,7 @@ const ListsAll = (props) => {
   const handleCardSubmit = (list) => { 
 
     console.log(list)
-    if (newCardTitle === "") {
+    if (!newCardTitle) {
       return alert("Please enter a name for your card")
     }     
 
