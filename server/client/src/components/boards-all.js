@@ -26,7 +26,6 @@ const BoardsAll = () => {
       return alert("Please enter a name for your board.")
     }
       setShow(false);
-      console.log(newBoardName);
       dispatch(addBoardAsync({name: newBoardName}));
       setNewBoardName("");
   }
