@@ -40,8 +40,24 @@ exports.postCard = (req, res) => {
   })
 }
 
+// Adds a card to a list's references
+exports.addCardToList = (req, res) => {
+  List.findOneAndUpdate({_id: req.list._id}, {'$push': {'cards': req.card._id}}, {new: true})
+  .exec((err, list) => {
+    if (err) throw err;
+
+    // Update the card's list reference
+    Card.updateOne({_id: req.card._id}, {list: list._id})
+    .exec(err => {
+      if (err) throw err;
+
+      res.status(200).json(list);
+    })
+  })
+}
+
 // Removes a card from a list's references 
-exports.removeCard = (req, res) => {
+exports.removeCardFromList = (req, res) => {
   List.updateOne({_id: req.list._id}, {'$pull': {'cards': req.card._id}})
     .exec((err, card) => {
       if (err) next(err)
@@ -53,9 +69,9 @@ exports.removeCard = (req, res) => {
           list: req.list._id
         })
       } else {
+        // Return 404 if the specified card wasn't part of the list
         res.status(404).send('Card not in list');
-      }
-      
+      }   
     })
 }
 
