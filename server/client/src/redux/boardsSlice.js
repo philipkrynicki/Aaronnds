@@ -11,6 +11,11 @@ socket.on('newBoard', board => {
   store.dispatch(addBoardAsync(board));
 })
 
+// Refresh when a board is updated
+socket.on('updatedBoard', () => {
+  store.dispatch(getBoardsAsync());
+})
+
 export const getBoardsAsync = createAsyncThunk(
   'boards/getBoardsAsync',
   async () => {

@@ -43,7 +43,7 @@ exports.updateBoardName = (req, res) => {
     .exec((err, updatedBoard) => {
       if (err) throw err;
       
-      io.emit('updatedBoard', JSON.stringify(updatedBoard));
+      io.emit('updatedBoard', updatedBoard);
       res.status(200).json(updatedBoard);
     })
 
