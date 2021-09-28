@@ -24,6 +24,7 @@ exports.postList = (req, res) => {
   req.board.lists.push(newList)
   req.board.save()
   newList.save()
+  req.app.get('io').emit('newList', newList);
   res.status(200).send(newList)
 }
 
