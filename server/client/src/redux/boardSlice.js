@@ -1,10 +1,11 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { apiUrl } from "../constants/constants";
 
 export const getBoardAsync = createAsyncThunk(
   'board/getBoardAsync',
   async (id) => {
-    const response = await axios.get(`http://localhost:5000/api/boards/${id}`);
+    const response = await axios.get(`${apiUrl}/boards/${id}`);
     const data = response.data
     return { data }
   })
@@ -12,7 +13,7 @@ export const getBoardAsync = createAsyncThunk(
 export const editBoardAsync = createAsyncThunk(
   'board/editBoardAsync',
   async (board) => {
-    const response = await axios.put(`/api/boards/${board.id}`, board);
+    const response = await axios.put(`${apiUrl}/boards/${board.id}`, board);
     const data = response.data
     return { data }
   }
@@ -21,7 +22,7 @@ export const editBoardAsync = createAsyncThunk(
 export const deleteBoardAsync = createAsyncThunk(
   'boards/deleteBoardAsync',
   async (board) => {
-    const response = await axios.delete(`http://localhost:5000/api/boards/${board.id}`)
+    const response = await axios.delete(`${apiUrl}/boards/${board.id}`)
     const data = response.data
     return { data }
   }
