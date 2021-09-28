@@ -1,30 +1,38 @@
 import { useSelector, useDispatch } from 'react-redux';
 import ListsAll from './lists-all.js';
-import { editIconUrl, deleteIconUrl, tripleDotIconUrl } from '../constants/constants.js';
+import { editIconUrl, deleteIconUrl } from '../constants/constants.js';
 import { Modal, Button } from "react-bootstrap";
-import { useState } from 'react';
-import { editBoardAsync } from "../redux/boardSlice";
+import { useState, useEffect } from 'react';
+import { editBoardAsync, getBoardAsync } from "../redux/boardSlice";
 
 
 
-const BoardIndividual = () => {
+const BoardIndividual = (props) => {
   const [show, setShow] = useState(false);
   const [updatedBoardName, setUpdatedBoardName] = useState("");
   const dispatch = useDispatch();
   const handleModalShow = () => setShow(true);
   const handleModalClose = () => setShow(false);
-  const handleModalEdit = () => {
-    setShow(false);
-    dispatch(editBoardAsync({name: updatedBoardName}));
-    setUpdatedBoardName("");
-  }
   
   const newBoardInputChangeHandler = (e) => {
     
     setUpdatedBoardName(e.target.value)
-    console.log(updatedBoardName);
   }
   const board = useSelector(state => state.board)
+
+  const handleModalEdit = () => {
+    if (updatedBoardName === "") {
+      return (alert("Please enter a name for the board!"))
+    }
+    setShow(false);
+    dispatch(editBoardAsync({id: board._id, nameObj: {name: updatedBoardName}}));
+    setUpdatedBoardName("");
+  }
+
+  
+  useEffect(() => {
+    dispatch(getBoardAsync(props.match.params.id));
+    }, [dispatch, props.match.params.id]);
 
   const renderBoardDetail = (board) => {
     return (

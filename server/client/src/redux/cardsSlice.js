@@ -18,7 +18,7 @@ export const addCardAsync = createAsyncThunk(
     return { data }
   });
 
-  export const deleteCardAsync = createAsyncThunk(
+export const deleteCardAsync = createAsyncThunk(
     'cards/deleteCardAsync',
   async (id) => {
     const response = await axios.delete(`${apiUrl}/cards/${id}`)
@@ -26,6 +26,14 @@ export const addCardAsync = createAsyncThunk(
     return { data }
   }
 ) 
+export const editCardAsync = createAsyncThunk(
+    'cards/editCardAsync',
+  async (card) => {
+    const response = await axios.put(`${apiUrl}/cards/${card.id}`, card)
+    const data = response.data
+    return { data }
+  }
+)
 
 const cardsSlice = createSlice({
   name: 'cards',
