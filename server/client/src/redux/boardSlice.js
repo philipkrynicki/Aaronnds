@@ -5,7 +5,7 @@ import socket from '../socket-connect';
 import store from './store'
 
 socket.on('updatedBoard', board => {
-  store.dispatch(getBoardAsync(board._id));
+  store.dispatch(editBoardAsync(board));
 })
 
 export const getBoardAsync = createAsyncThunk(
