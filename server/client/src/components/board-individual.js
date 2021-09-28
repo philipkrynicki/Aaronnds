@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import ListsAll from './lists-all.js';
-import { editIconUrl, deleteIconUrl } from '../constants/constants.js';
+import { editIconUrl, deleteIconUrl, tripleDotIconUrl } from '../constants/constants.js';
 import { Modal, Button } from "react-bootstrap";
 import { useState } from 'react';
 import { editBoardAsync } from "../redux/boardSlice";
@@ -18,13 +18,13 @@ const BoardIndividual = () => {
     dispatch(editBoardAsync({name: updatedBoardName}));
     setUpdatedBoardName("");
   }
+  
   const newBoardInputChangeHandler = (e) => {
     
     setUpdatedBoardName(e.target.value)
     console.log(updatedBoardName);
   }
   const board = useSelector(state => state.board)
-
 
   const renderBoardDetail = (board) => {
     return (
@@ -67,7 +67,7 @@ const BoardIndividual = () => {
         <div className="col align-items-center">
           {renderBoardDetail(board)}   
           {renderEditBoardModal()}      
-          <ListsAll />
+          <ListsAll boardId={board._id} />
         </div>
 
       </div>
