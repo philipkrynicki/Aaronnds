@@ -42,7 +42,7 @@ exports.updateBoardName = (req, res) => {
   Board.findOneAndUpdate({_id: req.board._id}, {name: update}, {new: true})
     .exec((err, updatedBoard) => {
       if (err) throw err;
-
+      
       io.emit('updatedBoard', JSON.stringify(updatedBoard));
       res.status(200).json(updatedBoard);
     })

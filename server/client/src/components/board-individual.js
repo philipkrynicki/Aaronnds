@@ -13,18 +13,22 @@ const BoardIndividual = (props) => {
   const dispatch = useDispatch();
   const handleModalShow = () => setShow(true);
   const handleModalClose = () => setShow(false);
-  const handleModalEdit = () => {
-    setShow(false);
-    dispatch(editBoardAsync({name: updatedBoardName}));
-    setUpdatedBoardName("");
-  }
   
   const newBoardInputChangeHandler = (e) => {
     
     setUpdatedBoardName(e.target.value)
-    console.log(updatedBoardName);
   }
   const board = useSelector(state => state.board)
+
+  const handleModalEdit = () => {
+    if (updatedBoardName === "") {
+      return (alert("Please enter a name for the board!"))
+    }
+    setShow(false);
+    dispatch(editBoardAsync({id: board._id, nameObj: {name: updatedBoardName}}));
+    setUpdatedBoardName("");
+  }
+
   
   useEffect(() => {
     dispatch(getBoardAsync(props.match.params.id));
