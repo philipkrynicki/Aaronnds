@@ -50,11 +50,10 @@ const listsSlice = createSlice({
       return action.payload.data
     },
     [addListAsync.fulfilled]: (state, action) => {
-
       if (checkDuplicateIds(state, action.payload.data._id))
-        return state
+        return state;
       else
-        state.push(action.payload.data)
+        state.push(action.payload.data);
     },
     [deleteListAsync.fulfilled]: (state, action) => {
       //same as boardsSlice question
