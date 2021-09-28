@@ -1,12 +1,43 @@
-import { editIconUrl, deleteIconUrl } from '../constants/constants.js';
-import { useSelector } from "react-redux";
-import { useState } from 'react';
+import { xIconUrl, tripleDotIconUrl, plusIconUrl } from '../constants/constants.js';
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from 'react';
+import { getListsAsync, addListAsync } from '../redux/listSlice.js';
 import { addCardAsync } from '../redux/cardsSlice.js';
 
-const ListsAll = () => {
+const ListsAll = (props) => {
+  const [showNewListInput, setShowNewListInput] = useState(false);
+  const [newListName, setNewListName] = useState ("");
   const lists = useSelector(state => state.lists); 
   const [addNewCard, setAddNewCard] = useState(false);
   const [newCardTitle, setNewCardTitle] = useState('');
+  
+
+  const dispatch = useDispatch();
+
+  const addListClickHandler = () => {
+    setShowNewListInput(true);
+  }
+  
+  const addListInputButtonClickHandler = () => {
+    if (newListName === "" ) {
+      return alert("Please enter a name for your list.");
+    }
+    dispatch(addListAsync({id: props.boardId, nameObj: {name: newListName}}));
+    setShowNewListInput(false);
+    setNewListName("");
+  }
+
+  const addListInputChangeHandler = (e) => {
+    setNewListName(e.target.value);
+  }
+
+  const cancelAddListHandler = () => {
+    setShowNewListInput(false);
+  }
+
+  const listDotClickHandler = () => {
+    console.log('Display edit/remove list modal')
+  }
 
   const newCardLink = (list) => {
     return (
@@ -45,20 +76,48 @@ const ListsAll = () => {
     //link to Card Detail component or delete function and include link in the jsx?
   }
 
+  const renderNewListButton = () => {
+    if (showNewListInput === true) {
+      return (
+        <div className="col-md-3">
+          <div className="col new-list-input-col-outer">
+            <div className="col new-list-input-col-inner">
+              <input type="text" className="form-control new-list-input-field" placeholder="New list title" onChange = {addListInputChangeHandler}></input>
+              <button type="button" className="btn btn-primary btn-sm new-list-input-button" onClick={addListInputButtonClickHandler}>Add list</button>
+              <img src={xIconUrl} alt="x" className="sm-x-icon" onClick={cancelAddListHandler} />
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    return (
+      <div className="col-md-3">
+        <div className="col">
+          <div className="col d-flex new-list-comp" onClick={addListClickHandler}>
+            <img src={plusIconUrl} alt="add" className="sm-plus-icon" />
+            <h5 className="add-listname-text"><strong>Add list</strong></h5>
+          </div>
+        </div>
+      </div>
+    )
+  }
+ 
+
   const renderLists = () => {
     return (
       <div className="row">
         {lists.map((list) => {
+
           return (
             <div className="col-md-3" key={list._id}>
               <div className="col list-comp">
                 <div className="row">
-                  <div className="col-8 col-listname">
-                    <h5><strong>{list.name}</strong></h5>
+                  <div className="col-10 col-listname">
+                    <h5 className="listname-text"><strong>{list.name}</strong></h5>
                  </div>
-                 <div className="col-4 text-end">
-                  <img src={editIconUrl} alt="edit" className="sm-edit-icon" />
-                  <img src={deleteIconUrl} alt="delete" className="sm-delete-icon" />
+                 <div className="col-2 text-end">
+                  <img src={tripleDotIconUrl} alt="edit" className="sm-3dot-icon" onClick={listDotClickHandler} />
                 </div>
                 <div className="row">
                   <div className="col">
@@ -77,11 +136,9 @@ const ListsAll = () => {
             </div>
           )
         })}
-        <div className="col-md-3">
-          <div className="col new-list-comp">
-            <h5><strong>+ Add list</strong></h5>
-          </div>
-        </div>
+
+        {renderNewListButton()}
+
       </div>
     )
   }
