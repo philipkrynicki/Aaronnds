@@ -40,12 +40,31 @@ exports.postCard = (req, res) => {
   })
 }
 
+// Removes a card from a list's references 
+exports.removeCard = (req, res) => {
+  List.updateOne({_id: req.list._id}, {'$pull': {'cards': req.card._id}})
+    .exec((err, card) => {
+      if (err) next(err)
+
+      if (card.modifiedCount) {
+        // Send the id of the removed card and the id of the list
+        res.status(200).send({
+          card: req.card._id,
+          list: req.list._id
+        })
+      } else {
+        res.status(404).send('Card not in list');
+      }
+      
+    })
+}
+
 exports.deleteCard = (req, res) => {
   Card.deleteOne({_id: req.card._id})
   .then(() => {
 
     List.updateOne({_id: req.card.list}, {'$pull': {'cards': req.card._id}})
-    .exec((err, card) => {
+    .exec(err => {
       if (err) next(err)
       res.status(200).send(req.card._id)
     })
