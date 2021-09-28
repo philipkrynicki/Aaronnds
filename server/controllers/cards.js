@@ -40,39 +40,43 @@ exports.postCard = (req, res) => {
   })
 }
 
-// Adds a card to a list's references
-exports.addCardToList = (req, res) => {
-  List.findOneAndUpdate({_id: req.list._id}, {'$push': {'cards': req.card._id}}, {new: true})
-  .exec((err, list) => {
-    if (err) throw err;
+// Move a card across lists
+exports.moveCard = (req, res) => {
+  const originListId = req.list._id;
+  const destinationListId = req.body.destinationList;
+  const cardId = req.card._id;
 
-    // Update the card's list reference
-    Card.updateOne({_id: req.card._id}, {list: list._id})
-    .exec(err => {
-      if (err) throw err;
+  // Remove the card from the origin list
+  List.updateOne({_id: originListId}, {'$pull': {'cards': cardId}})
+  .exec((err, card) => {
+    if (err) next(err)
 
-      res.status(200).json(list);
-    })
-  })
-}
+    if (card.modifiedCount) {
 
-// Removes a card from a list's references 
-exports.removeCardFromList = (req, res) => {
-  List.updateOne({_id: req.list._id}, {'$pull': {'cards': req.card._id}})
-    .exec((err, card) => {
-      if (err) next(err)
-
-      if (card.modifiedCount) {
-        // Send the id of the removed card and the id of the list
-        res.status(200).send({
-          card: req.card._id,
-          list: req.list._id
+      // Add the card to the destination list
+      List.findOneAndUpdate({_id: destinationListId}, {'$push': {'cards': cardId}}, {new: true})
+      .exec((err, list) => {
+        if (err) throw err;
+    
+        // Update the card's list reference
+        Card.updateOne({_id: cardId}, {list: list._id})
+        .exec(err => {
+          if (err) throw err;
+          
+          // Send the card id, origin list id, and updated destination list
+          res.status(200).send({
+            card: req.card._id,
+            originList: req.list._id,
+            updatedList: list
+          });
         })
-      } else {
-        // Return 404 if the specified card wasn't part of the list
-        res.status(404).send('Card not in list');
-      }   
-    })
+      })
+
+    } else {
+      // Return 404 if the specified card wasn't part of the origin list
+      res.status(404).send('Card not in list');
+    }   
+  })
 }
 
 exports.deleteCard = (req, res) => {

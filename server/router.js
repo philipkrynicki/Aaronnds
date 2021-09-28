@@ -123,8 +123,7 @@ module.exports = function(app) {
   app.get('/api/lists/:list/cards', Cards.getCards);
   app.get('/api/cards/:card', Cards.getCard);
   app.post('/api/lists/:list/cards', Cards.postCard);
-  app.put('/api/lists/:list/cards/:card', Cards.addCardToList);
-  app.delete('/api/lists/:list/cards/:card', Cards.removeCardFromList);
+  app.put('/api/lists/:list/cards/:card', Cards.moveCard);
   app.delete('/api/cards/:card', Cards.deleteCard);
   app.put('/api/cards/:card', Cards.updateCard);
 
