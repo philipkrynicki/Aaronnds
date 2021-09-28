@@ -38,11 +38,10 @@ exports.updateBoardName = (req, res) => {
 
   const update = req.body.name;
   const io = req.app.get('io');
-
   Board.findOneAndUpdate({_id: req.board._id}, update, { new: true })
     .exec((err, updatedBoard) => {
       if (err) throw err;
-
+      
       io.emit('updatedBoard', JSON.stringify(updatedBoard));
       res.status(200).json(updatedBoard);
     })
