@@ -1,13 +1,13 @@
 import { useSelector, useDispatch } from 'react-redux';
 import ListsAll from './lists-all.js';
-import { editIconUrl, deleteIconUrl, tripleDotIconUrl } from '../constants/constants.js';
+import { editIconUrl, deleteIconUrl } from '../constants/constants.js';
 import { Modal, Button } from "react-bootstrap";
-import { useState } from 'react';
-import { editBoardAsync } from "../redux/boardSlice";
+import { useState, useEffect } from 'react';
+import { editBoardAsync, getBoardAsync } from "../redux/boardSlice";
 
 
 
-const BoardIndividual = () => {
+const BoardIndividual = (props) => {
   const [show, setShow] = useState(false);
   const [updatedBoardName, setUpdatedBoardName] = useState("");
   const dispatch = useDispatch();
@@ -25,6 +25,10 @@ const BoardIndividual = () => {
     console.log(updatedBoardName);
   }
   const board = useSelector(state => state.board)
+  
+  useEffect(() => {
+    dispatch(getBoardAsync(props.match.params.id));
+    }, [dispatch, props.match.params.id]);
 
   const renderBoardDetail = (board) => {
     return (
