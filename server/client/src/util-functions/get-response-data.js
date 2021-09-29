@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Returns the relevent data from a POST request
-const getPostData = async (url, body) => {
+const getResponseData = async (url, body, httpMethod) => {
 
   // Data from a socket
   if (body.hasOwnProperty('_id'))
@@ -14,9 +14,15 @@ const getPostData = async (url, body) => {
   else
     reqBody = body;
   
+  let response = {};
+
   // Data from an http request
-  const response = await axios.post(url, reqBody);
-  return response.data;
+  if (httpMethod === 'POST') 
+    response = await axios.post(url, reqBody);
+  else if (httpMethod === 'PUT') 
+   response = await axios.put(url, reqBody);
+  
+  return response.data
 }
 
-export default getPostData;
+export default getResponseData;

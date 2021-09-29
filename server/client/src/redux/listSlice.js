@@ -4,13 +4,14 @@ import { apiUrl } from "../constants/constants";
 import socket from '../socket-connect';
 import store from './store';
 import checkDuplicateIds from '../util-functions/id-check';
-import getPostData from '../util-functions/get-response-data';
+import getResponseData from '../util-functions/get-response-data';
 
 socket.on('newList', list => {
   store.dispatch(addListAsync(list));
 })
 
 socket.on('updatedList', list => {
+  store.dispatch(editListAsync(list));
 })
   
 socket.on('newCard', card => {
@@ -28,7 +29,7 @@ export const getListsAsync = createAsyncThunk(
 export const addListAsync = createAsyncThunk(
   'lists/addListAsync',
   async (newListObject) => {
-    const data = await getPostData(`${apiUrl}/boards/${newListObject.id}/lists`, newListObject)
+    const data = await getResponseData(`${apiUrl}/boards/${newListObject.id}/lists`, newListObject, 'POST')
     return { data }
   });
 
@@ -53,7 +54,7 @@ export const editListAsync = createAsyncThunk(
 export const addCardAsync = createAsyncThunk(
   'cards/addCardAsync',
   async (newCardObject) => {
-    const data = await getPostData(`${apiUrl}/lists/${newCardObject.listID}/cards`, newCardObject);
+    const data = await getResponseData(`${apiUrl}/lists/${newCardObject.listID}/cards`, newCardObject, 'POST');
     return { data };
   });
 

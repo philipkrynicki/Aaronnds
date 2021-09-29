@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { apiUrl } from "../constants/constants";
 import socket from '../socket-connect';
 import store from './store'
+import getResponseData from '../util-functions/get-response-data';
 
 socket.on('updatedBoard', board => {
   store.dispatch(editBoardAsync(board));
@@ -19,14 +20,7 @@ export const getBoardAsync = createAsyncThunk(
 export const editBoardAsync = createAsyncThunk(
   'board/editBoardAsync',
   async (board) => {
-    let data = {};
-
-    if (board.hasOwnProperty('_id')) {
-      data = board;
-    } else {
-      const response = await axios.put(`${apiUrl}/boards/${board.id}`, board.nameObj);
-      data = response.data;    
-    }
+    const data = await getResponseData(`${apiUrl}/boards/${board.id}`, board, 'PUT');
     return { data }
   }
 )
