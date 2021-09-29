@@ -46,8 +46,7 @@ export const deleteBoardAsync = createAsyncThunk(
         return action.payload.data
       },
       [deleteBoardAsync.fulfilled]: (state, action) => {
-        //may have to use history.push to put you back at workspace page from board individual page
-        return state.filter((board) => board.id !== action.payload.data.id);
+        return state;
       }
     }
   })
