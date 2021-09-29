@@ -18,8 +18,8 @@
     "socket.io": "^4.2.0"
   },
   "engines": {
-    "node": "10.0.0",
-    "npm": "5.1.0"
+    "node": "14.17.4",
+    "npm": "7.24.1"
   },
   "scripts": {
     "start": "node index.js"
