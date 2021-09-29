@@ -22,7 +22,7 @@ const BoardIndividual = (props) => {
 
   const handleModalEdit = () => {
     if (updatedBoardName === "") {
-      return (alert("Please enter a name for the board!"))
+      return (alert("Please enter a name for the board."))
     }
     setShow(false);
     dispatch(editBoardAsync({id: board._id, nameObj: {name: updatedBoardName}}));

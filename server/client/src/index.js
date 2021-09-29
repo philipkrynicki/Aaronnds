@@ -5,6 +5,7 @@ import store from './redux/store'
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import './index.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Navbar from './components/navbar.js';
@@ -16,10 +17,9 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 
-let persistor = persistStore(store);
+// let persistor = persistStore(store);
 
 const App = () => {
-  
   
   return (
     <div className="container">
@@ -44,11 +44,11 @@ ReactDOM.render(
   <BrowserRouter>
     <React.StrictMode>
       <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
+        {/* <PersistGate loading={null} persistor={persistor}> */}
           <DndProvider backend={HTML5Backend}>
             <App />
           </DndProvider>
-        </PersistGate>
+        {/* </PersistGate> */}
       </Provider>
     </React.StrictMode>
   </BrowserRouter>,

@@ -12,8 +12,8 @@ export const getCardsAsync = createAsyncThunk(
 
 export const addCardAsync = createAsyncThunk(
   'cards/addCardAsync',
-  async (newCardObj) => {
-    const response = await axios.post(`${apiUrl}/api/lists/${newCardObj.listId}/cards`, newCardObj.name)
+  async (newCardObject) => {
+    const response = await axios.post(`${apiUrl}/lists/${newCardObject.listID}/cards`, newCardObject.nameObj)
     const data = response.data
     return { data }
   });
@@ -44,7 +44,13 @@ const cardsSlice = createSlice({
       return action.payload.data
     },
     [addCardAsync.fulfilled]: (state, action) => {
+      
+       let list = state.lists.find(list => list._id === action.meta.arg.listID)
+      console.log(list)
+
+      // list.push(action.payload.data)
       state.push(action.payload.data)
+      
     },
     [deleteCardAsync.fulfilled]: (state, action) => {
       //same as boardsSlice question
