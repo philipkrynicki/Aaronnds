@@ -8,19 +8,48 @@ const CardDetail = (props) => {
   const dispatch = useDispatch();
   const card = useSelector(state => state.card);
 
-  const handleModalClose = () => setShow(false)
- 
+  const handleModalClose = () => {
+    setShow(false);
+    props.onChange(false)
+  }
   useEffect(() => {    
-    dispatch(getCardAsync(props.id)) 
-  }, [dispatch, props.id])
+    dispatch(getCardAsync(props.id));
+    console.log(props) 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   //this does nothing. Likely has somethign to do with how many times the function is called for some reason. See console logs. 
   const showLabels = () => {
     console.log("show labels function")
-    card.labels.map((label) => {     
-      return (
-        <div>{label}</div>   
-        )
+    card.labels.map((label) => {
+      switch (label) {
+        case "yellow":
+          return (
+            <div className="label yellow"></div>
+          )
+        case "blue":
+          return (
+            <div className="label blue"></div>
+          )
+        case "black":
+          return (
+            <div className="label black"></div>
+          )
+        case "green":
+          return (
+            <div className="label green"></div>
+          )
+        case "red":
+          return (
+            <div className="label red"></div>
+          )
+        case "purple":
+          return (
+            <div className="label purple"></div>
+          )
+        default:
+          return null
+      }
     })
   }
   
@@ -32,26 +61,55 @@ const CardDetail = (props) => {
     })
   }
 
+  const showComments = () => {
+
+  }
+
  //need to add list name to card information that comes from the server?
   return (
     <div>
-      <Modal show={show} onHide={handleModalClose}>
+      <Modal className="card-detail-modal" show={show} onHide={handleModalClose} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>{card.name}</Modal.Title>
+          <Modal.Title><strong>{card.name}</strong></Modal.Title>
         </Modal.Header>
         <Modal.Body>
+        <div>
           <strong>labels: </strong>
-          <div>
            {showLabels()}
           {/* {card.labels.map((label) => {
-            return (
-              <p>{label}</p> 
-            )
+            switch (label) {
+              case "yellow":
+                return (
+                  <div className="label yellow" key={label}></div>
+                )
+              case "blue":
+                return (
+                  <div className="label blue" key={label}></div>
+                )
+              case "black":
+                return (
+                  <div className="label black" key={label}></div>
+                )
+              case "green":
+                return (
+                  <div className="label green" key={label}></div>
+                )
+              case "red":
+                return (
+                  <div className="label red" key={label}></div>
+                )
+              case "purple":
+                return (
+                  <div className="label purple" key={label}></div>
+                )
+              default:
+                return null
+            }
           })} */}
           </div>
-          <br/><br/>
-          <u>Description:</u>
-          {card.description}
+          <br/>
+          <u>Description:</u>  
+          <p>{card.description}</p>
           <br /> <br /> 
           <u>Activity:</u>
           <ul>
@@ -59,6 +117,9 @@ const CardDetail = (props) => {
           </ul>
           <hr></hr>
           <u>Comments:</u>
+          <div>
+            {showComments()}
+          </div>
         </Modal.Body>
       </Modal>
     </div>

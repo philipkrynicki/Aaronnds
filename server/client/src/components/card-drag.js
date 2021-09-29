@@ -8,8 +8,12 @@ function CardDrag ({id, name}) {
   const [currentCardID, setCurrentCardID] = useState('');
 
   // useEffect(() => {
-  //   setShowDetail(!showDetail)
-  // }, [currentCardID])
+  //   setShowDetail(false)
+  // }, [])
+
+  const cardDetailChange = (newValue) => {
+    setShowDetail(newValue)
+  }
 
   const [{isDragging}, drag] = useDrag(() => ({
     type: "card",
@@ -29,7 +33,7 @@ function CardDrag ({id, name}) {
     <div className="col">
       <div className="col card-listview" ref={drag} onClick={() => viewCardDetail(id)}>{name}</div>
       
-      { showDetail && <CardDetail id={currentCardID}/>}
+      { showDetail && <CardDetail id={currentCardID} value={showDetail} onChange={cardDetailChange}/>}
     </div>
   ) 
 }
