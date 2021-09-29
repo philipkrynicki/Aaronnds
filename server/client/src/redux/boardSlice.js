@@ -2,7 +2,8 @@ import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { apiUrl } from "../constants/constants";
 import socket from '../socket-connect';
-import store from './store'
+import store from './store';
+
 
 socket.on('updatedBoard', board => {
   store.dispatch(editBoardAsync(board));
@@ -52,8 +53,7 @@ export const deleteBoardAsync = createAsyncThunk(
         return action.payload.data
       },
       [deleteBoardAsync.fulfilled]: (state, action) => {
-        //may have to use history.push to put you back at workspace page from board individual page
-        return state.filter((board) => board.id !== action.payload.data.id);
+        return state;
       }
     }
   })
