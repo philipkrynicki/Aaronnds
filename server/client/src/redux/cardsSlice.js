@@ -1,6 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { apiUrl } from "../constants/constants";
+import socket from '../socket-connect';
+import store from './store';
+import checkDuplicateIds from '../util-functions/id-check';
+import getResponseData from '../util-functions/get-response-data';
+
+socket.on('newCard', card => {
+  store.dispatch(addCardAsync(card));
+})
 
 export const getCardsAsync = createAsyncThunk(
   'cards/getCardsAsync',
@@ -13,8 +21,7 @@ export const getCardsAsync = createAsyncThunk(
 export const addCardAsync = createAsyncThunk(
   'cards/addCardAsync',
   async (newCardObj) => {
-    const response = await axios.post(`${apiUrl}/api/lists/${newCardObj.listId}/cards`, newCardObj.name)
-    const data = response.data
+    const data = getResponseData(`${apiUrl}/lists/${newCardObj.listId}/cards`, newCardObj.name)
     return { data }
   });
 

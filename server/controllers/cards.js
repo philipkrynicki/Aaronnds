@@ -36,6 +36,8 @@ exports.postCard = (req, res) => {
 
   newCard.save((err, card) => {
     if (err) next(err)
+
+    req.app.get('io').emit('newCard', card);
     res.status(200).json(card);
   })
 }
