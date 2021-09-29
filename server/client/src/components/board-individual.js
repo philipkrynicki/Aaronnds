@@ -4,7 +4,7 @@ import { editIconUrl, deleteIconUrl } from '../constants/constants.js';
 import { Modal, Button } from "react-bootstrap";
 import { useState, useEffect } from 'react';
 import { editBoardAsync, getBoardAsync } from "../redux/boardSlice";
-import { deleteBoardAsync } from '../redux/boardSlice';
+import { deleteBoardAsync } from '../redux/boardsSlice.js';
 import { useHistory } from 'react-router';
 
 

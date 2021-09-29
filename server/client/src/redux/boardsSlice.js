@@ -33,6 +33,15 @@ export const addBoardAsync = createAsyncThunk(
   }
 )
 
+export const deleteBoardAsync = createAsyncThunk(
+  'boards/deleteBoardAsync',
+  async (board) => {
+    const response = await axios.delete(`${apiUrl}/boards/${board.id}`)
+    const data = response.data
+    return { data }
+  }
+) 
+
 const boardsSlice = createSlice({
   name: 'boards',
   initialState: [],
@@ -47,6 +56,9 @@ const boardsSlice = createSlice({
       else
         state.push(action.payload.data);
     },
+    [deleteBoardAsync.fulfilled]: (state, action) => {
+      return state.filter((board) => board._id !== action.payload.data);
+    }
   }
 });
 
