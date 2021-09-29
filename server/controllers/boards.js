@@ -24,6 +24,7 @@ exports.deleteBoard = (req, res) => {
     Workspace.updateOne({_id: req.board.workspace}, {'$pull': {'boards': req.board._id}})
     .exec(err => {
       if (err) throw err
+      req.app.get('io').emit('deleteBoard', req.board._id);
       res.status(200).send(req.board._id);
     })  
   })  

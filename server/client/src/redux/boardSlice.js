@@ -25,15 +25,6 @@ export const editBoardAsync = createAsyncThunk(
   }
 )
 
-export const deleteBoardAsync = createAsyncThunk(
-  'boards/deleteBoardAsync',
-  async (board) => {
-    const response = await axios.delete(`${apiUrl}/boards/${board.id}`)
-    const data = response.data
-    return { data }
-  }
-) 
-
   const boardSlice = createSlice({
     name:'board',
     initialState: { },
@@ -44,9 +35,6 @@ export const deleteBoardAsync = createAsyncThunk(
       },
       [editBoardAsync.fulfilled]: (state, action) => {
         return action.payload.data
-      },
-      [deleteBoardAsync.fulfilled]: (state, action) => {
-        return state;
       }
     }
   })
