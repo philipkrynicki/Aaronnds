@@ -47,16 +47,18 @@ const ListsAll = (props) => {
 
   const newCardLink = (list) => {
     return (
-      <div className="new-card-link" id={list._id} onClick={() => handleNewCardToggle({list})}>+ Add Card</div>      
+      <div className="col new-card-link">
+        <div className=" col add-card-text" id={list._id} onClick={() => handleNewCardToggle({list})}>+ Add card</div>
+      </div>     
     )
   };
   
   const newCardForm = (list) => {
     return (      
-      <div className="card-listview" id={list._id}>            
-        <input type="text" className="form-control" placeholder="Enter card title" onChange={(e) => setNewCardTitle(e.target.value)}></input>
-        <button type="button" className="button btn btn-primary btn-sm new-card-btn" onClick={() => handleCardSubmit({list})}>Add Card</button>  
-        <a className="cancel-card" href="#" onClick={cancelNewCard}>X</a>      
+      <div className="card-addView" id={list._id}>            
+        <input type="text" className="form-control new-card-input-field" placeholder="Enter card title" onChange={(e) => setNewCardTitle(e.target.value)}></input>
+        <button type="button" className="button btn btn-primary btn-sm new-card-btn" onClick={() => handleCardSubmit({list})}>Add card</button>  
+        <img src={xIconUrl} alt="x" className="sm-x-icon" onClick={cancelNewCard} />      
       </div>     
     )
   }
@@ -70,8 +72,6 @@ const ListsAll = (props) => {
   };
 
   const handleCardSubmit = (list) => { 
-
-    console.log(list)
     if (newCardTitle === "") {
       return alert("Please enter a name for your card")
     }     
@@ -126,6 +126,7 @@ const ListsAll = (props) => {
       </div>
     )
     } else {
+      
       return (
         <div className="row">
           {lists.map((list) => {
@@ -133,24 +134,28 @@ const ListsAll = (props) => {
               <div className="col-md-3" key={list._id}>
                 <div className="col list-comp">
                   <div className="row">
-                    <div className="col-8 col-listname">
+                    <div className="col-10 col-listname">
                       <h5><strong>{list.name}</strong></h5>
-                   </div>
-                   <div className="col-4 text-end">
-                    <img src={tripleDotIconUrl} alt="edit" className="sm-3dot-icon" onClick={listDotClickHandler} />
-                   </div>
-                <div className="row">
-                  <div className="col">
-                    {list.cards.map((card) => {
-                        return(
-                          <CardDrag key={card._id} id={card._id} name={card.name}/>
-                        )
-                      })}
+                    </div>
+
+                    <div className="col-2">
+                      <img src={tripleDotIconUrl} alt="edit" className="sm-3dot-icon" onClick={listDotClickHandler} />
+                    </div>
+
+                    <div className="row">
+                      <div className="col">
+
+                        {list.cards.map((card) => {
+                            return(
+                              <CardDrag key={card._id} id={card._id} name={card.name}/>
+                            )
+                          })}
                       
-                      {addNewCard && list._id === currentListID ? newCardForm(list._id): newCardLink(list)}
-                    
-                  </div>
-                 </div>
+                        {addNewCard && list._id === currentListID ? newCardForm(list._id): newCardLink(list)}
+
+                      </div>
+                    </div>
+
                 </div>
               </div>
             </div>

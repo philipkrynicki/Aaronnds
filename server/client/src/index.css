@@ -121,18 +121,9 @@ code {
   cursor: pointer;
 }
 
-.dot3-icon {
-  height: 32px;
-  width: 32px;
-  margin-right: 5px;
-  mix-blend-mode: multiply;
-  cursor: pointer;
-}
-
 .sm-3dot-icon {
   height: 32px;
   width: 32px;
-  margin-right: 5px;
   mix-blend-mode: multiply;
   cursor: pointer;
 }
@@ -180,14 +171,25 @@ code {
 .new-list-input-button {
   margin-right: 15px;
 }
+
 .card-listview {
-  border-style: dotted;
+  border: solid thin rgb(20, 20, 199);
   border-radius: 5px;
-  border-color: rgb(20, 20, 199);
-  border-width: thin;
   margin: 5px;
-  background-color: whitesmoke;
+  padding: 5px;
+  background-color: white;
   cursor: pointer;
+  line-height: 20px;
+}
+
+.card-addView {
+  border: dotted thin rgb(20, 20, 199);
+  border-radius: 5px;
+  margin: 5px;
+  padding: 5px;
+  background-color: white;
+  cursor: pointer;
+  line-height: 20px;
 }
 
 .new-card-link {
@@ -196,7 +198,7 @@ code {
   border-color: rgb(20, 20, 199);
   border-width: thin;
   margin: 5px;
-  background-color: rgb(238, 248, 152);
+  background-color: rgb(250, 239, 193);
   cursor: pointer;
 }
 
@@ -204,12 +206,20 @@ code {
   display: none;
 }
 
-.col-listname {
-  height: 27px;
-  overflow: auto;
-}
-
 .cancel-card {
   margin-left: 5px;
   font-size: larger;
+}
+
+.add-card-text {
+  margin-top: 2px;
+  margin-left: 5px;
+}
+
+.new-card-btn {
+  margin-right: 15px;
+}
+
+.new-card-input-field {
+  margin-bottom: 5px;
 }

@@ -40,12 +40,64 @@ exports.postCard = (req, res) => {
   })
 }
 
+// Move a card across lists
+exports.moveCard = (req, res) => {
+  const originListId = req.list._id;
+  const cardId = req.card._id;
+  const destinationListId = req.body.destinationList;
+
+  if (!destinationListId) {
+    res.status(400).send('destinationList required in request body')
+    return res.end();
+  }
+
+ List.findById(destinationListId)
+ .exec((err, destinationList) => {
+    // Make sure the destination list is in the db
+    if (!destinationList) {
+      res.status(404).send('Destination list not found');
+    } else if (err) {
+      throw err;
+
+    } else {
+      
+      // Remove the card from the origin list
+      List.updateOne({_id: originListId}, {'$pull': {'cards': cardId}})
+      .exec((err, card) => {
+        if (err) next(err)
+
+        if (card.modifiedCount) {
+          // Add the card to the destination list
+          destinationList.cards.push(cardId);
+          destinationList.save();
+
+          // Update the card's list reference
+          Card.updateOne({_id: cardId}, {list: destinationList._id})
+          .exec(err => {
+            if (err) throw err;
+            
+            // Send the card id, origin list id, and updated destination list
+            res.status(200).send({
+              card: req.card._id,
+              originList: req.list._id,
+              updatedList: destinationList
+            });
+          })
+        } else {
+          // Return 404 if the specified card wasn't part of the origin list
+          res.status(404).send('Card not in list');
+        }   
+      })
+    }
+ });
+}
+
 exports.deleteCard = (req, res) => {
   Card.deleteOne({_id: req.card._id})
   .then(() => {
 
     List.updateOne({_id: req.card.list}, {'$pull': {'cards': req.card._id}})
-    .exec((err, card) => {
+    .exec(err => {
       if (err) next(err)
       res.status(200).send(req.card._id)
     })
