@@ -4,7 +4,7 @@ import { apiUrl } from "../constants/constants";
 import socket from '../socket-connect';
 import store from './store';
 import checkDuplicateIds from '../util-functions/id-check';
-import getResponseData from '../util-functions/get-response-data';
+import getPostData from '../util-functions/get-response-data';
 
 socket.on('newList', list => {
   store.dispatch(addListAsync(list));
@@ -25,15 +25,7 @@ export const getListsAsync = createAsyncThunk(
 export const addListAsync = createAsyncThunk(
   'lists/addListAsync',
   async (newListObject) => {
-    let data = {};
-
-    if (newListObject.hasOwnProperty('_id')) {
-      data = newListObject;
-    } else {
-      const response = await axios.post(`${apiUrl}/boards/${newListObject.id}/lists`, newListObject.nameObj)
-      data = response.data
-    }
-    
+    const data = await getPostData(`${apiUrl}/boards/${newListObject.id}/lists`, newListObject)
     return { data }
   });
 
@@ -58,7 +50,7 @@ export const editListAsync = createAsyncThunk(
 export const addCardAsync = createAsyncThunk(
   'cards/addCardAsync',
   async (newCardObject) => {
-    const data = await getResponseData(`${apiUrl}/lists/${newCardObject.listID}/cards`, newCardObject);
+    const data = await getPostData(`${apiUrl}/lists/${newCardObject.listID}/cards`, newCardObject);
     return { data };
   });
 
