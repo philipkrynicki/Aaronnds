@@ -2,19 +2,19 @@ import { useSelector, useDispatch  } from "react-redux";
 import { xIconUrl, tripleDotIconUrl, plusIconUrl } from '../constants/constants.js';
 import { useEffect, useState } from 'react';
 import { useDrop } from "react-dnd";
-import { getListsAsync, addListAsync } from '../redux/listSlice.js';
-import { addCardAsync, editCardAsync } from '../redux/cardsSlice.js';
+import { addCardAsync, getListsAsync, addListAsync } from '../redux/listSlice.js';
+import {  editCardAsync } from '../redux/cardsSlice.js';
 import CardDrag from './card-drag';
 
 const ListsAll = (props) => {
   const [showNewListInput, setShowNewListInput] = useState(false);
   const [newListName, setNewListName] = useState ("");
-  const lists = useSelector(state => state.lists); 
   const [addNewCard, setAddNewCard] = useState(false);
-  const [newCardTitle, setNewCardTitle] = useState('');
+  const [newCardName, setNewCardName] = useState('');
   const [currentListID, setCurrentListID] = useState('');
 
   const dispatch = useDispatch();
+  const lists = useSelector(state => state.lists);
 
   useEffect(() => {
     dispatch(getListsAsync(props.boardId));
@@ -55,10 +55,10 @@ const ListsAll = (props) => {
   
   const newCardForm = (list) => {
     return (      
-      <div className="card-addView" id={list._id}>            
-        <input type="text" className="form-control new-card-input-field" placeholder="Enter card title" onChange={(e) => setNewCardTitle(e.target.value)}></input>
-        <button type="button" className="button btn btn-primary btn-sm new-card-btn" onClick={() => handleCardSubmit({list})}>Add card</button>  
-        <img src={xIconUrl} alt="x" className="sm-x-icon" onClick={cancelNewCard} />      
+      <div className="card-listview" id={list._id}>            
+        <input type="text" className="form-control" placeholder="Enter card title" onChange={(e) => setNewCardName(e.target.value)}></input>
+        <button type="button" className="button btn btn-primary btn-sm new-card-btn" onClick={() => handleCardSubmit({list})}>Add Card</button>  
+        <a className="cancel-card" href="#" onClick={cancelNewCard}>X</a>      
       </div>     
     )
   }
@@ -67,19 +67,17 @@ const ListsAll = (props) => {
   }
 
   const handleNewCardToggle = (list) => {
-    console.log(list)
     setCurrentListID(list.list._id)
     setAddNewCard(true)
   };
 
   const handleCardSubmit = (list) => { 
-    if (newCardTitle === "") {
+    if (!newCardName) {
       return alert("Please enter a name for your card")
-    }     
-
-    setAddNewCard(false)
-    //pass list.list._id in creating new card
-    dispatchEvent(addCardAsync({name: newCardTitle}))
+    }         
+    dispatch(addCardAsync({listID: currentListID, nameObj: {name: newCardName}}));
+    setNewCardName("");
+    setAddNewCard(false);    
   }
 
   const [{isover}, drop] = useDrop(() => ({
