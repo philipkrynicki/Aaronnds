@@ -41,7 +41,6 @@ const cardsSlice = createSlice({
   reducers: { },
   extraReducers: {
     [getCardsAsync.fulfilled]: (state, action) => {
-      console.log(action.payload.response.data)
       return action.payload.data
     },
     [addCardAsync.fulfilled]: (state, action) => {

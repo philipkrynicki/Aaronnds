@@ -65,7 +65,6 @@ const ListsAll = (props) => {
   }
 
   const handleNewCardToggle = (list) => {
-    console.log(list)
     setCurrentListID(list.list._id)
     setAddNewCard(true)
   };
