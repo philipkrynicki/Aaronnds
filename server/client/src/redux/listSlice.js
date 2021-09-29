@@ -48,8 +48,7 @@ export const editListAsync = createAsyncThunk(
     const data = response.data
     return { data }
   }
-)
-) ;
+);
 
 export const addCardAsync = createAsyncThunk(
   'cards/addCardAsync',

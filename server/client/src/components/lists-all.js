@@ -19,7 +19,6 @@ const ListsAll = (props) => {
   const lists = useSelector(state => state.lists); 
 
   const dispatch = useDispatch();
-  const lists = useSelector(state => state.lists);
 
   useEffect(() => {
     dispatch(getListsAsync(props.boardId));
@@ -66,7 +65,7 @@ const ListsAll = (props) => {
   const newCardForm = (list) => {
     return (      
       <div className="card-addView" id={list._id}>            
-        <input type="text" className="form-control new-card-input-field" placeholder="New card title" onChange={(e) => setNewCardTitle(e.target.value)}></input>
+        <input type="text" className="form-control new-card-input-field" placeholder="New card title" onChange={(e) => setNewCardName(e.target.value)}></input>
         <button type="button" className="button btn btn-primary btn-sm new-card-btn" onClick={() => handleCardSubmit({list})}>Add card</button>  
         <img src={xIconUrl} alt="x" className="sm-x-icon" onClick={cancelNewCard} />      
       </div>     
