@@ -4,6 +4,7 @@ import socket from '../socket-connect';
 import store from './store'
 import { apiUrl } from "../constants/constants";
 import checkDuplicateIds from '../util-functions/id-check';
+import getPostData from '../util-functions/get-response-data';
 
 // Listen for when a new board is posted
 // All socket listeners may be moved to their own file(s) in the future
@@ -27,16 +28,7 @@ export const getBoardsAsync = createAsyncThunk(
 export const addBoardAsync = createAsyncThunk(
   'boards/addBoardAsync',
   async (board) => {
-
-    let data = {};
-
-    // Check whether or not the passed board is a complete board object
-    if (board.hasOwnProperty('_id')) {
-      data = board;
-    } else {
-      const response = await axios.post(`${apiUrl}/workspace/boards/`, board)
-      data = response.data;    
-    }
+    const data = await getPostData(`${apiUrl}/workspace/boards/`, board);
     return { data }
   }
 )

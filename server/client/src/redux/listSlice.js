@@ -4,13 +4,17 @@ import { apiUrl } from "../constants/constants";
 import socket from '../socket-connect';
 import store from './store';
 import checkDuplicateIds from '../util-functions/id-check';
+import getPostData from '../util-functions/get-response-data';
 
 socket.on('newList', list => {
   store.dispatch(addListAsync(list));
 })
 
 socket.on('updatedList', list => {
+})
   
+socket.on('newCard', card => {
+  store.dispatch(addCardAsync(card));
 })
 
 export const getListsAsync = createAsyncThunk(
@@ -24,15 +28,7 @@ export const getListsAsync = createAsyncThunk(
 export const addListAsync = createAsyncThunk(
   'lists/addListAsync',
   async (newListObject) => {
-    let data = {};
-
-    if (newListObject.hasOwnProperty('_id')) {
-      data = newListObject;
-    } else {
-      const response = await axios.post(`${apiUrl}/boards/${newListObject.id}/lists`, newListObject.nameObj)
-      data = response.data
-    }
-    
+    const data = await getPostData(`${apiUrl}/boards/${newListObject.id}/lists`, newListObject)
     return { data }
   });
 
@@ -57,11 +53,8 @@ export const editListAsync = createAsyncThunk(
 export const addCardAsync = createAsyncThunk(
   'cards/addCardAsync',
   async (newCardObject) => {
-    const response = await axios.post(`${apiUrl}/lists/${newCardObject.listID}/cards`, newCardObject.nameObj)
-
-    const data = response.data
-    
-    return { data }
+    const data = await getPostData(`${apiUrl}/lists/${newCardObject.listID}/cards`, newCardObject);
+    return { data };
   });
 
 const listsSlice = createSlice({
@@ -86,9 +79,14 @@ const listsSlice = createSlice({
       state[state.findIndex(({ _id }) => _id === list._id)] = list;
     },
     [addCardAsync.fulfilled]: (state, action) => {
-      state[state.findIndex(({ _id }) => _id === action.meta.arg.listID)].cards.push(action.payload.data)
+      const cards = state[state.findIndex(({ _id }) => _id === action.payload.data.list)].cards;
 
-   },
+      if (checkDuplicateIds(cards, action.payload.data._id))
+        return state;
+      else
+        cards.push(action.payload.data);
+
+    },
   }
 });
 
