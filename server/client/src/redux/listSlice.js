@@ -10,7 +10,7 @@ socket.on('newList', list => {
   store.dispatch(addListAsync(list));
 })
 
-socket.on('updatedList', list => {
+socket.on('updateList', list => {
   store.dispatch(editListAsync(list));
 })
   
@@ -45,8 +45,7 @@ export const deleteListAsync = createAsyncThunk(
 export const editListAsync = createAsyncThunk(
   'lists/editListAsync',
   async (listObj) => {
-    const response = await axios.put(`${apiUrl}/lists/${listObj.id}`, listObj.nameObj);
-    const data = response.data
+    const data = await getResponseData(`${apiUrl}/lists/${listObj.id}`, listObj, 'PUT');
     return { data }
   }
 );
