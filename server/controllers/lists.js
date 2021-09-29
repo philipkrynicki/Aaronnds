@@ -35,6 +35,7 @@ exports.deleteList = (req, res) => {
     Board.updateOne({_id: req.list.board}, {'$pull': {'lists': req.list._id}})
     .exec(err => {
       if (err) throw err;
+      req.app.get('io').emit('deleteList', req.list._id);
       res.status(200).send(req.list._id);
     })
   })
