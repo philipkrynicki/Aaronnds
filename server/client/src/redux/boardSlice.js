@@ -42,9 +42,7 @@ export const deleteBoardAsync = createAsyncThunk(
 
   const boardSlice = createSlice({
     name:'board',
-    initialState: {
-      _id: 1
-    },
+    initialState: { },
     reducers: {},
     extraReducers: {
       [getBoardAsync.fulfilled]: (state, action) => {
