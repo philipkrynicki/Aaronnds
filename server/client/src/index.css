@@ -223,3 +223,19 @@ code {
 .new-card-input-field {
   margin-bottom: 5px;
 }
+
+.list-drop-btn {
+  margin-top: 2px;
+  border: solid thin black;
+  background-color: rgb(216, 214, 214);
+}
+
+.col-listname-edit-input {
+  margin-top: 5px;
+}
+
+.listname-edit-inp {
+  border: dotted black;
+  background-color: rgb(216, 214, 214);
+  width: 100%;
+}
