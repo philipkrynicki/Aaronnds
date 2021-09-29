@@ -1,14 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { apiUrl } from "../constants/constants";
-import socket from '../socket-connect';
-import store from './store';
-import checkDuplicateIds from '../util-functions/id-check';
-import getResponseData from '../util-functions/get-response-data';
-
-socket.on('newCard', card => {
-  store.dispatch(addCardAsync(card));
-})
 
 export const getCardsAsync = createAsyncThunk(
   'cards/getCardsAsync',
@@ -17,13 +9,6 @@ export const getCardsAsync = createAsyncThunk(
     const data = response.data
     return { data }
   })
-
-export const addCardAsync = createAsyncThunk(
-  'cards/addCardAsync',
-  async (newCardObj) => {
-    const data = getResponseData(`${apiUrl}/lists/${newCardObj.listId}/cards`, newCardObj.name)
-    return { data }
-  });
 
 export const deleteCardAsync = createAsyncThunk(
     'cards/deleteCardAsync',
@@ -49,15 +34,6 @@ const cardsSlice = createSlice({
   extraReducers: {
     [getCardsAsync.fulfilled]: (state, action) => {
       return action.payload.data
-    },
-    [addCardAsync.fulfilled]: (state, action) => {
-      
-       let list = state.lists.find(list => list._id === action.meta.arg.listID)
-      console.log(list)
-
-      // list.push(action.payload.data)
-      state.push(action.payload.data)
-      
     },
     [deleteCardAsync.fulfilled]: (state, action) => {
       //same as boardsSlice question

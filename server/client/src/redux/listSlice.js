@@ -9,6 +9,10 @@ socket.on('newList', list => {
   store.dispatch(addListAsync(list));
 })
 
+socket.on('newCard', card => {
+  store.dispatch(addCardAsync(card));
+})
+
 export const getListsAsync = createAsyncThunk(
   'lists/getListsAsync',
   async (id) => {
@@ -82,9 +86,10 @@ const listsSlice = createSlice({
       state[state.findIndex(({ _id }) => _id === list._id)] = list;
     },
     [addCardAsync.fulfilled]: (state, action) => {
+      console.log(action.payload.data);
       state[state.findIndex(({ _id }) => _id === action.meta.arg.listID)].cards.push(action.payload.data)
 
-   },
+    },
   }
 });
 
