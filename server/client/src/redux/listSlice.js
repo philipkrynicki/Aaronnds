@@ -4,12 +4,16 @@ import { apiUrl } from "../constants/constants";
 import socket from '../socket-connect';
 import store from './store';
 import checkDuplicateIds from '../util-functions/id-check';
-import getPostData from '../util-functions/get-response-data';
+import getResponseData from '../util-functions/get-response-data';
 
 socket.on('newList', list => {
   store.dispatch(addListAsync(list));
 })
 
+socket.on('updateList', list => {
+  store.dispatch(editListAsync(list));
+})
+  
 socket.on('newCard', card => {
   store.dispatch(addCardAsync(card));
 })
@@ -25,7 +29,7 @@ export const getListsAsync = createAsyncThunk(
 export const addListAsync = createAsyncThunk(
   'lists/addListAsync',
   async (newListObject) => {
-    const data = await getPostData(`${apiUrl}/boards/${newListObject.id}/lists`, newListObject)
+    const data = await getResponseData(`${apiUrl}/boards/${newListObject.id}/lists`, newListObject, 'POST')
     return { data }
   });
 
@@ -41,8 +45,7 @@ export const deleteListAsync = createAsyncThunk(
 export const editListAsync = createAsyncThunk(
   'lists/editListAsync',
   async (listObj) => {
-    const response = await axios.put(`${apiUrl}/lists/${listObj.id}`, listObj.nameObj);
-    const data = response.data
+    const data = await getResponseData(`${apiUrl}/lists/${listObj.id}`, listObj, 'PUT');
     return { data }
   }
 );
@@ -50,7 +53,7 @@ export const editListAsync = createAsyncThunk(
 export const addCardAsync = createAsyncThunk(
   'cards/addCardAsync',
   async (newCardObject) => {
-    const data = await getPostData(`${apiUrl}/lists/${newCardObject.listID}/cards`, newCardObject);
+    const data = await getResponseData(`${apiUrl}/lists/${newCardObject.listID}/cards`, newCardObject, 'POST');
     return { data };
   });
 
@@ -73,7 +76,7 @@ const listsSlice = createSlice({
     },
     [editListAsync.fulfilled]: (state, action) => {
       const list = action.payload.data;
-      state[state.findIndex(({ _id }) => _id === list._id)] = list;
+      state[state.findIndex(({ _id }) => _id === list._id)].name = list.name;
     },
     [addCardAsync.fulfilled]: (state, action) => {
       const cards = state[state.findIndex(({ _id }) => _id === action.payload.data.list)].cards;

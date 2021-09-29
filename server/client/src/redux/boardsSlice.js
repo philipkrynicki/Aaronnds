@@ -4,7 +4,7 @@ import socket from '../socket-connect';
 import store from './store'
 import { apiUrl } from "../constants/constants";
 import checkDuplicateIds from '../util-functions/id-check';
-import getPostData from '../util-functions/get-response-data';
+import getResponseData from '../util-functions/get-response-data';
 
 // Listen for when a new board is posted
 // All socket listeners may be moved to their own file(s) in the future
@@ -28,7 +28,7 @@ export const getBoardsAsync = createAsyncThunk(
 export const addBoardAsync = createAsyncThunk(
   'boards/addBoardAsync',
   async (board) => {
-    const data = await getPostData(`${apiUrl}/workspace/boards/`, board);
+    const data = await getResponseData(`${apiUrl}/workspace/boards/`, board, 'POST');
     return { data }
   }
 )
