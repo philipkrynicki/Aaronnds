@@ -22,7 +22,7 @@ import { persistStore } from 'redux-persist';
 const App = () => {
   
   return (
-    <div className="container">
+    <div className="container app-container">
 
       <div>
         <Navbar />
