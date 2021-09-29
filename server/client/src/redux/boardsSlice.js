@@ -17,6 +17,10 @@ socket.on('updatedBoard', () => {
   store.dispatch(getBoardsAsync());
 })
 
+socket.on('deleteBoard', data => {
+  store.dispatch(removeBoardAsync(data));
+}) 
+
 export const getBoardsAsync = createAsyncThunk(
   'boards/getBoardsAsync',
   async () => {
@@ -29,18 +33,25 @@ export const addBoardAsync = createAsyncThunk(
   'boards/addBoardAsync',
   async (board) => {
     const data = await getResponseData(`${apiUrl}/workspace/boards/`, board, 'POST');
-    return { data }
+    return { data };
   }
 )
 
 export const deleteBoardAsync = createAsyncThunk(
   'boards/deleteBoardAsync',
   async (board) => {
-    const response = await axios.delete(`${apiUrl}/boards/${board.id}`)
-    const data = response.data
-    return { data }
+    const response = await axios.delete(`${apiUrl}/boards/${board.id}`);
+    const data = response.data;
+    store.dispatch(removeBoardAsync(data));
   }
 ) 
+
+const removeBoardAsync = createAsyncThunk(
+  'boards/removeBoardAsync',
+  async(data) => {
+    return { data }; 
+  }
+)
 
 const boardsSlice = createSlice({
   name: 'boards',
@@ -56,7 +67,7 @@ const boardsSlice = createSlice({
       else
         state.push(action.payload.data);
     },
-    [deleteBoardAsync.fulfilled]: (state, action) => {
+    [removeBoardAsync.fulfilled]: (state, action) => {
       return state.filter((board) => board._id !== action.payload.data);
     }
   }

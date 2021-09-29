@@ -47,7 +47,7 @@ export const deleteListAsync = createAsyncThunk(
   }
 )
 
-// Function that sends id of list to be deleted witout making an api request
+// Function that sends id of list to be removed from the state witout making an api request
 const removeListAsync = createAsyncThunk(
   'lists/removeListAsync',
   async(data) => {
