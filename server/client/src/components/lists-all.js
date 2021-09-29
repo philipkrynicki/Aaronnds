@@ -1,9 +1,9 @@
 import { useSelector, useDispatch  } from "react-redux";
 import { xIconUrl, tripleDotIconUrl, plusIconUrl } from '../constants/constants.js';
 import { useEffect, useState } from 'react';
-import { useDrop } from "react-dnd";
 import { getListsAsync, addListAsync } from '../redux/listSlice.js';
 import { addCardAsync, editCardAsync } from '../redux/cardsSlice.js';
+import DropWrapper from "./drop-wrapper.js";
 import CardDrag from './card-drag';
 
 const ListsAll = (props) => {
@@ -81,15 +81,6 @@ const ListsAll = (props) => {
     dispatchEvent(addCardAsync({name: newCardTitle}))
   }
 
-  const [{isover}, drop] = useDrop(() => ({
-    accept: "card",
-    drop: (item) => editCardAsync(item.id),
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
-    }),
-  }));
-
-
   const renderNewListButton = () => {
     if (showNewListInput === true) {
       return (
@@ -128,37 +119,38 @@ const ListsAll = (props) => {
     } else {
       
       return (
-        <div className="row">
+        <div className="row" >
           {lists.map((list) => {
             return (
-              <div className="col-md-3" key={list._id}>
-                <div className="col list-comp">
-                  <div className="row">
-                    <div className="col-10 col-listname">
-                      <h5><strong>{list.name}</strong></h5>
-                    </div>
-
-                    <div className="col-2">
-                      <img src={tripleDotIconUrl} alt="edit" className="sm-3dot-icon" onClick={listDotClickHandler} />
-                    </div>
-
+              
+                <div className="col-md-3" key={list._id}>
+                  <div className="col list-comp" >
                     <div className="row">
-                      <div className="col">
+                      <div className="col-10 col-listname">
+                        <h5><strong>{list.name}</strong></h5>
+                       </div>
 
-                        {list.cards.map((card) => {
-                            return(
-                              <CardDrag key={card._id} id={card._id} name={card.name}/>
-                            )
-                          })}
-                      
-                        {addNewCard && list._id === currentListID ? newCardForm(list._id): newCardLink(list)}
+                      <div className="col-2">
+                        <img src={tripleDotIconUrl} alt="edit" className="sm-3dot-icon" onClick={listDotClickHandler} />
+                      </div>
 
+                      <div className="row">
+                        <div className="col">
+
+                          {list.cards.map((card) => {
+                             return(
+                                <CardDrag key={card._id} id={card._id} name={card.name}/>
+                              )
+                            })}
+                          
+                          {addNewCard && list._id === currentListID ? newCardForm(list._id): newCardLink(list)}
+
+                        </div>
                       </div>
                     </div>
-
+                  </div>
                 </div>
-              </div>
-            </div>
+           
             )})}
               {renderNewListButton()}
           </div>
