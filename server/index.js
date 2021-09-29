@@ -15,9 +15,15 @@ app.use(express.urlencoded({extended: true}));
 app.use(passport.initialize());
 router(app);
 
-const server = app.listen(5000, () => {
-  console.log("Node.js listening on port " + 5000);
-})
+// const server = app.listen(5000, () => {
+//   console.log("Node.js listening on port " + 5000);
+// })
+
+// Server Setup
+const port = process.env.PORT || 5000;
+const server = http.createServer(app);
+server.listen(port);
+console.log('Server listening on:', port);
 
 const io = socket(server);
 app.set('io', io);
