@@ -24,7 +24,7 @@ exports.postCard = (req, res) => {
 
   let newCard = new Card({
     name: req.body.name,
-    description: req.body.description,
+    description: req.body.description || null,
     activities: [],
     labels: [],
     comments: [],
@@ -37,7 +37,7 @@ exports.postCard = (req, res) => {
   newCard.save((err, card) => {
     if (err) next(err)
     res.status(200).json(card);
-  })
+  })  
 }
 
 // Move a card across lists
@@ -105,7 +105,7 @@ exports.deleteCard = (req, res) => {
 }
 
 exports.updateCard = (req, res) => {
-  if (!req.body.name || !req.body.description) {
+  if (!req.body.name || !req.body.description ||!req.body.list) {
     res.status(400).send("No update information included in request body")
     return res.end();
   } 
