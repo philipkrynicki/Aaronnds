@@ -76,7 +76,7 @@ const listsSlice = createSlice({
     },
     [editListAsync.fulfilled]: (state, action) => {
       const list = action.payload.data;
-      state[state.findIndex(({ _id }) => _id === list._id)] = list;
+      state[state.findIndex(({ _id }) => _id === list._id)].name = list.name;
     },
     [addCardAsync.fulfilled]: (state, action) => {
       const cards = state[state.findIndex(({ _id }) => _id === action.payload.data.list)].cards;
