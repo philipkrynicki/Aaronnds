@@ -9,6 +9,10 @@ socket.on('newList', list => {
   store.dispatch(addListAsync(list));
 })
 
+socket.on('updatedList', list => {
+  
+})
+
 export const getListsAsync = createAsyncThunk(
   'lists/getListsAsync',
   async (id) => {
