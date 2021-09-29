@@ -1,8 +1,7 @@
 import { useSelector, useDispatch  } from "react-redux";
 import { xIconUrl, plusIconUrl } from '../constants/constants.js';
 import { useEffect, useState } from 'react';
-import { useDrop } from "react-dnd";
-
+import DropWrapper from "./drop-wrapper.js";
 import { getListsAsync, addListAsync, deleteListAsync, addCardAsync, editListAsync } from '../redux/listSlice.js';
 import {  editCardAsync } from '../redux/cardsSlice.js';
 import CardDrag from './card-drag';
@@ -89,14 +88,6 @@ const ListsAll = (props) => {
     setAddNewCard(false);    
   }
 
-  const [{isover}, drop] = useDrop(() => ({
-    accept: "card",
-    drop: (item) => editCardAsync(item.id),
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
-    }),
-  }));
-
   const handleEditListInputSubmit = (e, list) => {
     setEditListName(e.target.value)
 
@@ -162,9 +153,10 @@ const ListsAll = (props) => {
     } else {
       
       return (
-        <div className="row">
+        <div className="row" >
           {lists.map((list) => {
             return (
+
               <div className="col-md-3" key={list._id}>
                 <div className="col list-comp">
                   <div className="row">
@@ -185,24 +177,23 @@ const ListsAll = (props) => {
                       </div>
                     </div>
 
-                    <div className="row">
-                      <div className="col">
+                      <div className="row">
+                        <div className="col">
 
-                        {list.cards.map((card) => {
-                            return(
-                              <CardDrag key={card._id} id={card._id} name={card.name}/>
-                            )
-                          })}
-                      
-                        {addNewCard && list._id === currentListID ? newCardForm(list._id): newCardLink(list)}
+                          {list.cards.map((card) => {
+                             return(
+                                <CardDrag key={card._id} id={card._id} name={card.name}/>
+                              )
+                            })}
+                          
+                          {addNewCard && list._id === currentListID ? newCardForm(list._id): newCardLink(list)}
 
+                        </div>
                       </div>
                     </div>
-
+                  </div>
                 </div>
-              </div>
-              
-            </div>
+
             )})}
               {renderNewListButton()}
           </div>
