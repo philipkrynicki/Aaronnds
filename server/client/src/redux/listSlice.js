@@ -48,7 +48,18 @@ export const editListAsync = createAsyncThunk(
     const data = response.data
     return { data }
   }
-) 
+)
+) ;
+
+export const addCardAsync = createAsyncThunk(
+  'cards/addCardAsync',
+  async (newCardObject) => {
+    const response = await axios.post(`${apiUrl}/lists/${newCardObject.listID}/cards`, newCardObject.nameObj)
+
+    const data = response.data
+    
+    return { data }
+  });
 
 const listsSlice = createSlice({
   name: 'lists',
@@ -70,7 +81,11 @@ const listsSlice = createSlice({
     [editListAsync.fulfilled]: (state, action) => {
       const list = action.payload.data;
       state[state.findIndex(({ _id }) => _id === list._id)] = list;
-    }
+    },
+    [addCardAsync.fulfilled]: (state, action) => {
+      state[state.findIndex(({ _id }) => _id === action.meta.arg.listID)].cards.push(action.payload.data)
+
+   },
   }
 });
 

@@ -2,8 +2,9 @@ import { useSelector, useDispatch  } from "react-redux";
 import { xIconUrl, plusIconUrl } from '../constants/constants.js';
 import { useEffect, useState } from 'react';
 import { useDrop } from "react-dnd";
-import { getListsAsync, addListAsync, deleteListAsync, editListAsync } from '../redux/listSlice.js';
-import { addCardAsync, editCardAsync } from '../redux/cardsSlice.js';
+
+import { getListsAsync, addListAsync, deleteListAsync, addCardAsync, editListAsync } from '../redux/listSlice.js';
+import {  editCardAsync } from '../redux/cardsSlice.js';
 import CardDrag from './card-drag';
 
 const ListsAll = (props) => {
@@ -12,12 +13,13 @@ const ListsAll = (props) => {
   const [newListName, setNewListName] = useState("");
   const [editListName, setEditListName] = useState("");
   const [addNewCard, setAddNewCard] = useState(false);
-  const [newCardTitle, setNewCardTitle] = useState('');
+  const [newCardName, setNewCardName] = useState('');
   const [currentListID, setCurrentListID] = useState('');
 
   const lists = useSelector(state => state.lists); 
 
   const dispatch = useDispatch();
+  const lists = useSelector(state => state.lists);
 
   useEffect(() => {
     dispatch(getListsAsync(props.boardId));
@@ -75,19 +77,17 @@ const ListsAll = (props) => {
   }
 
   const handleNewCardToggle = (list) => {
-    console.log(list)
     setCurrentListID(list.list._id)
     setAddNewCard(true)
   };
 
   const handleCardSubmit = (list) => { 
-    if (newCardTitle === "") {
-      return alert("Please enter a name for your card.")
-    }     
-
-    setAddNewCard(false)
-    //pass list.list._id in creating new card
-    dispatchEvent(addCardAsync({name: newCardTitle}))
+    if (!newCardName) {
+      return alert("Please enter a name for your card")
+    }         
+    dispatch(addCardAsync({listID: currentListID, nameObj: {name: newCardName}}));
+    setNewCardName("");
+    setAddNewCard(false);    
   }
 
   const [{isover}, drop] = useDrop(() => ({
