@@ -2,8 +2,8 @@ import { useSelector, useDispatch  } from "react-redux";
 import { xIconUrl, tripleDotIconUrl, plusIconUrl } from '../constants/constants.js';
 import { useEffect, useState } from 'react';
 import { useDrop } from "react-dnd";
-import { getListsAsync, addListAsync } from '../redux/listSlice.js';
-import { addCardAsync, editCardAsync } from '../redux/cardsSlice.js';
+import { addCardAsync, getListsAsync, addListAsync } from '../redux/listSlice.js';
+import {  editCardAsync } from '../redux/cardsSlice.js';
 import CardDrag from './card-drag';
 
 const ListsAll = (props) => {
@@ -14,7 +14,7 @@ const ListsAll = (props) => {
   const [currentListID, setCurrentListID] = useState('');
 
   const dispatch = useDispatch();
-  const lists = useSelector(state => state.lists); 
+  const lists = useSelector(state => state.lists);
 
   useEffect(() => {
     dispatch(getListsAsync(props.boardId));

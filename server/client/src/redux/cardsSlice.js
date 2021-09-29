@@ -44,12 +44,13 @@ const cardsSlice = createSlice({
       return action.payload.data
     },
     [addCardAsync.fulfilled]: (state, action) => {
-
+      
        let list = state.lists.find(list => list._id === action.meta.arg.listID)
       console.log(list)
 
-      list.push(action.payload.data)
-      // state.push(action.payload.data)
+      // list.push(action.payload.data)
+      state.push(action.payload.data)
+      
     },
     [deleteCardAsync.fulfilled]: (state, action) => {
       //same as boardsSlice question
