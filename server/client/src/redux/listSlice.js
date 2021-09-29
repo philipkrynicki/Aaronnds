@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { apiUrl } from "../constants/constants";
 import socket from '../socket-connect';
@@ -32,10 +32,19 @@ export const addListAsync = createAsyncThunk(
     return { data }
   });
 
-  export const deleteListAsync = createAsyncThunk(
-    'lists/deleteListAsync',
+export const deleteListAsync = createAsyncThunk(
+  'lists/deleteListAsync',
   async (id) => {
     const response = await axios.delete(`${apiUrl}/lists/${id}`)
+    const data = response.data
+    return { data }
+  }
+)
+
+export const editListAsync = createAsyncThunk(
+  'lists/editListAsync',
+  async (listObj) => {
+    const response = await axios.put(`${apiUrl}/lists/${listObj.id}`, listObj.nameObj);
     const data = response.data
     return { data }
   }
@@ -56,8 +65,11 @@ const listsSlice = createSlice({
         state.push(action.payload.data);
     },
     [deleteListAsync.fulfilled]: (state, action) => {
-      //same as boardsSlice question
-      return state.filter((list) => list.id !== action.payload.data.id);
+      return state.filter((list) => list._id !== action.payload.data);
+    },
+    [editListAsync.fulfilled]: (state, action) => {
+      const list = action.payload.data;
+      state[state.findIndex(({ _id }) => _id === list._id)] = list;
     }
   }
 });

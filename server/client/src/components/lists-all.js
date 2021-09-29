@@ -1,18 +1,21 @@
 import { useSelector, useDispatch  } from "react-redux";
-import { xIconUrl, tripleDotIconUrl, plusIconUrl } from '../constants/constants.js';
+import { xIconUrl, plusIconUrl } from '../constants/constants.js';
 import { useEffect, useState } from 'react';
 import { useDrop } from "react-dnd";
-import { getListsAsync, addListAsync } from '../redux/listSlice.js';
+import { getListsAsync, addListAsync, deleteListAsync, editListAsync } from '../redux/listSlice.js';
 import { addCardAsync, editCardAsync } from '../redux/cardsSlice.js';
 import CardDrag from './card-drag';
 
 const ListsAll = (props) => {
   const [showNewListInput, setShowNewListInput] = useState(false);
-  const [newListName, setNewListName] = useState ("");
-  const lists = useSelector(state => state.lists); 
+  const [showEditListInput, setShowEditListInput] = useState(false);
+  const [newListName, setNewListName] = useState("");
+  const [editListName, setEditListName] = useState("");
   const [addNewCard, setAddNewCard] = useState(false);
   const [newCardTitle, setNewCardTitle] = useState('');
   const [currentListID, setCurrentListID] = useState('');
+
+  const lists = useSelector(state => state.lists); 
 
   const dispatch = useDispatch();
 
@@ -41,8 +44,13 @@ const ListsAll = (props) => {
     setShowNewListInput(false);
   }
 
-  const listDotClickHandler = () => {
-    console.log('Display edit/remove list modal')
+  const editListNameClickHandler = (list) => {
+    setCurrentListID(list._id);
+    setShowEditListInput(true);
+  }
+
+  const deleteListClickHandler = (list) => {
+    dispatch(deleteListAsync(list._id));
   }
 
   const newCardLink = (list) => {
@@ -56,7 +64,7 @@ const ListsAll = (props) => {
   const newCardForm = (list) => {
     return (      
       <div className="card-addView" id={list._id}>            
-        <input type="text" className="form-control new-card-input-field" placeholder="Enter card title" onChange={(e) => setNewCardTitle(e.target.value)}></input>
+        <input type="text" className="form-control new-card-input-field" placeholder="New card title" onChange={(e) => setNewCardTitle(e.target.value)}></input>
         <button type="button" className="button btn btn-primary btn-sm new-card-btn" onClick={() => handleCardSubmit({list})}>Add card</button>  
         <img src={xIconUrl} alt="x" className="sm-x-icon" onClick={cancelNewCard} />      
       </div>     
@@ -74,7 +82,7 @@ const ListsAll = (props) => {
 
   const handleCardSubmit = (list) => { 
     if (newCardTitle === "") {
-      return alert("Please enter a name for your card")
+      return alert("Please enter a name for your card.")
     }     
 
     setAddNewCard(false)
@@ -90,6 +98,20 @@ const ListsAll = (props) => {
     }),
   }));
 
+  const handleEditListInputSubmit = (e, list) => {
+    setEditListName(e.target.value)
+
+    if (e.key === 'Enter' && e.target.value !== "") {
+      dispatch(editListAsync({id: list._id , nameObj: {name: e.target.value}}))
+      setShowEditListInput(false);
+      setEditListName("");
+    }
+
+    if (e.key === 'Enter' && e.target.value === "") {
+      setShowEditListInput(false);
+      setEditListName("");
+    }
+  }
 
   const renderNewListButton = () => {
     if (showNewListInput === true) {
@@ -111,14 +133,26 @@ const ListsAll = (props) => {
         <div className="col">
           <div className="col d-flex new-list-comp" onClick={addListClickHandler}>
             <img src={plusIconUrl} alt="add" className="sm-plus-icon" />
-            <h5 className="add-listname-text"><strong>Add list</strong></h5>
+            <h5 className="add-listname-text">Add list</h5>
           </div>
         </div>
       </div>
     )
   }
- 
 
+  const renderListName = (list) => {
+    if (showEditListInput === true && list._id === currentListID) {
+      return (
+        <div className="col col-listname-edit-input">
+          <input type="text" className="listname-edit-inp" placeholder={list.name} onKeyUp={(e) => handleEditListInputSubmit(e, list)} />
+        </div>
+      )
+    }
+    return (
+        <h5><strong>{list.name}</strong></h5>
+    )
+  }
+ 
   const renderLists = () => {
     if (lists.length === 0) {
       return (
@@ -135,12 +169,21 @@ const ListsAll = (props) => {
               <div className="col-md-3" key={list._id}>
                 <div className="col list-comp">
                   <div className="row">
+
                     <div className="col-10 col-listname">
-                      <h5><strong>{list.name}</strong></h5>
+                      {renderListName(list)}
                     </div>
 
-                    <div className="col-2">
-                      <img src={tripleDotIconUrl} alt="edit" className="sm-3dot-icon" onClick={listDotClickHandler} />
+                    <div className="col-2 text-center">
+                      <div className="btn-group dropend">
+                        <button type="button" className="btn-sm dropdown-toggle list-drop-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                    
+                        </button>
+                        <ul className="dropdown-menu">
+                          <li><button className="dropdown-item" type="button" onClick={() => editListNameClickHandler(list)}>Edit list name</button></li>
+                          <li><button className="dropdown-item" type="button" onClick={() => deleteListClickHandler(list)}>Delete list</button></li>
+                        </ul>
+                      </div>
                     </div>
 
                     <div className="row">
@@ -159,6 +202,7 @@ const ListsAll = (props) => {
 
                 </div>
               </div>
+              
             </div>
             )})}
               {renderNewListButton()}
