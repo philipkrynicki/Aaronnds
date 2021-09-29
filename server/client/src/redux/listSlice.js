@@ -4,14 +4,15 @@ import { apiUrl } from "../constants/constants";
 import socket from '../socket-connect';
 import store from './store';
 import checkDuplicateIds from '../util-functions/id-check';
+import getResponseData from '../util-functions/get-response-data';
 
 socket.on('newList', list => {
   store.dispatch(addListAsync(list));
 })
 
-socket.on('newCard', card => {
-  store.dispatch(addCardAsync(card));
-})
+// socket.on('newCard', card => {
+//   store.dispatch(addCardAsync(card));
+// })
 
 export const getListsAsync = createAsyncThunk(
   'lists/getListsAsync',
@@ -57,10 +58,10 @@ export const editListAsync = createAsyncThunk(
 export const addCardAsync = createAsyncThunk(
   'cards/addCardAsync',
   async (newCardObject) => {
-    const response = await axios.post(`${apiUrl}/lists/${newCardObject.listID}/cards`, newCardObject.nameObj)
+    // const response = await axios.post(`${apiUrl}/lists/${newCardObject.listID}/cards`, newCardObject.nameObj)
 
-    const data = response.data
-    
+    const data = await getResponseData(`${apiUrl}/lists/${newCardObject.listID}/cards`, newCardObject);
+    console.log(data);
     return { data }
   });
 
@@ -86,8 +87,23 @@ const listsSlice = createSlice({
       state[state.findIndex(({ _id }) => _id === list._id)] = list;
     },
     [addCardAsync.fulfilled]: (state, action) => {
+      const cards = state.map(list => {
+        return list.card;
+      })
+
+      console.log(cards);
       console.log(action.payload.data);
-      state[state.findIndex(({ _id }) => _id === action.meta.arg.listID)].cards.push(action.payload.data)
+      console.log(state);
+
+      // const cardIds = cards.map(card => {
+      //   return card._id;
+      // })
+
+      // if (checkDuplicateIds(cardIds, action.payload._id))
+      //   return state;
+      // else
+      
+        state[state.findIndex(({ _id }) => _id === action.meta.arg.listID)].cards.push(action.payload.data)
 
     },
   }
