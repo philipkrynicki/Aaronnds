@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Returns the relevent data from a POST request
-const getResponseData = async (url, body) => {
+const getPostData = async (url, body) => {
 
   // Data from a socket
   if (body.hasOwnProperty('_id'))
@@ -12,4 +12,4 @@ const getResponseData = async (url, body) => {
   return response.data;
 }
 
-export default getResponseData;
+export default getPostData;
