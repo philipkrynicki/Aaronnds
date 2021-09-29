@@ -13,6 +13,10 @@ socket.on('newList', list => {
 socket.on('updateList', list => {
   store.dispatch(editListAsync(list));
 })
+
+socket.on('deleteList', data => {
+  store.dispatch(removeListAsync(data));
+})
   
 socket.on('newCard', card => {
   store.dispatch(addCardAsync(card));
@@ -31,14 +35,23 @@ export const addListAsync = createAsyncThunk(
   async (newListObject) => {
     const data = await getResponseData(`${apiUrl}/boards/${newListObject.id}/lists`, newListObject, 'POST')
     return { data }
-  });
+  }
+);
 
 export const deleteListAsync = createAsyncThunk(
   'lists/deleteListAsync',
   async (id) => {
-    const response = await axios.delete(`${apiUrl}/lists/${id}`)
-    const data = response.data
-    return { data }
+    const response = await axios.delete(`${apiUrl}/lists/${id}`);
+    const data = response.data;
+    store.dispatch(removeListAsync(data)); // dispatch removeListAsync with the response id
+  }
+)
+
+// Function that sends id of list to be deleted witout making an api request
+const removeListAsync = createAsyncThunk(
+  'lists/removeListAsync',
+  async(data) => {
+    return { data };
   }
 )
 
@@ -71,7 +84,7 @@ const listsSlice = createSlice({
       else
         state.push(action.payload.data);
     },
-    [deleteListAsync.fulfilled]: (state, action) => {
+    [removeListAsync.fulfilled]: (state, action) => {
       return state.filter((list) => list._id !== action.payload.data);
     },
     [editListAsync.fulfilled]: (state, action) => {
