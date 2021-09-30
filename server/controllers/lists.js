@@ -56,3 +56,51 @@ exports.updateListName = (req, res) => {
     res.status(400).send('Request must include name');
   }
 }
+
+// Changes a list's postion 
+exports.moveList = (req, res) => {
+  const newPosition = parseInt(req.body.newPosition);
+  const oldPosition = req.list.position;
+
+  if (!newPosition) {
+    res.status(400).send("newPosition required in request body")
+    return res.end();
+  }
+
+  // Update the list's position field
+  List.findOneAndUpdate({_id: req.list._id}, {position: newPosition}, {new: true})
+  .exec((err, movedList) => {
+    if (err) throw err;
+
+    // When moving closer to the start, increment all lists in between the new and old positions
+    if (newPosition < oldPosition) {
+      List.find({board: movedList.board, position: {$gte: newPosition, $lt: oldPosition}, _id: {$ne: movedList._id}})
+      .exec((err, lists) => {
+        if (err) throw err;
+
+        lists.forEach(list => {
+          list.position += 1;
+          list.save();
+        })
+
+      })
+
+    // When moving away from the start, decrement all lists in between the new and old positions
+    } else if (newPosition > oldPosition) {
+      List.find({board: movedList.board, position: {$lte: newPosition, $gt: oldPosition}, _id: {$ne: movedList._id}})
+      .exec((err, lists) => {
+        if (err) throw err;
+
+        lists.forEach(list => {
+          list.position -= 1;
+          list.save();
+        })        
+      })
+    }
+
+    res.status(200).json({
+      movedList: movedList,
+    });
+    
+  })
+}
