@@ -19,7 +19,7 @@ function CardDrag ({id, name}) {
   }));
  
   const viewCardDetail = (id) => {
-    setShowDetail(!showDetail)
+    setShowDetail(true);
     setCurrentCardID(id);    
   }
 
@@ -27,10 +27,10 @@ function CardDrag ({id, name}) {
     <div className="col">
       
       { showDetail && <CardDetail id={currentCardID} value={showDetail} onChange={cardDetailChange}/>}
-      {!isDragging ? <div className="col card-listview" ref={drag} onClick={viewCardDetail(id)}>{name}</div> : null}
+      {!isDragging ? <div className="col card-listview" ref={drag} onClick={() => viewCardDetail(id)}>{name}</div> : null}
 
     </div>
-  ) 
+     ) 
 }
 
 export default CardDrag

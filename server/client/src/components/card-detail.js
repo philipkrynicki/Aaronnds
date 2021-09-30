@@ -18,19 +18,6 @@ const CardDetail = (props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  
-  const showActivity = () => {
-    card.activities.map((action) => {
-      return (
-        <li>{action}</li>
-      )
-    })
-  }
-
-  const showComments = () => {
-
-  }
-
  //need to pass list name in props from parent to display here
   return (
     <div>
@@ -50,12 +37,12 @@ const CardDetail = (props) => {
           <br /> <br /> 
           <u>Activity:</u>
           <ul>
-            {showActivity()}
+            
           </ul>
           <hr></hr>
           <u>Comments:</u>
           <div>
-            {showComments()}
+            
           </div>
         </Modal.Body>
       </Modal>
