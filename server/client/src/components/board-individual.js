@@ -46,6 +46,10 @@ const BoardIndividual = (props) => {
     dispatch(deleteBoardAsync({id: board._id}));
   }
 
+  const handleCancelDeleteBoardClick = () => {
+    console.log('test');
+  }
+
   
   useEffect(() => {
     dispatch(getBoardAsync(props.match.params.id));
@@ -68,17 +72,17 @@ const BoardIndividual = (props) => {
     )
   }
 
-  const renderEditBoardModal = () => {
+  const renderEditBoardModal = (board) => {
     return (
       <div>
         <Modal show={show} onHide={handleModalClose}>
           <Modal.Header closeButton><Modal.Title>Edit the name of this board:</Modal.Title></Modal.Header>
           <Modal.Body>
-            <input type="text" className="form-control" placeholder="New board title" onChange={newBoardInputChangeHandler} />
+            <input type="text" className="form-control" placeholder={board.name} onChange={newBoardInputChangeHandler} />
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary text-center" onClick={handleModalEdit}>
-              Edit board name
+              Save
             </Button>
           </Modal.Footer>
         </Modal>
@@ -90,12 +94,15 @@ const BoardIndividual = (props) => {
     return (
       <div>
         <Modal show={showDelete} onHide={handleModalDeleteClose}>
-          <Modal.Header closeButton><Modal.Title>Would you like to delete this board?</Modal.Title></Modal.Header>
-          <Modal.Body>
-          </Modal.Body>
+          <Modal.Header closeButton>
+            <Modal.Title as="h5">Are you sure you want to delete this board?</Modal.Title>
+          </Modal.Header>
           <Modal.Footer>
-            <Button variant="primary text-center" onClick={handleModalDelete}>
-              Delete board
+            <Button variant="danger text-center" onClick={handleModalDelete}>
+              Delete
+            </Button>
+            <Button variant="warning text-center" onClick={handleModalDeleteClose}>
+              Cancel
             </Button>
           </Modal.Footer>
         </Modal>
@@ -108,7 +115,7 @@ const BoardIndividual = (props) => {
       <div className="row">
         <div className="col align-items-center">
           {renderBoardDetail(board)}   
-          {renderEditBoardModal()}   
+          {renderEditBoardModal(board)}   
           {renderDeleteBoardModal()}   
           <ListsAll boardId={board._id} />
         </div>
