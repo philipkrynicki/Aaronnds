@@ -185,7 +185,7 @@ const ListsAll = (props) => {
 
                           {list.cards.map((card) => {
                               return(
-                                <CardDrag key={card._id} id={card._id} name={card.name}/>
+                                <CardDrag key={ card._id } id={ card._id } name={ card.name } list={list.name}/>
                               )
                             })}
                         
