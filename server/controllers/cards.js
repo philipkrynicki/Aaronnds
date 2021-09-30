@@ -1,8 +1,6 @@
 const Card = require('../models/card');
 const List = require('../models/list');
 
-const ListModel = List.ListModel;
-
 // Get all cards for a list
 exports.getCards = (req, res) => {
 
@@ -55,7 +53,7 @@ exports.moveCard = (req, res) => {
     return res.end();
   }
 
-  ListModel.findById(destinationListId)
+  List.findById(destinationListId)
  .exec((err, destinationList) => {
     // Make sure the destination list is in the db
     if (!destinationList) {
@@ -66,7 +64,7 @@ exports.moveCard = (req, res) => {
     } else {
       
       // Remove the card from the origin list
-      ListModel.updateOne({_id: originListId}, {'$pull': {'cards': cardId}})
+      List.updateOne({_id: originListId}, {'$pull': {'cards': cardId}})
       .exec((err, card) => {
         if (err) next(err)
 
@@ -100,7 +98,7 @@ exports.deleteCard = (req, res) => {
   Card.deleteOne({_id: req.card._id})
   .then(() => {
 
-    ListModel.updateOne({_id: req.card.list}, {'$pull': {'cards': req.card._id}})
+    List.updateOne({_id: req.card.list}, {'$pull': {'cards': req.card._id}})
     .exec(err => {
       if (err) next(err)
       res.status(200).send(req.card._id)

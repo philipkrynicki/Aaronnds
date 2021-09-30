@@ -21,8 +21,6 @@ const Comment = require('./models/comment');
 const requireAuth = passport.authenticate('jwt', { session: false });
 const requireSignin = passport.authenticate('local', { session: false });
 
-const ListModel = List.ListModel;
-
 module.exports = function(app) {
 
   // ROUTER PARAMS
@@ -52,7 +50,7 @@ module.exports = function(app) {
 
   // Fetches a list
   app.param('list', (req, res, next, id) => {
-    ListModel.findById(id)
+    List.findById(id)
     .populate({
       path: 'cards'
     })
