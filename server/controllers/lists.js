@@ -1,8 +1,10 @@
 const List = require('../models/list')
 const Board = require('../models/board');
 
+const ListModel = List.ListModel;
+
 exports.getLists = (req, res) => {
-  List.find({board: req.board._id})
+  ListModel.find({board: req.board._id})
   .populate('cards')
   .exec((err, lists) => {
     res.status(200).json(lists);
@@ -15,7 +17,7 @@ exports.postList = (req, res) => {
     return res.end();
   } 
 
-  let newList = new List({
+  let newList = new ListModel({
     name: req.body.name,
     cards: [],
     board: req.board._id
@@ -29,7 +31,7 @@ exports.postList = (req, res) => {
 }
 
 exports.deleteList = (req, res) => {
-  List.deleteOne({_id: req.list._id})
+  ListModel.deleteOne({_id: req.list._id})
   .then(() => {
 
     Board.updateOne({_id: req.list.board}, {'$pull': {'lists': req.list._id}})
@@ -45,7 +47,7 @@ exports.updateListName = (req, res) => {
   const newName = req.body.name;
 
   if (newName) {
-    List.findOneAndUpdate({_id: req.list._id}, {name: newName}, {new: true})
+    ListModel.findOneAndUpdate({_id: req.list._id}, {name: newName}, {new: true})
     .exec((err, updatedList) => {
       if (err) throw err;
       req.app.get('io').emit('updateList', updatedList);

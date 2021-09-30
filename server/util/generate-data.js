@@ -4,12 +4,14 @@ const Board = require('../models/board');
 const List = require('../models/list');
 const Card = require('../models/card');
 
+const ListModel = List.ListModel;
+
 // Generate random lists
 const generateLists = (boardId) => {
   let listArr = [];
 
   for (let i = 0; i < 3; i++) {
-    let list = new List();
+    let list = new ListModel();
     const id = list._id;
 
     list.name = faker.lorem.words();
