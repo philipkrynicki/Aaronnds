@@ -59,7 +59,7 @@ exports.moveCard = (req, res) => {
     return res.end();
   }
 
- List.findById(destinationListId)
+  List.findById(destinationListId)
  .exec((err, destinationList) => {
     // Make sure the destination list is in the db
     if (!destinationList) {
