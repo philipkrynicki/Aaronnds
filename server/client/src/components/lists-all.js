@@ -5,6 +5,7 @@ import DropWrapper from "./drop-wrapper.js";
 import { getListsAsync, addListAsync, deleteListAsync, addCardAsync, editListAsync } from '../redux/listSlice.js';
 import {  editCardAsync } from '../redux/cardsSlice.js';
 import CardDrag from './card-drag';
+import {Accessibility} from 'react-ionicons';
 
 const ListsAll = (props) => {
   const [showNewListInput, setShowNewListInput] = useState(false);
@@ -15,7 +16,7 @@ const ListsAll = (props) => {
   const [newCardName, setNewCardName] = useState('');
   const [currentListID, setCurrentListID] = useState('');
 
-  const lists = useSelector(state => state.lists); 
+  const lists = useSelector(state => state.lists);
 
   const dispatch = useDispatch();
 
