@@ -10,6 +10,7 @@ export const getCardsAsync = createAsyncThunk(
     return { data }
   })
 
+
 export const getCardAsync = createAsyncThunk(
   'cards/getCardAsync',
   async (id) => {
@@ -20,6 +21,7 @@ export const getCardAsync = createAsyncThunk(
   }
 )
 
+
 export const deleteCardAsync = createAsyncThunk(
     'cards/deleteCardAsync',
   async (id) => {
@@ -28,6 +30,7 @@ export const deleteCardAsync = createAsyncThunk(
     return { data }
   }
 ) 
+
 export const editCardAsync = createAsyncThunk(
     'cards/editCardAsync',
   async (card) => {
@@ -51,7 +54,6 @@ const cardsSlice = createSlice({
     [getCardAsync.fulfilled]: (state, action) => {
       return action.payload.data
     },
-   
     [deleteCardAsync.fulfilled]: (state, action) => {
       //same as boardsSlice question
       return state.filter((card) => card.id !== action.payload.data.id);

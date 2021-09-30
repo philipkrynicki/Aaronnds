@@ -92,7 +92,7 @@ code {
   width: 100%;
 }
 
-.container {
+.app-container {
   background-color: rgb(245, 244, 244);
   border: solid thin black;
   margin-top: 10px;
@@ -260,4 +260,29 @@ code {
 
 .card-detail-modal .modal-content {
   background-color: rgb(235, 233, 233);
+}
+
+.list-drop-btn {
+  margin-top: 2px;
+  border: solid thin black;
+  background-color: rgb(216, 214, 214);
+}
+
+.col-listname-edit-input {
+  margin-top: 5px;
+}
+
+.listname-edit-inp {
+  border: dotted black;
+  background-color: rgb(216, 214, 214);
+  width: 100%;
+}
+
+.entire-list-row {
+  overflow-x: auto;
+}
+
+.bg-cust {
+  background-color: rgb(216, 214, 214) !important;
+  border: none !important;
 }

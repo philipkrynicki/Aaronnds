@@ -5,6 +5,7 @@ import store from './redux/store'
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import './index.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Navbar from './components/navbar.js';
@@ -20,9 +21,8 @@ import { persistStore } from 'redux-persist';
 
 const App = () => {
   
-  
   return (
-    <div className="container">
+    <div className="container app-container">
 
       <div>
         <Navbar />

@@ -4,15 +4,21 @@ import { editIconUrl, deleteIconUrl } from '../constants/constants.js';
 import { Modal, Button } from "react-bootstrap";
 import { useState, useEffect } from 'react';
 import { editBoardAsync, getBoardAsync } from "../redux/boardSlice";
-
+import { deleteBoardAsync } from '../redux/boardsSlice.js';
+import { useHistory } from 'react-router';
+import socket from '../socket-connect.js';
 
 
 const BoardIndividual = (props) => {
   const [show, setShow] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
   const [updatedBoardName, setUpdatedBoardName] = useState("");
+  const history = useHistory();
   const dispatch = useDispatch();
   const handleModalShow = () => setShow(true);
   const handleModalClose = () => setShow(false);
+  const handleModalDeleteShow = () => setShowDelete(true);
+  const handleModalDeleteClose = () => setShowDelete(false);
   
   const newBoardInputChangeHandler = (e) => {
     
@@ -20,13 +26,24 @@ const BoardIndividual = (props) => {
   }
   const board = useSelector(state => state.board)
 
+  socket.on('deleteBoard', id => {
+    if (board._id === id) {
+      history.push('/');
+    }
+  })
+
   const handleModalEdit = () => {
     if (updatedBoardName === "") {
-      return (alert("Please enter a name for the board!"))
+      return (alert("Please enter a name for the board."))
     }
     setShow(false);
     dispatch(editBoardAsync({id: board._id, nameObj: {name: updatedBoardName}}));
     setUpdatedBoardName("");
+  }
+
+  const handleModalDelete = () => {
+    setShow(false);
+    dispatch(deleteBoardAsync({id: board._id}));
   }
 
   
@@ -45,7 +62,7 @@ const BoardIndividual = (props) => {
       </div>  
       <div className="col-md-4 d-flex align-items-center justify-contents-start board-ind-title-icons-col">
         <img src={editIconUrl} alt="edit" className="edit-icon" onClick={handleModalShow}/>
-        <img src={deleteIconUrl} alt="delete" className="delete-icon" />
+        <img src={deleteIconUrl} alt="delete" className="delete-icon" onClick={handleModalDeleteShow}/>
       </div> 
     </div> 
     )
@@ -69,21 +86,35 @@ const BoardIndividual = (props) => {
     )
   }
 
+  const renderDeleteBoardModal = () => {
+    return (
+      <div>
+        <Modal show={showDelete} onHide={handleModalDeleteClose}>
+          <Modal.Header closeButton><Modal.Title>Would you like to delete this board?</Modal.Title></Modal.Header>
+          <Modal.Body>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="primary text-center" onClick={handleModalDelete}>
+              Delete board
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+    )
+  }
+
   return (
     <div>
       <div className="row">
         <div className="col align-items-center">
           {renderBoardDetail(board)}   
-          {renderEditBoardModal()}      
+          {renderEditBoardModal()}   
+          {renderDeleteBoardModal()}   
           <ListsAll boardId={board._id} />
         </div>
 
       </div>
 
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
       <br></br>
       <br></br>
       <br></br>

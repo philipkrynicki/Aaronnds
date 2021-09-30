@@ -4,6 +4,7 @@ import socket from '../socket-connect';
 import store from './store'
 import { apiUrl } from "../constants/constants";
 import checkDuplicateIds from '../util-functions/id-check';
+import getResponseData from '../util-functions/get-response-data';
 
 // Listen for when a new board is posted
 // All socket listeners may be moved to their own file(s) in the future
@@ -16,6 +17,10 @@ socket.on('updatedBoard', () => {
   store.dispatch(getBoardsAsync());
 })
 
+socket.on('deleteBoard', data => {
+  store.dispatch(removeBoardAsync(data));
+}) 
+
 export const getBoardsAsync = createAsyncThunk(
   'boards/getBoardsAsync',
   async () => {
@@ -27,17 +32,24 @@ export const getBoardsAsync = createAsyncThunk(
 export const addBoardAsync = createAsyncThunk(
   'boards/addBoardAsync',
   async (board) => {
+    const data = await getResponseData(`${apiUrl}/workspace/boards/`, board, 'POST');
+    return { data };
+  }
+)
 
-    let data = {};
+export const deleteBoardAsync = createAsyncThunk(
+  'boards/deleteBoardAsync',
+  async (board) => {
+    const response = await axios.delete(`${apiUrl}/boards/${board.id}`);
+    const data = response.data;
+    store.dispatch(removeBoardAsync(data));
+  }
+) 
 
-    // Check whether or not the passed board is a complete board object
-    if (board.hasOwnProperty('_id')) {
-      data = board;
-    } else {
-      const response = await axios.post(`${apiUrl}/workspace/boards/`, board)
-      data = response.data;    
-    }
-    return { data }
+const removeBoardAsync = createAsyncThunk(
+  'boards/removeBoardAsync',
+  async(data) => {
+    return { data }; 
   }
 )
 
@@ -55,6 +67,9 @@ const boardsSlice = createSlice({
       else
         state.push(action.payload.data);
     },
+    [removeBoardAsync.fulfilled]: (state, action) => {
+      return state.filter((board) => board._id !== action.payload.data);
+    }
   }
 });
 
