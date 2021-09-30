@@ -14,7 +14,6 @@ const CardDetail = (props) => {
   }
   useEffect(() => {    
     dispatch(getCardAsync(props.id));
-    console.log(props) 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
