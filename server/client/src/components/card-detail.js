@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { getCardAsync } from '../redux/cardsSlice.js'
 import Labels from "./labels"
+import Activities from "./activities"
 
 const CardDetail = (props) => {
   const [show, setShow] = useState(true)
@@ -26,7 +27,8 @@ const CardDetail = (props) => {
           <Modal.Title><strong>{card.name}</strong></Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <div>
+          <div>
+            <p>In list: <u>{props.list} </u> </p>
           <strong>labels: </strong>
            <Labels />
           
@@ -36,9 +38,7 @@ const CardDetail = (props) => {
           <p>{card.description}</p>
           <br /> <br /> 
           <u>Activity:</u>
-          <ul>
-            
-          </ul>
+          <Activities />
           <hr></hr>
           <u>Comments:</u>
           <div>
