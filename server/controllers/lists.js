@@ -4,6 +4,7 @@ const Board = require('../models/board');
 exports.getLists = (req, res) => {
   List.find({board: req.board._id})
   .populate('cards')
+  .sort({position: 1})
   .exec((err, lists) => {
     res.status(200).json(lists);
   })
