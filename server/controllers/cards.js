@@ -17,9 +17,9 @@ exports.getCard = (req, res) => {
 }
 
 exports.postCard = (req, res) => {
-  const today = new Date().toLocaleDateString();
+  const today = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short'});
 
-  const now = new Date().toLocaleTimeString();
+  const now = new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
 
   const creationDate = "Card created at " + now + " on " + today;
 
