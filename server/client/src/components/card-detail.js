@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getCardAsync } from '../redux/cardsSlice.js'
 import Labels from "./labels"
 import Activities from "./activities"
+import Comments from "./comments"
 
 const CardDetail = (props) => {
   const [show, setShow] = useState(true)
@@ -41,9 +42,7 @@ const CardDetail = (props) => {
           <Activities />
           <hr></hr>
           <u>Comments:</u>
-          <div>
-            
-          </div>
+          <Comments />
         </Modal.Body>
       </Modal>
     </div>

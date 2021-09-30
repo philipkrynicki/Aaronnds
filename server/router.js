@@ -71,7 +71,11 @@ module.exports = function(app) {
   app.param('card', (req, res, next, id) => {
     Card.findById(id)
     .populate({
-      path: 'comments'
+      path: 'comments',
+      populate: {
+        path: 'user',
+        model: "User"
+      }
     })
     .exec((err, card) => {
 
