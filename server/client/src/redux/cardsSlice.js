@@ -40,6 +40,17 @@ export const editCardAsync = createAsyncThunk(
   }
 )
 
+export const addActivityAsync = createAsyncThunk(
+  'cards/addActivityAsync',
+  async (activityObj) => {
+    const response = await axios.post(`${ apiUrl }/cards/${ activityObj.card }/activity`, activityObj.activity)
+    
+    const data = response.data;
+
+    return { data }
+  }
+)
+
 const cardsSlice = createSlice({
   name: 'cards',
   initialState: {
@@ -57,6 +68,9 @@ const cardsSlice = createSlice({
     [deleteCardAsync.fulfilled]: (state, action) => {
       //same as boardsSlice question
       return state.filter((card) => card.id !== action.payload.data.id);
+    },
+    [addActivityAsync.fulfilled]: (state, action) => {
+      return action.payload.data
     }
   }
 });

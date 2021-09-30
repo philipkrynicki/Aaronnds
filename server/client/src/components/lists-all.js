@@ -3,7 +3,7 @@ import { xIconUrl, plusIconUrl } from '../constants/constants.js';
 import { useEffect, useState } from 'react';
 import DropWrapper from "./drop-wrapper.js";
 import { getListsAsync, addListAsync, deleteListAsync, addCardAsync, editListAsync } from '../redux/listSlice.js';
-import {  editCardAsync } from '../redux/cardsSlice.js';
+import {  editCardAsync, addActivityAsync } from '../redux/cardsSlice.js';
 import CardDrag from './card-drag';
 import {Accessibility} from 'react-ionicons';
 
@@ -84,13 +84,14 @@ const ListsAll = (props) => {
   const handleCardSubmit = (list) => { 
     if (!newCardName) {
       return alert("Please enter a name for your card")
-    }
-    
+    }   
 
+    //pass user into this dispatch function so the activity log can begin with a line like 'Card created by USER X on date'
     dispatch(addCardAsync({
       listID: currentListID,
       nameObj: { name: newCardName }
     }));
+
     setNewCardName("");
     setAddNewCard(false);    
   }
