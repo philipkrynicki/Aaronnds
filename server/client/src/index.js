@@ -22,7 +22,7 @@ let persistor = persistStore(store);
 const App = () => {
   
   return (
-    <div className="container">
+    <div className="container app-container">
 
       <div>
         <Navbar />

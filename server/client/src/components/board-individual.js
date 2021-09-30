@@ -113,10 +113,6 @@ const BoardIndividual = (props) => {
       <br></br>
       <br></br>
       <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
 
     </div>
   );

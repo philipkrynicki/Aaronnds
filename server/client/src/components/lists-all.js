@@ -92,7 +92,7 @@ const ListsAll = (props) => {
     setEditListName(e.target.value)
 
     if (e.key === 'Enter' && e.target.value !== "") {
-      dispatch(editListAsync({id: list._id , nameObj: {name: e.target.value}}))
+      dispatch(editListAsync({id: list._id , nameObj: {name: editListName}}))
       setShowEditListInput(false);
       setEditListName("");
     }
@@ -153,39 +153,41 @@ const ListsAll = (props) => {
     } else {
       
       return (
-        <div className="row" >
-          {lists.map((list) => {
-            return (
+        <div className ="container list-container">
+          <div className="row entire-list-row flex-row flex-nowrap mt-4 pb-4 pt-2">
+            {lists.map((list) => {
+              return (
+                <div className="col-md-3 single-list-col" key={list._id}>
+                  <div className="col list-comp">
+                    <div className="card bg-cust">
+                    <div className="row">
 
-              <div className="col-md-3" key={list._id}>
-                <div className="col list-comp">
-                  <div className="row">
-
-                    <div className="col-10 col-listname">
-                      {renderListName(list)}
-                    </div>
-
-                    <div className="col-2 text-center">
-                      <div className="btn-group dropend">
-                        <button type="button" className="btn-sm dropdown-toggle list-drop-btn" data-bs-toggle="dropdown" aria-expanded="false">
-                    
-                        </button>
-                        <ul className="dropdown-menu">
-                          <li><button className="dropdown-item" type="button" onClick={() => editListNameClickHandler(list)}>Edit list name</button></li>
-                          <li><button className="dropdown-item" type="button" onClick={() => deleteListClickHandler(list)}>Delete list</button></li>
-                        </ul>
+                      <div className="col-10 col-listname">
+                        {renderListName(list)}
                       </div>
-                    </div>
+
+                      <div className="col-2 text-center">
+                        <div className="btn-group dropend">
+                          <button type="button" className="btn-sm dropdown-toggle list-drop-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                      
+                          </button>
+                          <ul className="dropdown-menu">
+                            <li><button className="dropdown-item" type="button" onClick={() => editListNameClickHandler(list)}>Edit list name</button></li>
+                            <li><button className="dropdown-item" type="button" onClick={() => deleteListClickHandler(list)}>Delete list</button></li>
+                          </ul>
+                        </div>
+                      </div>
 
                       <div className="row">
                         <div className="col">
 
                           {list.cards.map((card) => {
-                             return(
+                              return(
                                 <CardDrag key={card._id} id={card._id} name={card.name}/>
                               )
                             })}
-                          
+                        
+
                           {addNewCard && list._id === currentListID ? newCardForm(list._id): newCardLink(list)}
 
                         </div>
@@ -193,9 +195,12 @@ const ListsAll = (props) => {
                     </div>
                   </div>
                 </div>
+                
+              </div>
+              )})}
+                {renderNewListButton()}
+            </div>
 
-            )})}
-              {renderNewListButton()}
           </div>
       )}}
 
