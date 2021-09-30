@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { editBoardAsync, getBoardAsync } from "../redux/boardSlice";
 import { deleteBoardAsync } from '../redux/boardsSlice.js';
 import { useHistory } from 'react-router';
+import socket from '../socket-connect.js';
 
 
 const BoardIndividual = (props) => {
@@ -25,6 +26,12 @@ const BoardIndividual = (props) => {
   }
   const board = useSelector(state => state.board)
 
+  socket.on('deleteBoard', id => {
+    if (board._id === id) {
+      history.push('/');
+    }
+  })
+
   const handleModalEdit = () => {
     if (updatedBoardName === "") {
       return (alert("Please enter a name for the board."))
@@ -37,7 +44,6 @@ const BoardIndividual = (props) => {
   const handleModalDelete = () => {
     setShow(false);
     dispatch(deleteBoardAsync({id: board._id}));
-    history.push('/');
   }
 
   
