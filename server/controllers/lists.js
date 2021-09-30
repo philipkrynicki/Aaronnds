@@ -35,6 +35,7 @@ exports.deleteList = (req, res) => {
     Board.updateOne({_id: req.list.board}, {'$pull': {'lists': req.list._id}})
     .exec(err => {
       if (err) throw err;
+      req.app.get('io').emit('deleteList', req.list._id);
       res.status(200).send(req.list._id);
     })
   })
@@ -47,6 +48,7 @@ exports.updateListName = (req, res) => {
     List.findOneAndUpdate({_id: req.list._id}, {name: newName}, {new: true})
     .exec((err, updatedList) => {
       if (err) throw err;
+      req.app.get('io').emit('updateList', updatedList);
       res.status(200).json(updatedList);
     })
 

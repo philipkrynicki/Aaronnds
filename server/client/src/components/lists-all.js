@@ -1,8 +1,7 @@
 import { useSelector, useDispatch  } from "react-redux";
 import { xIconUrl, plusIconUrl } from '../constants/constants.js';
 import { useEffect, useState } from 'react';
-import { useDrop } from "react-dnd";
-
+import DropWrapper from "./drop-wrapper.js";
 import { getListsAsync, addListAsync, deleteListAsync, addCardAsync, editListAsync } from '../redux/listSlice.js';
 import {  editCardAsync } from '../redux/cardsSlice.js';
 import CardDrag from './card-drag';
@@ -88,14 +87,6 @@ const ListsAll = (props) => {
     setNewCardName("");
     setAddNewCard(false);    
   }
-
-  const [{isover}, drop] = useDrop(() => ({
-    accept: "card",
-    drop: (item) => editCardAsync(item.id),
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
-    }),
-  }));
 
   const handleEditListInputSubmit = (e, list) => {
     setEditListName(e.target.value)
@@ -196,12 +187,12 @@ const ListsAll = (props) => {
                               )
                             })}
                         
+
                           {addNewCard && list._id === currentListID ? newCardForm(list._id): newCardLink(list)}
 
                         </div>
                       </div>
-
-                  </div>
+                    </div>
                   </div>
                 </div>
                 
@@ -209,6 +200,7 @@ const ListsAll = (props) => {
               )})}
                 {renderNewListButton()}
             </div>
+
           </div>
       )}}
 

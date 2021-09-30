@@ -15,7 +15,7 @@ function CardDrag ({id, name}) {
 
   return (
     <div className="col">
-      <div className="col card-listview" ref={drag} onClick={viewCardDetail(id)}>{name}</div>
+      {!isDragging ? <div className="col card-listview" ref={drag} onClick={viewCardDetail(id)}>{name}</div> : null}
     </div>
   ) 
 }
