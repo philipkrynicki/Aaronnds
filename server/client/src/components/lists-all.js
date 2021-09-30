@@ -80,12 +80,17 @@ const ListsAll = (props) => {
     setCurrentListID(list.list._id)
     setAddNewCard(true)
   };
-
+  // activities: [{ action: "Card created", time: today.getHours() + ":" + today.getMinutes(), date: today.getDate() + " " + today.getMonth() }]
   const handleCardSubmit = (list) => { 
     if (!newCardName) {
       return alert("Please enter a name for your card")
-    }         
-    dispatch(addCardAsync({listID: currentListID, nameObj: {name: newCardName}}));
+    }
+    
+
+    dispatch(addCardAsync({
+      listID: currentListID,
+      nameObj: { name: newCardName }
+    }));
     setNewCardName("");
     setAddNewCard(false);    
   }

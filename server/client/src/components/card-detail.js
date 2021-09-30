@@ -38,9 +38,7 @@ const CardDetail = (props) => {
           <p>{card.description}</p>
           <br /> <br /> 
           <u>Activity:</u>
-          
           <Activities />
-          
           <hr></hr>
           <u>Comments:</u>
           <div>
