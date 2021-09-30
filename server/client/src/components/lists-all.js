@@ -73,9 +73,9 @@ const ListsAll = (props) => {
       <div className="card-addView" id={list._id}> 
       <form onSubmit={() => handleCardSubmit({list})}>           
         <input type="text" className="form-control new-card-input-field" placeholder="New card title" onChange={(e) => setNewCardName(e.target.value)}></input>
-        <button type="submit" className="button btn btn-primary btn-sm new-card-btn">Add card</button>  
-      </form>  
-        <img src={xIconUrl} alt="x" className="sm-x-icon" onClick={cancelNewCard} />      
+        <button type="submit" className="button btn btn-primary btn-sm new-card-btn">Add card</button>
+        <img src={xIconUrl} alt="x" className="sm-x-icon" onClick={cancelNewCard} />  
+      </form>        
       </div>     
     )
   }
@@ -127,8 +127,8 @@ const ListsAll = (props) => {
               <form onSubmit={submitAddListEventHandler}>
                 <input type="text" className="form-control new-list-input-field" placeholder="New list title" onChange = {addListInputChangeHandler}></input>
                 <button type="submit" className="btn btn-primary btn-sm new-list-input-button">Add list</button>
+                <img src={xIconUrl} alt="x" className="sm-x-icon" onClick={cancelAddListHandler} />
               </form>
-              <img src={xIconUrl} alt="x" className="sm-x-icon" onClick={cancelAddListHandler} />
             </div>
           </div>
         </div>

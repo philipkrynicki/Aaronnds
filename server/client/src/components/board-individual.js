@@ -76,9 +76,11 @@ const BoardIndividual = (props) => {
     return (
       <div>
         <Modal show={show} onHide={handleModalClose}>
-          <Modal.Header closeButton><Modal.Title>Edit the name of this board:</Modal.Title></Modal.Header>
+          <Modal.Header closeButton><Modal.Title>Edit board name:</Modal.Title></Modal.Header>
           <Modal.Body>
-            <input type="text" className="form-control" placeholder={board.name} onChange={newBoardInputChangeHandler} />
+            <form onSubmit={handleModalEdit}>
+              <input type="text" className="form-control" placeholder={board.name} onChange={newBoardInputChangeHandler} />
+            </form>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary text-center" onClick={handleModalEdit}>
