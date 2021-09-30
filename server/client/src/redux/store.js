@@ -6,13 +6,14 @@ import thunk from 'redux-thunk';
 import boardsReducer from './boardsSlice'
 import boardReducer from './boardSlice'
 import listsReducer from './listSlice'
-
+import cardsReducer from './cardsSlice'
 
 
 const reducers = combineReducers({
   boards: boardsReducer,
   board: boardReducer,
-  lists: listsReducer
+  lists: listsReducer,
+  card: cardsReducer,
  });
 
 const persistConfig = {

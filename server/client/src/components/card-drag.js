@@ -1,6 +1,15 @@
 import { useDrag } from "react-dnd";
+import CardDetail from "./card-detail.js"
+import { useState } from "react";
 
 function CardDrag ({id, name}) {
+  const [showDetail, setShowDetail] = useState(false);
+  const [currentCardID, setCurrentCardID] = useState('');
+
+  const cardDetailChange = (newValue) => {
+    setShowDetail(newValue)
+  }
+
   const [{isDragging}, drag] = useDrag(() => ({
     type: "card",
     item: {id: id},
@@ -8,14 +17,18 @@ function CardDrag ({id, name}) {
       isDragging: !!monitor.isDragging(),
     }),
   }));
-
-  const viewCardDetail = () => {
-    //link to Card Detail component or delete function and include link in the jsx?
+ 
+  const viewCardDetail = (id) => {
+    setShowDetail(!showDetail)
+    setCurrentCardID(id);    
   }
 
   return (
     <div className="col">
+      
+      { showDetail && <CardDetail id={currentCardID} value={showDetail} onChange={cardDetailChange}/>}
       {!isDragging ? <div className="col card-listview" ref={drag} onClick={viewCardDetail(id)}>{name}</div> : null}
+
     </div>
   ) 
 }

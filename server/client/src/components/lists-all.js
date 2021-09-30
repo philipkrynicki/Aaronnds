@@ -7,6 +7,7 @@ import {  editCardAsync } from '../redux/cardsSlice.js';
 import CardDrag from './card-drag';
 import {Accessibility} from 'react-ionicons';
 
+
 const ListsAll = (props) => {
   const [showNewListInput, setShowNewListInput] = useState(false);
   const [showEditListInput, setShowEditListInput] = useState(false);

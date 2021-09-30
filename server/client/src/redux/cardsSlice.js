@@ -10,6 +10,18 @@ export const getCardsAsync = createAsyncThunk(
     return { data }
   })
 
+
+export const getCardAsync = createAsyncThunk(
+  'cards/getCardAsync',
+  async (id) => {
+    const response = await axios.get(`${apiUrl}/cards/${id}`)
+
+    const data = response.data
+    return { data }
+  }
+)
+
+
 export const deleteCardAsync = createAsyncThunk(
     'cards/deleteCardAsync',
   async (id) => {
@@ -30,10 +42,16 @@ export const editCardAsync = createAsyncThunk(
 
 const cardsSlice = createSlice({
   name: 'cards',
-  initialState: [],
+  initialState: {
+    labels:[],
+    activities: []
+  },
   reducers: { },
   extraReducers: {
     [getCardsAsync.fulfilled]: (state, action) => {
+      return action.payload.data
+    },
+    [getCardAsync.fulfilled]: (state, action) => {
       return action.payload.data
     },
     [deleteCardAsync.fulfilled]: (state, action) => {
