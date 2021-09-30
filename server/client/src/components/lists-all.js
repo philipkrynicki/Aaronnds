@@ -51,7 +51,12 @@ const ListsAll = (props) => {
   }
 
   const deleteListClickHandler = (list) => {
-    dispatch(deleteListAsync(list._id));
+    //eslint-disable-next-line
+    const isConfirmed = confirm("This will delete the selected list. Continue?");
+    
+    if (isConfirmed === true) {
+      dispatch(deleteListAsync(list._id));
+    };
   }
 
   const newCardLink = (list) => {
