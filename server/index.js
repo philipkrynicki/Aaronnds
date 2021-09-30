@@ -2,11 +2,13 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require('cors');
 const socket = require('socket.io');
+const AutoIncrementFactory = require('mongoose-sequence');
 
 const router = require('./router');
 const passport = require("passport");
 
-mongoose.connect("mongodb://localhost/aaronnds");
+const connection = mongoose.connect("mongodb://localhost/aaronnds");
+const AutoIncrement = AutoIncrementFactory(connection);
 
 const app = express();
 app.use(cors());
