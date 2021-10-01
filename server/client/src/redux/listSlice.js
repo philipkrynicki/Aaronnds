@@ -75,8 +75,7 @@ export const addCardAsync = createAsyncThunk(
     'cards/moveCardAsync',
     async (card) => {
       const response = await axios.put(`${apiUrl}/lists/${card.list}/cards/${card.id}`, card.destList)
-      
-      store.dispatch(getListsAsync(response.data.originList.board))
+      store.dispatch(getListsAsync(response.data.updatedList.board))
       
     }
   )
