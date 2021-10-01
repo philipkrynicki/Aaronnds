@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux"
 import { useState } from "react";
-import { addCommentAsync, editCommentAsync } from "../redux/cardsSlice";
+import { addCommentAsync, editCommentAsync, deleteCommentAsync } from "../redux/cardsSlice";
 
 const Comments = () => {
   const card = useSelector(state => state.card);
@@ -29,7 +29,7 @@ const Comments = () => {
                   <hr/>
           <p className="comment-text">{ comment.text }</p>
           <button className="btn" onClick={ () => handleEditComment(comment) }><small><u>Edit</u></small></button>
-        <button className="btn" onClick={ () => handleDeleteComment() }><small><u>Delete</u></small></button>
+        <button className="btn" onClick={ () => handleDeleteComment(comment) }><small><u>Delete</u></small></button>
         </div>
         
               </div>
@@ -53,8 +53,10 @@ const Comments = () => {
     setCommentToEdit(comment._id)
   }
 
-  const handleDeleteComment = () => {
-
+  const handleDeleteComment = (comment) => {
+    dispatch(deleteCommentAsync({
+      comment: comment._id
+    }))
   }
 
   const handleEditSubmit = (comment) => {

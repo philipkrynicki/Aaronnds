@@ -45,9 +45,16 @@ export const deleteCardAsync = createAsyncThunk(
 export const editCardAsync = createAsyncThunk(
     'cards/editCardAsync',
   async (card) => {
-    const response = await axios.put(`${apiUrl}/cards/${card.id}`, card)
-    const data = response.data
-    return { data }
+    if (card.name){
+      const response = await axios.put(`${apiUrl}/cards/${card.id}`, card.name)
+      const data = response.data
+      return { data }
+    }
+    if (card.description){
+      const response = await axios.put(`${apiUrl}/cards/${card.id}`, card.description)
+      const data = response.data
+      return { data }
+    }
   }
 )
 
@@ -80,6 +87,16 @@ export const editCommentAsync = createAsyncThunk(
   }
 )
 
+export const deleteCommentAsync = createAsyncThunk(
+  'cards/deleteCommentAsync',
+  async (commentObj) => {
+    const response = await axios.delete(`${ apiUrl }/comments/${ commentObj.comment }`, commentObj)
+    
+    const data = response.data;
+    return { data };
+    
+  }
+)
 
 const cardsSlice = createSlice({
   name: 'cards',
@@ -100,6 +117,11 @@ const cardsSlice = createSlice({
       //same as boardsSlice question
       return state.filter((card) => card.id !== action.payload.data.id);
     },
+    [editCardAsync.fulfilled]: (state, action) => { 
+      const card = action.payload.data;
+      state.name = card.name;
+      state.description = card.description;
+    },
     [addActivityAsync.fulfilled]: (state, action) => {
       state.activities.push(action.payload.data)
     },
@@ -112,7 +134,9 @@ const cardsSlice = createSlice({
     [editCommentAsync.fulfilled]: (state, action) => {
       const comment = action.payload.data;
       state.comments[state.comments.findIndex(({ _id }) => _id === comment._id)].text = comment.text;
-      
+    },
+    [deleteCommentAsync.fulfilled]: (state, action) => {
+      state.comments.splice((state.comments.indexOf(action.payload.data) - 1), 1)
     }
   }
 });
