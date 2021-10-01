@@ -14,7 +14,7 @@ const Login = () => {
         <div className="col">
           <div className="text-center">
             <div className="login-title"><strong><em>Aaronnds</em></strong></div>
-            <h3 className="login-subtitle"><em>Witty Tagline Here</em></h3>
+            <h3 className="login-subtitle"><em>Faster Work, Smoother Flow</em></h3>
             <br></br>
           </div>
         </div>

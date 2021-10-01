@@ -12,6 +12,6 @@ exports.postActivity = (req, res) => {
 
   req.card.save((err, card) => {
     if (err) next(err);
-    res.status(200).json(card.activities);
+    res.status(200).json(card);
   })
 }

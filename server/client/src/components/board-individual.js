@@ -1,24 +1,36 @@
 import { useSelector, useDispatch } from 'react-redux';
 import ListsAll from './lists-all.js';
-import { editIconUrl, deleteIconUrl } from '../constants/constants.js';
+import {CreateOutline} from 'react-ionicons';
+import {TrashOutline} from 'react-ionicons';
 import { Modal, Button } from "react-bootstrap";
 import { useState, useEffect } from 'react';
 import { editBoardAsync, getBoardAsync } from "../redux/boardSlice";
-
-
+import { deleteBoardAsync } from '../redux/boardsSlice.js';
+import { useHistory } from 'react-router';
+import socket from '../socket-connect.js';
 
 const BoardIndividual = (props) => {
   const [show, setShow] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
   const [updatedBoardName, setUpdatedBoardName] = useState("");
+  const history = useHistory();
   const dispatch = useDispatch();
   const handleModalShow = () => setShow(true);
   const handleModalClose = () => setShow(false);
+  const handleModalDeleteShow = () => setShowDelete(true);
+  const handleModalDeleteClose = () => setShowDelete(false);
   
   const newBoardInputChangeHandler = (e) => {
     
     setUpdatedBoardName(e.target.value)
   }
   const board = useSelector(state => state.board)
+
+  socket.on('deleteBoard', id => {
+    if (board._id === id) {
+      history.push('/');
+    }
+  })
 
   const handleModalEdit = () => {
     if (updatedBoardName === "") {
@@ -28,7 +40,13 @@ const BoardIndividual = (props) => {
     dispatch(editBoardAsync({id: board._id, nameObj: {name: updatedBoardName}}));
     setUpdatedBoardName("");
   }
-  
+
+
+  const handleModalDelete = () => {
+    setShow(false);
+    dispatch(deleteBoardAsync({id: board._id}));
+  }
+
   useEffect(() => {
     dispatch(getBoardAsync(props.match.params.id));
     }, [dispatch, props.match.params.id]);
@@ -43,24 +61,48 @@ const BoardIndividual = (props) => {
         </h2>
       </div>  
       <div className="col-md-4 d-flex align-items-center justify-contents-start board-ind-title-icons-col">
-        <img src={editIconUrl} alt="edit" className="edit-icon" onClick={handleModalShow}/>
-        <img src={deleteIconUrl} alt="delete" className="delete-icon" />
+
+        <CreateOutline height="30px" width="30px" className="board-edit-icon" onClick={handleModalShow} />
+        <TrashOutline height="30px" width="30px" className="board-delete-icon" onClick={handleModalDeleteShow} />
+
       </div> 
     </div> 
     )
   }
 
-  const renderEditBoardModal = () => {
+  const renderEditBoardModal = (board) => {
     return (
       <div>
         <Modal show={show} onHide={handleModalClose}>
-          <Modal.Header closeButton><Modal.Title>Edit the name of this board:</Modal.Title></Modal.Header>
+          <Modal.Header closeButton><Modal.Title>Edit board name:</Modal.Title></Modal.Header>
           <Modal.Body>
-            <input type="text" className="form-control" placeholder="New board title" onChange={newBoardInputChangeHandler} />
+            <form onSubmit={handleModalEdit}>
+              <input type="text" className="form-control" placeholder={board.name} onChange={newBoardInputChangeHandler} />
+            </form>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary text-center" onClick={handleModalEdit}>
-              Edit board name
+              Save
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
+    )
+  }
+
+  const renderDeleteBoardModal = () => {
+    return (
+      <div>
+        <Modal show={showDelete} onHide={handleModalDeleteClose}>
+          <Modal.Header closeButton>
+            <Modal.Title as="h5">Are you sure you want to delete this board?</Modal.Title>
+          </Modal.Header>
+          <Modal.Footer>
+            <Button variant="danger text-center" onClick={handleModalDelete}>
+              Delete
+            </Button>
+            <Button variant="secondary text-center" onClick={handleModalDeleteClose}>
+              Cancel
             </Button>
           </Modal.Footer>
         </Modal>
@@ -73,16 +115,13 @@ const BoardIndividual = (props) => {
       <div className="row">
         <div className="col align-items-center">
           {renderBoardDetail(board)}   
-          {renderEditBoardModal()}      
+          {renderEditBoardModal(board)}   
+          {renderDeleteBoardModal()}   
           <ListsAll boardId={board._id} />
         </div>
 
       </div>
 
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
       <br></br>
       <br></br>
       <br></br>

@@ -10,13 +10,17 @@ export const getCardsAsync = createAsyncThunk(
     return { data }
   })
 
-export const addCardAsync = createAsyncThunk(
-  'cards/addCardAsync',
-  async (newCardObject) => {
-    const response = await axios.post(`${apiUrl}/lists/${newCardObject.listID}/cards`, newCardObject.nameObj)
+
+export const getCardAsync = createAsyncThunk(
+  'cards/getCardAsync',
+  async (id) => {
+    const response = await axios.get(`${apiUrl}/cards/${id}`)
+
     const data = response.data
     return { data }
-  });
+  }
+)
+
 
 export const deleteCardAsync = createAsyncThunk(
     'cards/deleteCardAsync',
@@ -26,6 +30,7 @@ export const deleteCardAsync = createAsyncThunk(
     return { data }
   }
 ) 
+
 export const editCardAsync = createAsyncThunk(
     'cards/editCardAsync',
   async (card) => {
@@ -36,28 +41,55 @@ export const editCardAsync = createAsyncThunk(
 )
 
 
+export const addActivityAsync = createAsyncThunk(
+  'cards/addActivityAsync',
+  async (activityObj) => {
+    const response = await axios.post(`${ apiUrl }/cards/${ activityObj.card }/activity`, activityObj.activity)
+    
+    const data = response.data;
+
+    return { data }
+  }
+)
+
+export const addCommentAsync = createAsyncThunk(
+  'cards/addCommentAsync',
+  async (commentObj) => {
+    
+    const response = await axios.post(`${ apiUrl }/cards/${commentObj.card}/comments`, commentObj)
+    
+    const data = response.data
+    return { data }
+  }
+)
+
 
 const cardsSlice = createSlice({
   name: 'cards',
-  initialState: [],
+  initialState: {
+    labels:[],
+    activities: [],
+    comments: []
+  },
   reducers: { },
   extraReducers: {
     [getCardsAsync.fulfilled]: (state, action) => {
       return action.payload.data
     },
-    [addCardAsync.fulfilled]: (state, action) => {
-      
-       let list = state.lists.find(list => list._id === action.meta.arg.listID)
-      console.log(list)
-
-      // list.push(action.payload.data)
-      state.push(action.payload.data)
-      
+    [getCardAsync.fulfilled]: (state, action) => {
+      return action.payload.data
     },
     [deleteCardAsync.fulfilled]: (state, action) => {
       //same as boardsSlice question
       return state.filter((card) => card.id !== action.payload.data.id);
     },
+    [addActivityAsync.fulfilled]: (state, action) => {
+      state.activities.push(action.payload.data)
+    },
+    [addCommentAsync.fulfilled]: (state, action) => {
+      
+      state.comments.push(action.payload.data);
+    }
   }
 });
 
