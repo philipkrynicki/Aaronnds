@@ -50,6 +50,7 @@ exports.deleteComment = (req, res) => {
       User.updateOne({_id: req.comment.user}, {'$pull': {'comments': req.comment._id}})
       .exec(err => {
         if (err) next(err)
+        req.app.get('io').emit('deleteComment', req.comment._id);
         res.status(200).send(req.comment._id)
       })
 
