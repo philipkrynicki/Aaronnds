@@ -78,7 +78,7 @@ const CardDetail = (props) => {
     if (showEditCardNameInput === true && card._id === currentCardId) {
       return (
         <div>
-          <input type="text" className="cardname-edit-inp" placeholder={card.name} onKeyUp={(e) => handleEditCardNameInputSubmit(e, card)} />
+          <input type="text" className="cardname-edit-inp" defaultValue={card.name} onKeyUp={(e) => handleEditCardNameInputSubmit(e, card)} />
         </div>
       )
     }
@@ -91,7 +91,7 @@ const CardDetail = (props) => {
     if (showEditCardDescriptionInput === true && card._id === currentCardId) {
       return (
         <div>
-          <textarea type="text" rows="4" cols="100" className="carddescription-edit-inp" placeholder={card.description} onKeyUp={(e) => handleEditCardDescriptionInputSubmit(e, card)} />
+          <textarea type="text" rows="4" cols="100" className="carddescription-edit-inp" defaultValue={card.description} onKeyUp={(e) => handleEditCardDescriptionInputSubmit(e, card)} />
         </div>
       )
     }

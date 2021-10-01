@@ -149,7 +149,7 @@ const ListsAll = (props) => {
     if (showEditListInput === true && list._id === currentListID) {
       return (
         <div className="col col-listname-edit-input">
-          <input type="text" className="listname-edit-inp" placeholder={list.name} onKeyUp={(e) => handleEditListInputSubmit(e, list)} />
+          <input type="text" className="listname-edit-inp" defaultValue={list.name} onKeyUp={(e) => handleEditListInputSubmit(e, list)} />
         </div>
       )
     }

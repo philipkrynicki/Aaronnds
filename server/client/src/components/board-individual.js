@@ -77,7 +77,7 @@ const BoardIndividual = (props) => {
           <Modal.Header closeButton><Modal.Title>Edit board name:</Modal.Title></Modal.Header>
           <Modal.Body>
             <form onSubmit={handleModalEdit}>
-              <input type="text" className="form-control" placeholder={board.name} onChange={newBoardInputChangeHandler} />
+              <input type="text" className="form-control" defaultValue={board.name} onChange={newBoardInputChangeHandler} />
             </form>
           </Modal.Body>
           <Modal.Footer>
