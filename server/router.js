@@ -131,6 +131,7 @@ module.exports = function(app) {
   app.put('/api/lists/:list/cards/:card', Cards.moveCard);
   app.delete('/api/cards/:card', Cards.deleteCard);
   app.put('/api/cards/:card', Cards.updateCard);
+  app.put('/api/cards/:card/position', Cards.updateCardPosition);
 
   app.post('/api/cards/:card/comments', Comments.postComment);
   app.get('/api/cards/:card/comments', Comments.getComments);

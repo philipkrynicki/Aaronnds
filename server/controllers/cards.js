@@ -3,9 +3,9 @@ const List = require('../models/list');
 
 // Get all cards for a list
 exports.getCards = (req, res) => {
-
   Card
   .find({list: req.params.list})
+  .sort({position: 1})
   .exec((err, cards) => {
     if (err) throw err;
     res.status(200).json(cards)
@@ -124,4 +124,47 @@ exports.updateCard = (req, res) => {
       if (err) next(err)
       res.status(200).json(updatedCard)
     })
+}
+
+// Change a card's position in a List, similar to moveList
+exports.updateCardPosition = (req, res) => {
+  const newPosition = parseInt(req.body.newPosition);
+  const oldPosition = req.card.position;
+
+  if (!newPosition) {
+    res.status(400).send("newPosition required in request body")
+    return res.end();
+  }
+
+  Card.findOneAndUpdate({_id: req.card._id}, {position: newPosition}, {new: true})
+  .exec((err, movedCard) => {
+    if (err) throw err;
+
+    if (newPosition < oldPosition) {
+      Card.find({list: movedCard.list, position: {$gte: newPosition, $lt: oldPosition}, _id: {$ne: movedCard._id}})
+      .exec((err, cards) => {
+        if (err) throw err;
+
+        cards.forEach(card => {
+          card.position += 1;
+          card.save();
+        })
+
+      })
+
+    } else if (newPosition > oldPosition) {
+      Card.find({list: movedCard.list, position: {$lte: newPosition, $gt: oldPosition}, _id: {$ne: movedCard._id}})
+      .exec((err, cards) => {
+        if (err) throw err;
+
+        cards.forEach(card => {
+          card.position -= 1;
+          card.save();
+        })        
+      })
+    }
+
+    res.status(200).json(movedCard);
+    
+  })
 }
