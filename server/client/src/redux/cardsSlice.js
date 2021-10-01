@@ -90,7 +90,6 @@ const cardsSlice = createSlice({
       return action.payload.data
     },
     [deleteCardAsync.fulfilled]: (state, action) => {
-      //same as boardsSlice question
       return state.filter((card) => card.id !== action.payload.data.id);
     },
     [addActivityAsync.fulfilled]: (state, action) => {
