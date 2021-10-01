@@ -77,7 +77,6 @@ export const addCardAsync = createAsyncThunk(
     'cards/moveCardAsync',
     async (card) => {
       const data = await getResponseData(`${apiUrl}/lists/${card.list}/cards/${card.id}`, card.destList, 'PUT')
-      console.log(data)
       store.dispatch(getListsAsync(data.updatedList.board))
       const today = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short'});
       const now = new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
