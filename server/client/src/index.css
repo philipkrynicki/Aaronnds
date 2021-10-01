@@ -273,6 +273,16 @@ code {
   border: none !important;
 }
 
+.description-edit {
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  color: blue;
+  display: inline-flex;
+}
+
 .card-detail-btn {
   width: 60px;
   margin-top: 20px;

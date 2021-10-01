@@ -14,8 +14,8 @@ import BoardIndividual from './components/board-individual.js';
 import Login from './components/login.js';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { PersistGate } from 'redux-persist/integration/react';
-import { persistStore } from 'redux-persist';
+// import { PersistGate } from 'redux-persist/integration/react';
+// import { persistStore } from 'redux-persist';
 
 // let persistor = persistStore(store);
 
