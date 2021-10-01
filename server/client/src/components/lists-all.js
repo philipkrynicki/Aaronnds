@@ -17,10 +17,6 @@ const ListsAll = (props) => {
 
   const lists = useSelector(state => state.lists);
   const dispatch = useDispatch();
-  
-  useEffect(() => {
-    dispatch(getListsAsync(props.boardId));
-  }, [dispatch, props.boardId]);
 
   const addListClickHandler = () => {
     setShowNewListInput(true);
@@ -50,7 +46,7 @@ const ListsAll = (props) => {
 
   const deleteListClickHandler = (list) => {
     //eslint-disable-next-line
-    const isConfirmed = confirm("This will delete the selected list. Continue?");
+    const isConfirmed = confirm("This will delete the entire list. Continue?");
     
     if (isConfirmed === true) {
       dispatch(deleteListAsync(list._id));
@@ -149,7 +145,7 @@ const ListsAll = (props) => {
     if (showEditListInput === true && list._id === currentListID) {
       return (
         <div className="col col-listname-edit-input">
-          <input type="text" className="listname-edit-inp" placeholder={list.name} onKeyUp={(e) => handleEditListInputSubmit(e, list)} />
+          <input type="text" className="listname-edit-inp" defaultValue={list.name} onKeyUp={(e) => handleEditListInputSubmit(e, list)} />
         </div>
       )
     }

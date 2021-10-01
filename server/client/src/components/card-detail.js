@@ -1,8 +1,11 @@
 import { Modal } from "react-bootstrap";
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { getCardAsync } from '../redux/cardsSlice.js'
+import { getCardAsync, deleteCardAsync, editCardAsync } from '../redux/cardsSlice.js'
+import { getListsAsync } from '../redux/listSlice.js'
 import Labels from "./labels"
+import { editIconUrl } from "../constants/constants.js";
+import { useParams } from "react-router";
 import Activities from "./activities"
 import Comments from "./comments"
 
@@ -10,22 +13,171 @@ const CardDetail = (props) => {
   const [show, setShow] = useState(true)
   const dispatch = useDispatch();
   const card = useSelector(state => state.card);
+  const board = useSelector(state => state.board);
+  const [currentCardId, setCurrentCardId] = useState('');
+  const [showEditCardNameInput, setShowEditCardNameInput] = useState(false);
+  const [showEditCardDescriptionInput, setShowEditCardDescriptionInput] = useState(false);
+  const [editCardName, setEditCardName] = useState("");
+  const [editCardDescription, setEditCardDescription] = useState("");
 
   const handleModalClose = () => {
     setShow(false);
     props.onChange(false)
+    dispatch(getListsAsync(board._id))
   }
   useEffect(() => {    
     dispatch(getCardAsync(props.id));
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }
+  ,[dispatch, props.id]
+  )
+
+  const editCardNameClickHandler = (card) => {
+    setCurrentCardId(card._id);
+    setShowEditCardNameInput(true);
+  }
+
+  const editCardDescriptionClickHandler = (card) => {
+    setCurrentCardId(card._id);
+    setShowEditCardDescriptionInput(true)
+  }
+
+  const handleEditCardNameInputSubmit = (e, card) => {
+    setEditCardName(e.target.value)
+
+    if (e.key === 'Enter' && e.target.value !== "") {
+      dispatch(editCardAsync({id: card._id,  name: {name: editCardName}}));
+      setShowEditCardNameInput(false);
+      setEditCardName("")
+    }
+
+    if (e.key === 'Enter' && e.target.value === "") {
+      setShowEditCardNameInput(false);
+      setEditCardName("")
+    }
+  }
+
+  const handleEditCardDescriptionInputSubmit = (e, card) => {
+    setEditCardDescription(e.target.value)
+
+    if (e.key === 'Enter' && e.target.value !== "") {
+      dispatch(editCardAsync({id: card._id,  description:{description: editCardDescription}}))
+      setShowEditCardDescriptionInput(false);
+      setEditCardDescription("")
+    }
+
+    if (e.key === 'Enter' && e.target.value === "") {
+      setShowEditCardDescriptionInput(false);
+      setEditCardDescription("")
+    }
+  }
+
+  const renderCardName = (card) => {
+    if (showEditCardNameInput === true && card._id === currentCardId) {
+      return (
+        <div>
+          <input type="text" className="cardname-edit-inp" defaultValue={card.name} onKeyUp={(e) => handleEditCardNameInputSubmit(e, card)} />
+        </div>
+      )
+    }
+    return (
+      <strong>{card.name}</strong>
+    )
+  }
+
+  const renderCardDescription = (card) => {
+    if (showEditCardDescriptionInput === true && card._id === currentCardId) {
+      return (
+        <div>
+          <textarea type="text" rows="4" cols="100" className="carddescription-edit-inp" defaultValue={card.description} onKeyUp={(e) => handleEditCardDescriptionInputSubmit(e, card)} />
+        </div>
+      )
+    }
+    return (
+      <p>
+        {card.description}
+        <button className="description-edit mx-2" onClick={() => editCardDescriptionClickHandler(card)}>(Edit Description)</button>
+      </p>
+    )
+  }
 
   const cardMoveClickHandler = () => {
     console.log('Moving card!');
   }
 
-  const cardDeleteClickHandler = () => {
-    console.log('Deleting card!')
+  const cardDeleteClickHandler = (id) => {
+    //eslint-disable-next-line
+    const isConfirmed = confirm("This will delete the card. Continue?");
+    if (isConfirmed === true) {
+      dispatch(deleteCardAsync(id));
+      setShow(false);
+      dispatch(getListsAsync(board._id));
+    }
+  }
+
+  const renderLabelsDropdown = () => {
+    return (
+      <div className="btn-group dropend">
+                        <button type="button" className="btn btn-success card-detail-btn btn-sm dropdown-toggle" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Labels</button>
+                        
+                        <div className="dropdown-menu" aria-labelledby="dropdownMenuClickableInside">
+                          <div className="labels-dropdown-options">
+                            <div className="form-check">
+                              <input className="form-check-input" type="checkbox" value="red" id="flexCheckLabel1"></input>
+                              <label className="form-check-label" htmlFor="flexCheckLabel1">
+                                Label 1
+                              </label>
+                            </div>
+                            <div className="form-check">
+                              <input className="form-check-input" type="checkbox" value="blue" id="flexCheckLabel2"></input>
+                              <label className="form-check-label" htmlFor="flexCheckLabel2">
+                                Label 2
+                              </label>
+                            </div>
+                            <div className="form-check">
+                              <input className="form-check-input" type="checkbox" value="green" id="flexCheckLabel3"></input>
+                              <label className="form-check-label" htmlFor="flexCheckLabel3">
+                                Label 3...
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+    )
+  }
+
+  const renderMoveDropdown = () => {
+    return (
+    <div className="btn-group dropend">
+                          <button className="btn btn-primary card-detail-btn btn-sm dropdown-toggle" type="button" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Move</button>
+
+                          <div className="dropdown-menu" aria-labelledby="dropdownMenuClickableInside">
+                            <div className="move-dropdown-options">
+                              <div className="form-check">
+                                <input className="form-check-input" type="radio" name="flexRadioLists" id="flexRadioList2"></input>
+                                <label className="form-check-label" htmlFor="flexRadioList2" defaultChecked>
+                                  List 2
+                                </label>
+                              </div>
+                              <div className="form-check">
+                                <input className="form-check-input" type="radio" name="flexRadioLists" id="flexRadioList3"></input>
+                                <label className="form-check-label" htmlFor="flexRadioList3">
+                                  List 3
+                                </label>
+                              </div>
+                              <div className="form-check">
+                                <input className="form-check-input" type="radio" name="flexRadioLists" id="flexRadioList4"></input>
+                                <label className="form-check-label" htmlFor="flexRadioList4">
+                                  List 4...
+                                </label>
+                              </div>
+
+                              <button type="button" className="btn-sm btn-primary move-dropdown-save-btn" onClick={cardMoveClickHandler}>Move</button>
+
+                            </div>
+                          </div>
+                        </div>
+    )
   }
 
  //need to pass list name in props from parent to display here
@@ -68,78 +220,24 @@ const CardDetail = (props) => {
                   <Comments/>
                 </div>
               </div>
+
               <div className="col-1 second-card-detail-col text-end d-flex align-items-end">
                 <div className="col">
                   <div className="row">
                     <div className="col">
-
-                      <div className="btn-group dropend">
-                        <button type="button" className="btn btn-success card-detail-btn btn-sm dropdown-toggle" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Labels</button>
-                        
-                        <div className="dropdown-menu" aria-labelledby="dropdownMenuClickableInside">
-                          <div className="labels-dropdown-options">
-                            <div className="form-check">
-                              <input className="form-check-input" type="checkbox" value="red" id="flexCheckLabel1"></input>
-                              <label className="form-check-label" htmlFor="flexCheckLabel1">
-                                Label 1
-                              </label>
-                            </div>
-                            <div className="form-check">
-                              <input className="form-check-input" type="checkbox" value="blue" id="flexCheckLabel2"></input>
-                              <label className="form-check-label" htmlFor="flexCheckLabel2">
-                                Label 2
-                              </label>
-                            </div>
-                            <div className="form-check">
-                              <input className="form-check-input" type="checkbox" value="green" id="flexCheckLabel3"></input>
-                              <label className="form-check-label" htmlFor="flexCheckLabel3">
-                                Label 3...
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      {renderLabelsDropdown()}
                     </div>
                   </div>
 
                   <div className="row">
                     <div className="col">
-
-                      <div className="btn-group dropend">
-                          <button className="btn btn-primary card-detail-btn btn-sm dropdown-toggle" type="button" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Move</button>
-
-                          <div className="dropdown-menu" aria-labelledby="dropdownMenuClickableInside">
-                            <div className="move-dropdown-options">
-                              <div className="form-check">
-                                <input className="form-check-input" type="radio" name="flexRadioLists" id="flexRadioList2"></input>
-                                <label className="form-check-label" htmlFor="flexRadioList2" defaultChecked>
-                                  List 2
-                                </label>
-                              </div>
-                              <div className="form-check">
-                                <input className="form-check-input" type="radio" name="flexRadioLists" id="flexRadioList3"></input>
-                                <label className="form-check-label" htmlFor="flexRadioList3">
-                                  List 3
-                                </label>
-                              </div>
-                              <div className="form-check">
-                                <input className="form-check-input" type="radio" name="flexRadioLists" id="flexRadioList4"></input>
-                                <label className="form-check-label" htmlFor="flexRadioList4">
-                                  List 4...
-                                </label>
-                              </div>
-
-                              <button type="button" className="btn-sm btn-primary move-dropdown-save-btn" onClick={cardMoveClickHandler}>Move</button>
-
-                            </div>
-                          </div>
-                        </div>
+                      {renderMoveDropdown()}
                       </div>
                     </div>
 
                   <div className="row">
                     <div className="col">
-                      <button type="button" className="btn btn-danger card-detail-btn btn-sm" onClick={cardDeleteClickHandler}>Delete</button>
+                      <button type="button" className="btn btn-danger card-detail-btn btn-sm" onClick={() => cardDeleteClickHandler(card._id)}>Delete</button>
                     </div>
                   </div>
                 </div>

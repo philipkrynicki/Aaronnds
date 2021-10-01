@@ -36,6 +36,7 @@ exports.postComment = async (req, res) => {
 
   newComment.save((err, comment) => {
     if (err) next(err);
+    req.app.get('io').emit('postComment', newComment);
     res.status(200).json(comment);
   })
 }
@@ -49,6 +50,7 @@ exports.deleteComment = (req, res) => {
       User.updateOne({_id: req.comment.user}, {'$pull': {'comments': req.comment._id}})
       .exec(err => {
         if (err) next(err)
+        req.app.get('io').emit('deleteComment', req.comment._id);
         res.status(200).send(req.comment._id)
       })
 
@@ -66,9 +68,10 @@ exports.updateComment = (req, res) => {
   const update = { text: req.body.text };
 
   Comment.findOneAndUpdate({ _id: req.params.comment }, update, { new: true })
+    .populate('user')
     .exec((err, updatedComment) => {
-      console.log(updatedComment)
       if (err) next(err)
+      req.app.get('io').emit('updateComment', updatedComment);
       res.status(200).json(updatedComment)
     })
 }

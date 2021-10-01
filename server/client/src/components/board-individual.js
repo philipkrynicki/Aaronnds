@@ -32,10 +32,11 @@ const BoardIndividual = (props) => {
     }
   })
 
-  const handleModalEdit = () => {
+  const handleModalEdit = (e) => {
     if (updatedBoardName === "") {
       return (alert("Please enter a name for the board."))
     }
+    e.preventDefault();
     setShow(false);
     dispatch(editBoardAsync({id: board._id, nameObj: {name: updatedBoardName}}));
     setUpdatedBoardName("");
@@ -77,7 +78,7 @@ const BoardIndividual = (props) => {
           <Modal.Header closeButton><Modal.Title>Edit board name:</Modal.Title></Modal.Header>
           <Modal.Body>
             <form onSubmit={handleModalEdit}>
-              <input type="text" className="form-control" placeholder={board.name} onChange={newBoardInputChangeHandler} />
+              <input type="text" className="form-control" defaultValue={board.name} onChange={newBoardInputChangeHandler} />
             </form>
           </Modal.Body>
           <Modal.Footer>
