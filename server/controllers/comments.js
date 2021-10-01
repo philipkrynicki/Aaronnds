@@ -36,6 +36,7 @@ exports.postComment = async (req, res) => {
 
   newComment.save((err, comment) => {
     if (err) next(err);
+    req.app.get('io').emit('postComment', newComment);
     res.status(200).json(comment);
   })
 }
