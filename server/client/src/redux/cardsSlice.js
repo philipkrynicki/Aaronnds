@@ -10,6 +10,10 @@ socket.on('postComment', comment => {
   store.dispatch(addCommentAsync(comment));
 })
 
+socket.on('updateComment', comment => {
+  store.dispatch(editCommentAsync(comment));
+})
+
 export const getCardsAsync = createAsyncThunk(
   'cards/getCardsAsync',
   async (id) => {
@@ -71,9 +75,7 @@ export const addCommentAsync = createAsyncThunk(
 export const editCommentAsync = createAsyncThunk(
   'cards/editCommentAsync',
   async (commentObj) => {
-    const response = await axios.put(`${ apiUrl }/comments/${commentObj.comment}`, commentObj)
-    
-    const data = response.data;
+    const data = await getResponseData(`${ apiUrl }/comments/${commentObj.comment}`, commentObj, 'PUT');
     return { data };
   }
 )
