@@ -51,11 +51,23 @@ export const addActivityAsync = createAsyncThunk(
   }
 )
 
+export const addCommentAsync = createAsyncThunk(
+  'cards/addCommentAsync',
+  async (commentObj) => {
+    
+    const response = await axios.post(`${ apiUrl }/cards/${commentObj.card}/comments`, commentObj)
+    
+    const data = response.data
+    return { data }
+  }
+)
+
 const cardsSlice = createSlice({
   name: 'cards',
   initialState: {
     labels:[],
-    activities: []
+    activities: [],
+    comments: []
   },
   reducers: { },
   extraReducers: {
@@ -70,7 +82,11 @@ const cardsSlice = createSlice({
       return state.filter((card) => card.id !== action.payload.data.id);
     },
     [addActivityAsync.fulfilled]: (state, action) => {
-      return action.payload.data
+      state.activities.push(action.payload.data)
+    },
+    [addCommentAsync.fulfilled]: (state, action) => {
+      
+      state.comments.push(action.payload.data);
     }
   }
 });
