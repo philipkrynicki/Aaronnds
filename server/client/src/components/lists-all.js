@@ -193,7 +193,7 @@ const ListsAll = (props) => {
                           <div className="col">
                           {list.cards.map((card) => {
                               return(
-                                <CardDrag key={ card._id } id={ card._id } name={ card.name } list={list.name}/>
+                                <CardDrag key={ card._id } id={ card._id } name={ card.name } listName={list.name} listId={list._id}/>
                               )
                             })}
                         

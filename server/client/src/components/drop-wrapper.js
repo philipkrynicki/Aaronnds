@@ -17,6 +17,7 @@ function DropWrapper(props) {
   }));
   
   const onDrop = (item, dest) => {
+    console.log(item)
     dispatch(moveCardAsync({list: item.list, id: item.id, destList: { destinationList: dest}}))
   }
 
