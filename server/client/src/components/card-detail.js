@@ -44,7 +44,6 @@ const CardDetail = (props) => {
 
           <div className="container">
             <div className="row">
-              <p>In list: <u>{props.list} </u> </p>
               <div className="col-11 first-card-detail-col">
                 <div>
                   <h6><strong>labels:</strong></h6>
@@ -68,7 +67,6 @@ const CardDetail = (props) => {
                   <u><strong>Comments:</strong></u>
                 </div>
               </div>
-
               <div className="col-1 second-card-detail-col text-end d-flex align-items-end">
                 <div className="col">
                   <div className="row">
