@@ -28,7 +28,6 @@ const BoardIndividual = (props) => {
     dispatch(editBoardAsync({id: board._id, nameObj: {name: updatedBoardName}}));
     setUpdatedBoardName("");
   }
-
   
   useEffect(() => {
     dispatch(getBoardAsync(props.match.params.id));

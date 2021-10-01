@@ -3,7 +3,8 @@ import { xIconUrl, plusIconUrl } from '../constants/constants.js';
 import { useEffect, useState } from 'react';
 import DropWrapper from "./drop-wrapper.js";
 import { getListsAsync, addListAsync, deleteListAsync, addCardAsync, editListAsync } from '../redux/listSlice.js';
-import {  editCardAsync } from '../redux/cardsSlice.js';
+import { editCardAsync } from '../redux/cardsSlice.js';
+import { useDrop } from "react-dnd";
 import CardDrag from './card-drag';
 
 const ListsAll = (props) => {
@@ -14,11 +15,9 @@ const ListsAll = (props) => {
   const [addNewCard, setAddNewCard] = useState(false);
   const [newCardName, setNewCardName] = useState('');
   const [currentListID, setCurrentListID] = useState('');
-
   const lists = useSelector(state => state.lists); 
-
   const dispatch = useDispatch();
-
+  
   useEffect(() => {
     dispatch(getListsAsync(props.boardId));
   }, [dispatch, props.boardId]);
@@ -35,7 +34,7 @@ const ListsAll = (props) => {
     setShowNewListInput(false);
     setNewListName("");
   }
-
+  
   const addListInputChangeHandler = (e) => {
     setNewListName(e.target.value);
   }
@@ -103,6 +102,7 @@ const ListsAll = (props) => {
     }
   }
 
+
   const renderNewListButton = () => {
     if (showNewListInput === true) {
       return (
@@ -156,44 +156,43 @@ const ListsAll = (props) => {
         <div className="row" >
           {lists.map((list) => {
             return (
+              <DropWrapper key={list._id}>
+                
+                  <div className="col list-comp">
+                    <div className="row">
 
-              <div className="col-md-3" key={list._id}>
-                <div className="col list-comp">
-                  <div className="row">
-
-                    <div className="col-10 col-listname">
-                      {renderListName(list)}
-                    </div>
-
-                    <div className="col-2 text-center">
-                      <div className="btn-group dropend">
-                        <button type="button" className="btn-sm dropdown-toggle list-drop-btn" data-bs-toggle="dropdown" aria-expanded="false">
-                    
-                        </button>
-                        <ul className="dropdown-menu">
-                          <li><button className="dropdown-item" type="button" onClick={() => editListNameClickHandler(list)}>Edit list name</button></li>
-                          <li><button className="dropdown-item" type="button" onClick={() => deleteListClickHandler(list)}>Delete list</button></li>
-                        </ul>
+                      <div className="col-10 col-listname">
+                        {renderListName(list)}
                       </div>
-                    </div>
 
-                      <div className="row">
-                        <div className="col">
+                      <div className="col-2 text-center">
+                        <div className="btn-group dropend">
+                          <button type="button" className="btn-sm dropdown-toggle list-drop-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                      
+                          </button>
+                          <ul className="dropdown-menu">
+                            <li><button className="dropdown-item" type="button" onClick={() => editListNameClickHandler(list)}>Edit list name</button></li>
+                            <li><button className="dropdown-item" type="button" onClick={() => deleteListClickHandler(list)}>Delete list</button></li>
+                          </ul>
+                        </div>
+                      </div>
 
-                          {list.cards.map((card) => {
-                             return(
-                                <CardDrag key={card._id} id={card._id} name={card.name}/>
-                              )
-                            })}
-                          
-                          {addNewCard && list._id === currentListID ? newCardForm(list._id): newCardLink(list)}
+                        <div className="row">
+                          <div className="col">
+
+                            {list.cards.map((card) => {
+                              return(
+                                  <CardDrag key={card._id} id={card._id} list={card.list} name={card.name}/>
+                                )
+                              })}
+                            
+                            {addNewCard && list._id === currentListID ? newCardForm(list._id): newCardLink(list)}
 
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-
+              </DropWrapper>
             )})}
               {renderNewListButton()}
           </div>
