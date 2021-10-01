@@ -2,7 +2,7 @@ import { Modal } from "react-bootstrap";
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { getCardAsync, deleteCardAsync, editCardAsync } from '../redux/cardsSlice.js'
-import { getListsAsync } from '../redux/listSlice.js'
+import { getListsAsync, moveCardAsync } from '../redux/listSlice.js'
 import Labels from "./labels"
 import { editIconUrl } from "../constants/constants.js";
 import { useParams } from "react-router";
@@ -14,7 +14,12 @@ const CardDetail = (props) => {
   const dispatch = useDispatch();
   const card = useSelector(state => state.card);
   const board = useSelector(state => state.board);
+  const lists = useSelector(state => state.lists);
+
   const [currentCardId, setCurrentCardId] = useState('');
+
+  const [selectedListToMove, setSelectedListToMove] = useState('');
+
   const [showEditCardNameInput, setShowEditCardNameInput] = useState(false);
   const [showEditCardDescriptionInput, setShowEditCardDescriptionInput] = useState(false);
   const [editCardName, setEditCardName] = useState("");
@@ -93,6 +98,7 @@ const CardDetail = (props) => {
         </div>
       )
     }
+
     return (
       <p>
         {card.description}
@@ -101,9 +107,16 @@ const CardDetail = (props) => {
     )
   }
 
-  const cardMoveClickHandler = () => {
-    console.log('Moving card!');
+  const moveListSubmitHandler = () => {
+    if (selectedListToMove !== "") {
+      //eslint-disable-next-line
+      const isConfirmed = confirm(`Move this card to ${selectedListToMove.name}?`);
+      if (isConfirmed === true) {
+        dispatch(moveCardAsync({list: card.list, id:card._id, destList: {destinationList: selectedListToMove._id}}));
+        setSelectedListToMove("");
+    }
   }
+}
 
   const cardDeleteClickHandler = (id) => {
     //eslint-disable-next-line
@@ -122,6 +135,8 @@ const CardDetail = (props) => {
                         
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuClickableInside">
                           <div className="labels-dropdown-options">
+
+
                             <div className="form-check">
                               <input className="form-check-input" type="checkbox" value="red" id="flexCheckLabel1"></input>
                               <label className="form-check-label" htmlFor="flexCheckLabel1">
@@ -140,6 +155,7 @@ const CardDetail = (props) => {
                                 Label 3...
                               </label>
                             </div>
+
                           </div>
                         </div>
                       </div>
@@ -147,37 +163,33 @@ const CardDetail = (props) => {
   }
 
   const renderMoveDropdown = () => {
-    return (
-    <div className="btn-group dropend">
-                          <button className="btn btn-primary card-detail-btn btn-sm dropdown-toggle" type="button" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Move</button>
+    const filteredList = lists.filter((list) => list._id !== card.list);
 
-                          <div className="dropdown-menu" aria-labelledby="dropdownMenuClickableInside">
-                            <div className="move-dropdown-options">
-                              <div className="form-check">
-                                <input className="form-check-input" type="radio" name="flexRadioLists" id="flexRadioList2"></input>
-                                <label className="form-check-label" htmlFor="flexRadioList2" defaultChecked>
-                                  List 2
-                                </label>
-                              </div>
-                              <div className="form-check">
-                                <input className="form-check-input" type="radio" name="flexRadioLists" id="flexRadioList3"></input>
-                                <label className="form-check-label" htmlFor="flexRadioList3">
-                                  List 3
-                                </label>
-                              </div>
-                              <div className="form-check">
-                                <input className="form-check-input" type="radio" name="flexRadioLists" id="flexRadioList4"></input>
-                                <label className="form-check-label" htmlFor="flexRadioList4">
-                                  List 4...
-                                </label>
-                              </div>
+    if (filteredList.length !== 0) {
+      return (
+        <div className="btn-group dropend">
+          <button className="btn btn-primary card-detail-btn btn-sm dropdown-toggle" type="button" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Move</button>
+            <div className="dropdown-menu" aria-labelledby="dropdownMenuClickableInside">
+              <div className="move-dropdown-options">
 
-                              <button type="button" className="btn-sm btn-primary move-dropdown-save-btn" onClick={cardMoveClickHandler}>Move</button>
+                {filteredList.map(list => {
+                  return (
+                    <div className="form-check" key={list._id}>
+                      <input className="form-check-input" type="radio" name="flexRadioLists" id={list._id} onChange={() => setSelectedListToMove(list)}></input>
+                      <label className="form-check-label" htmlFor={list._id}>
+                        {list.name}
+                      </label>
+                    </div>
+                  )
+                })}
+                
+                <button type="button" className="btn-sm btn-primary move-dropdown-save-btn" onClick={() => moveListSubmitHandler()}>Move</button>
 
-                            </div>
-                          </div>
-                        </div>
-    )
+              </div>
+            </div>
+          </div>
+      )
+    }
   }
 
  //need to pass list name in props from parent to display here
