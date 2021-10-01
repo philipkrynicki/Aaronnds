@@ -63,7 +63,7 @@ export const addActivityAsync = createAsyncThunk(
 export const addCommentAsync = createAsyncThunk(
   'cards/addCommentAsync',
   async (commentObj) => { 
-    const data = await axios.post(`${ apiUrl }/cards/${commentObj.card}/comments`, commentObj);
+    const data = await getResponseData(`${ apiUrl }/cards/${commentObj.card}/comments`, commentObj, 'POST');
     return { data };
   }
 )
@@ -92,8 +92,10 @@ const cardsSlice = createSlice({
       state.activities.push(action.payload.data)
     },
     [addCommentAsync.fulfilled]: (state, action) => {
-      
-      state.comments.push(action.payload.data);
+      if (checkDuplicateIds(state.comments, action.payload.data._id))
+        return state;
+      else
+        state.comments.push(action.payload.data);
     }
   }
 });
