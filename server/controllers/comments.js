@@ -70,6 +70,7 @@ exports.updateComment = (req, res) => {
     .populate('user')
     .exec((err, updatedComment) => {
       if (err) next(err)
+      req.app.get('io').emit('updateComment', updatedComment);
       res.status(200).json(updatedComment)
     })
 }

@@ -10,6 +10,10 @@ socket.on('postComment', comment => {
   store.dispatch(addCommentAsync(comment));
 })
 
+socket.on('updateComment', comment => {
+  store.dispatch(editCommentAsync(comment));
+})
+
 export const getCardsAsync = createAsyncThunk(
   'cards/getCardsAsync',
   async (id) => {
@@ -78,9 +82,7 @@ export const addCommentAsync = createAsyncThunk(
 export const editCommentAsync = createAsyncThunk(
   'cards/editCommentAsync',
   async (commentObj) => {
-    const response = await axios.put(`${ apiUrl }/comments/${commentObj.comment}`, commentObj)
-    
-    const data = response.data;
+    const data = await getResponseData(`${ apiUrl }/comments/${commentObj.comment}`, commentObj, 'PUT');
     return { data };
   }
 )
@@ -130,7 +132,8 @@ const cardsSlice = createSlice({
         state.comments.push(action.payload.data);
     },
     [editCommentAsync.fulfilled]: (state, action) => {
-      state.comments.splice((state.comments.indexOf(action.payload.data._id) -1), 1, action.payload.data) 
+      const comment = action.payload.data;
+      state.comments[state.comments.findIndex(({ _id }) => _id === comment._id)].text = comment.text;
     },
     [deleteCommentAsync.fulfilled]: (state, action) => {
       state.comments.splice((state.comments.indexOf(action.payload.data) - 1), 1)
