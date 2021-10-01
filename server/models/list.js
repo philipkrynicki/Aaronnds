@@ -1,11 +1,16 @@
 const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 const Schema = mongoose.Schema;
 
 const listSchema = new Schema({
   name: String,
   cards: [{type: Schema.Types.ObjectId, ref: 'Card'}],
-  board: {type: Schema.Types.ObjectId, ref: 'Board'}
+  board: {type: Schema.Types.ObjectId, ref: 'Board'},
+  position: {type: Number}
 })
+
+// AutoIncrement will assign new lists their position number
+listSchema.plugin(AutoIncrement, {id: 'position_seq', inc_field: 'position', reference_fields: ['board']});
 
 listSchema.pre('deleteOne', {document: false, query: true}, async function(next) {
   const list = await this.model.findOne(this.getFilter());

@@ -17,12 +17,12 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 
-let persistor = persistStore(store);
+// let persistor = persistStore(store);
 
 const App = () => {
   
   return (
-    <div className="container">
+    <div className="container app-container">
 
       <div>
         <Navbar />
@@ -44,11 +44,11 @@ ReactDOM.render(
   <BrowserRouter>
     <React.StrictMode>
       <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
+        {/* <PersistGate loading={null} persistor={persistor}> */}
           <DndProvider backend={HTML5Backend}>
             <App />
           </DndProvider>
-        </PersistGate>
+        {/* </PersistGate> */}
       </Provider>
     </React.StrictMode>
   </BrowserRouter>,

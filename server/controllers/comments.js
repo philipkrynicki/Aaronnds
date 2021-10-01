@@ -7,19 +7,27 @@ exports.getComments = (req, res) => {
 }
 
 exports.postComment = async (req, res) => {
+  const today = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short'});
+
+  const now = new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+
+  const creationDate = now + " " + today;
+
   if (!req.body.text) {
     res.status(400).send("No comment text included in request")
     return res.end();
   } 
 
   const user = await User.findOne({})
- 
+  
   const newComment = new Comment({
     text: req.body.text,
     user: user._id,
-    card: req.card._id
+    userName: user.name,
+    card: req.body.card,
+    created: creationDate
   });
-
+ 
   user.comments.push(newComment);
   user.save();
 
