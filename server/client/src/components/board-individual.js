@@ -6,6 +6,7 @@ import { Modal, Button } from "react-bootstrap";
 import { useState, useEffect } from 'react';
 import { editBoardAsync, getBoardAsync } from "../redux/boardSlice";
 import { deleteBoardAsync } from '../redux/boardsSlice.js';
+import { getListsAsync } from '../redux/listSlice.js';
 import { useHistory } from 'react-router';
 import socket from '../socket-connect.js';
 
@@ -50,6 +51,10 @@ const BoardIndividual = (props) => {
 
   useEffect(() => {
     dispatch(getBoardAsync(props.match.params.id));
+    }, [dispatch, props.match.params.id]);
+
+  useEffect(() => {
+    dispatch(getListsAsync(props.match.params.id));
     }, [dispatch, props.match.params.id]);
 
   const renderBoardDetail = (board) => {
@@ -117,7 +122,7 @@ const BoardIndividual = (props) => {
         <div className="col align-items-center">
           {renderBoardDetail(board)}   
           {renderEditBoardModal(board)}   
-          {renderDeleteBoardModal()}   
+          {renderDeleteBoardModal()}
           <ListsAll boardId={board._id} />
         </div>
 
