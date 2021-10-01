@@ -1,11 +1,10 @@
 import { useSelector, useDispatch  } from "react-redux";
-import { xIconUrl, plusIconUrl } from '../constants/constants.js';
 import { useEffect, useState } from 'react';
 import DropWrapper from "./drop-wrapper.js";
 import { getListsAsync, addListAsync, deleteListAsync, addCardAsync, editListAsync } from '../redux/listSlice.js';
 import {  editCardAsync, addActivityAsync } from '../redux/cardsSlice.js';
 import CardDrag from './card-drag';
-import {Accessibility} from 'react-ionicons';
+import {AddCircleOutline, Close} from 'react-ionicons';
 
 
 const ListsAll = (props) => {
@@ -74,7 +73,7 @@ const ListsAll = (props) => {
       <form onSubmit={() => handleCardSubmit({list})}>           
         <input type="text" className="form-control new-card-input-field" placeholder="New card title" onChange={(e) => setNewCardName(e.target.value)}></input>
         <button type="submit" className="button btn btn-primary btn-sm new-card-btn">Add card</button>
-        <img src={xIconUrl} alt="x" className="sm-x-icon" onClick={cancelNewCard} />  
+        <Close className="x-icon" height="30px" width="30px" onClick={cancelNewCard}/>
       </form>        
       </div>     
     )
@@ -127,7 +126,7 @@ const ListsAll = (props) => {
               <form onSubmit={submitAddListEventHandler}>
                 <input type="text" className="form-control new-list-input-field" placeholder="New list title" onChange = {addListInputChangeHandler}></input>
                 <button type="submit" className="btn btn-primary btn-sm new-list-input-button">Add list</button>
-                <img src={xIconUrl} alt="x" className="sm-x-icon" onClick={cancelAddListHandler} />
+                <Close className="x-icon" height="30px" width="30px" onClick={cancelAddListHandler}/>
               </form>
             </div>
           </div>
@@ -139,7 +138,7 @@ const ListsAll = (props) => {
       <div className="col-md-3">
         <div className="col">
           <div className="col d-flex new-list-comp" onClick={addListClickHandler}>
-            <img src={plusIconUrl} alt="add" className="sm-plus-icon" />
+            <AddCircleOutline className="sm-plus-icon"/>
             <h5 className="add-listname-text">Add list</h5>
           </div>
         </div>
@@ -185,9 +184,7 @@ const ListsAll = (props) => {
 
                       <div className="col-2 text-center">
                         <div className="btn-group dropend">
-                          <button type="button" className="btn-sm dropdown-toggle list-drop-btn" data-bs-toggle="dropdown" aria-expanded="false">
-                      
-                          </button>
+                          <button type="button" className="btn-sm dropdown-toggle list-drop-btn" data-bs-toggle="dropdown" aria-expanded="false"></button>
                           <ul className="dropdown-menu">
                             <li><button className="dropdown-item" type="button" onClick={() => editListNameClickHandler(list)}>Edit list name</button></li>
                             <li><button className="dropdown-item" type="button" onClick={() => deleteListClickHandler(list)}>Delete list</button></li>

@@ -1,13 +1,13 @@
 import { useSelector, useDispatch } from 'react-redux';
 import ListsAll from './lists-all.js';
-import { editIconUrl, deleteIconUrl } from '../constants/constants.js';
+import {CreateOutline} from 'react-ionicons';
+import {TrashOutline} from 'react-ionicons';
 import { Modal, Button } from "react-bootstrap";
 import { useState, useEffect } from 'react';
 import { editBoardAsync, getBoardAsync } from "../redux/boardSlice";
 import { deleteBoardAsync } from '../redux/boardsSlice.js';
 import { useHistory } from 'react-router';
 import socket from '../socket-connect.js';
-
 
 const BoardIndividual = (props) => {
   const [show, setShow] = useState(false);
@@ -65,8 +65,10 @@ const BoardIndividual = (props) => {
         </h2>
       </div>  
       <div className="col-md-4 d-flex align-items-center justify-contents-start board-ind-title-icons-col">
-        <img src={editIconUrl} alt="edit" className="edit-icon" onClick={handleModalShow}/>
-        <img src={deleteIconUrl} alt="delete" className="delete-icon" onClick={handleModalDeleteShow}/>
+
+        <CreateOutline height="30px" width="30px" className="board-edit-icon" onClick={handleModalShow} />
+        <TrashOutline height="30px" width="30px" className="board-delete-icon" onClick={handleModalDeleteShow} />
+
       </div> 
     </div> 
     )

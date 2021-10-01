@@ -2,8 +2,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from "react-router";
 import { useEffect, useState } from "react";
 import { getBoardsAsync, addBoardAsync } from "../redux/boardsSlice";
-import { plusIconUrl } from '../constants/constants.js';
 import { Modal, Button } from "react-bootstrap";
+import {AddCircleOutline} from 'react-ionicons';
 
 
 
@@ -61,7 +61,7 @@ const BoardsAll = () => {
         <div className="col-md-4 d-flex justify-content-center">
           <div className="new-board-comp d-flex align-items-center justify-content-center" onClick={handleModalShow}>
             
-              <img src={plusIconUrl} alt="add" className="plus-icon" />
+              <AddCircleOutline height="40px" width="40px" className="plus-icon"/>
               <h2>Add board</h2>
               
           </div>
@@ -77,7 +77,9 @@ const BoardsAll = () => {
         <Modal show={show} onHide={handleModalClose}>
           <Modal.Header closeButton><Modal.Title>Name your new board:</Modal.Title></Modal.Header>
           <Modal.Body>
-            <input type="text" className="form-control" placeholder="New board title" onChange={newBoardInputChangeHandler} />
+            <form onSubmit={handleModalAdd}>
+              <input type="text" className="form-control" placeholder="New board title" onChange={newBoardInputChangeHandler} />
+            </form>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="primary text-center" onClick={handleModalAdd}>
