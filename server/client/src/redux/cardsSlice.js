@@ -31,7 +31,13 @@ export const getCardAsync = createAsyncThunk(
 export const deleteCardAsync = createAsyncThunk(
     'cards/deleteCardAsync',
   async (id) => {
-    const response = await axios.delete(`${apiUrl}/cards/${id}`)
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    }
+    
+    const response = await axios.delete(`${apiUrl}/cards/${id}`, config)
     const data = response.data
     return { data }
   }
@@ -40,13 +46,19 @@ export const deleteCardAsync = createAsyncThunk(
 export const editCardAsync = createAsyncThunk(
     'cards/editCardAsync',
   async (card) => {
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    }
+
     if (card.name){
-      const response = await axios.put(`${apiUrl}/cards/${card.id}`, card.name)
+      const response = await axios.put(`${apiUrl}/cards/${card.id}`, card.name, config)
       const data = response.data
       return { data }
     }
     if (card.description){
-      const response = await axios.put(`${apiUrl}/cards/${card.id}`, card.description)
+      const response = await axios.put(`${apiUrl}/cards/${card.id}`, card.description, config)
       const data = response.data
       return { data }
     }
@@ -83,7 +95,13 @@ export const editCommentAsync = createAsyncThunk(
 export const deleteCommentAsync = createAsyncThunk(
   'cards/deleteCommentAsync',
   async (commentObj) => {
-    const response = await axios.delete(`${ apiUrl }/comments/${ commentObj.comment }`, commentObj) 
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    }
+
+    const response = await axios.delete(`${ apiUrl }/comments/${ commentObj.comment }`, commentObj, config) 
     const data = response.data;
     store.dispatch(removeCommentAsync(data));
   }

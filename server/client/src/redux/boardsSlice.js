@@ -40,7 +40,13 @@ export const addBoardAsync = createAsyncThunk(
 export const deleteBoardAsync = createAsyncThunk(
   'boards/deleteBoardAsync',
   async (board) => {
-    const response = await axios.delete(`${apiUrl}/boards/${board.id}`);
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    }
+
+    const response = await axios.delete(`${apiUrl}/boards/${board.id}`, config);
     const data = response.data;
     store.dispatch(removeBoardAsync(data));
   }

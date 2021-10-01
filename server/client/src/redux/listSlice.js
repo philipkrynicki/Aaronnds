@@ -42,7 +42,13 @@ export const addListAsync = createAsyncThunk(
 export const deleteListAsync = createAsyncThunk(
   'lists/deleteListAsync',
   async (id) => {
-    const response = await axios.delete(`${apiUrl}/lists/${id}`);
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    }
+
+    const response = await axios.delete(`${apiUrl}/lists/${id}`, config);
     const data = response.data;
     store.dispatch(removeListAsync(data)); // dispatch removeListAsync with the response id
   }
