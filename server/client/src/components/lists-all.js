@@ -182,7 +182,7 @@ const ListsAll = (props) => {
                         {renderListName(list)}
                       </div>
 
-                      <div className="col-2 text-center">
+                      <div className="col-2 text-start">
                         <div className="btn-group dropend">
                           <button type="button" className="btn-sm dropdown-toggle list-drop-btn" data-bs-toggle="dropdown" aria-expanded="false"></button>
                           <ul className="dropdown-menu">

@@ -260,6 +260,10 @@ code {
   width: 100%;
 }
 
+.listname-edit-inp:hover {
+  background-color: rgb(230, 227, 227);
+}
+
 .entire-list-row {
   overflow-x: auto;
 }

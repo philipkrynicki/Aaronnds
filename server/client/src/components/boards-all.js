@@ -46,7 +46,7 @@ const BoardsAll = () => {
         {boards.map((board) => {
           if (board) {
             return (
-              <div className="col-md-4 d-flex justify-content-center" key={board._id}>
+              <div className="col-md-3 d-flex justify-content-center" key={board._id}>
                 <div className="board-comp d-flex align-items-center justify-content-center" onClick={boardClickHandler(board._id)}>
                   <h2>
                     {board.name}
@@ -58,7 +58,7 @@ const BoardsAll = () => {
           return <div></div>
         })}
       
-        <div className="col-md-4 d-flex justify-content-center">
+        <div className="col-md-3 d-flex justify-content-center">
           <div className="new-board-comp d-flex align-items-center justify-content-center" onClick={handleModalShow}>
             
               <AddCircleOutline height="40px" width="40px" className="plus-icon"/>

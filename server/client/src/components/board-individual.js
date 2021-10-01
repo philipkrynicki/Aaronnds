@@ -46,11 +46,6 @@ const BoardIndividual = (props) => {
     dispatch(deleteBoardAsync({id: board._id}));
   }
 
-  const handleCancelDeleteBoardClick = () => {
-    console.log('test');
-  }
-
-  
   useEffect(() => {
     dispatch(getBoardAsync(props.match.params.id));
     }, [dispatch, props.match.params.id]);
@@ -105,7 +100,7 @@ const BoardIndividual = (props) => {
             <Button variant="danger text-center" onClick={handleModalDelete}>
               Delete
             </Button>
-            <Button variant="warning text-center" onClick={handleModalDeleteClose}>
+            <Button variant="secondary text-center" onClick={handleModalDeleteClose}>
               Cancel
             </Button>
           </Modal.Footer>
