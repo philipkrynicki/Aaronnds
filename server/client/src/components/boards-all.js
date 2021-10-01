@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from "react-router";
 import { useEffect, useState } from "react";
 import { getBoardsAsync, addBoardAsync } from "../redux/boardsSlice";
+import { getListsAsync } from '../redux/listSlice';
 import { Modal, Button } from "react-bootstrap";
 import {AddCircleOutline} from 'react-ionicons';
 
@@ -22,13 +23,14 @@ const BoardsAll = () => {
 
   const handleModalClose = () => setShow(false);
   const handleModalShow = () => setShow(true);
-  const handleModalAdd = () => {
+  const handleModalAdd = (e) => {
     if (newBoardName === "") {
       return alert("Please enter a name for your board.")
-    }
-      setShow(false);
-      dispatch(addBoardAsync({name: newBoardName}));
-      setNewBoardName("");
+    } 
+    e.preventDefault();
+    setShow(false);
+    dispatch(addBoardAsync({name: newBoardName}));
+    setNewBoardName("");
   }
 
   const boardClickHandler = (id) => (event) => {

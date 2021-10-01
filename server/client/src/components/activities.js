@@ -5,9 +5,9 @@ const Activities = () => {
   
   return (
     <ul>
-      { card.activities.map((activity) => {
+      { card.activities.map((activity, i) => {
         return (
-          <li key={activity}>
+          <li key={i}>
             {activity}
           </li>
         )

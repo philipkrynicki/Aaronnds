@@ -17,10 +17,6 @@ const ListsAll = (props) => {
 
   const lists = useSelector(state => state.lists);
   const dispatch = useDispatch();
-  
-  useEffect(() => {
-    dispatch(getListsAsync(props.boardId));
-  }, [dispatch, props.boardId]);
 
   const addListClickHandler = () => {
     setShowNewListInput(true);

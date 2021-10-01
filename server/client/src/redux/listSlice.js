@@ -5,6 +5,7 @@ import socket from '../socket-connect';
 import store from './store';
 import checkDuplicateIds from '../util-functions/id-check';
 import getResponseData from '../util-functions/get-response-data';
+import { addActivityAsync } from "./cardsSlice"
 
 socket.on('newList', list => {
   store.dispatch(addListAsync(list));
@@ -66,8 +67,9 @@ export const editListAsync = createAsyncThunk(
 export const addCardAsync = createAsyncThunk(
   'cards/addCardAsync',
   async (newCardObject) => {
-    console.log(newCardObject)
+    
     const data = await getResponseData(`${apiUrl}/lists/${newCardObject.listID}/cards`, newCardObject, 'POST');
+    
     return { data };
   });
 
@@ -75,6 +77,17 @@ export const addCardAsync = createAsyncThunk(
     'cards/moveCardAsync',
     async (card) => {
       const data = await getResponseData(`${apiUrl}/lists/${card.list}/cards/${card.id}`, card.destList, 'PUT')
+      store.dispatch(getListsAsync(data.updatedList.board))
+      const today = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short'});
+      const now = new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+      store.dispatch(addActivityAsync({card: data.card , activity: {newActivity: `Moved to ${data.updatedList.name} at ${today} ${now}`}}))
+    }
+  )
+  export const reorderCardAsync = createAsyncThunk(
+    'cards/reorderCardsAsync',
+    async (cardInfo) => {
+      const data = await getResponseData(`${apiUrl}/cards/${cardInfo.id}/position`, cardInfo.newPosition, 'PUT')
+      
       store.dispatch(getListsAsync(data.updatedList.board))
       
     }
