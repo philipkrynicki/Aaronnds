@@ -333,3 +333,44 @@ code {
 .board-delete-icon:hover {
   transform: scale(1.25);
 }
+
+.ind-comment-row {
+  width: 92%;
+}
+
+.ind-comment-col {
+  background: white;
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+  margin-left: 13px;
+  border: thin solid black;
+}
+
+.comment-input-row {
+  margin-top: 10px;
+  width: 88%;
+}
+
+.comment-username {
+  margin: 1px;
+  color: blue;
+}
+
+.comment-time {
+  font-size: 75%;
+  margin: 1px;
+}
+
+.comment-text {
+  margin-top: 5px;
+}
+
+.com-inp-btn {
+  width: 75px;
+}
+
+.all-comments-col {
+  margin-top: 10px;
+  max-height: 300px;
+  overflow-y: scroll;
+}

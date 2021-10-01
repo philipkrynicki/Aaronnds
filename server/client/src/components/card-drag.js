@@ -2,7 +2,7 @@ import { useDrag } from "react-dnd";
 import CardDetail from "./card-detail.js"
 import { useState } from "react";
 
-function CardDrag ({id, name, list}) {
+function CardDrag ({id, name, listName, listId}) {
   const [showDetail, setShowDetail] = useState(false);
   const [currentCardID, setCurrentCardID] = useState('');
 
@@ -12,7 +12,7 @@ function CardDrag ({id, name, list}) {
 
   const [{isDragging}, drag] = useDrag(() => ({
     type: "card",
-    item: {id: id, list: list}, 
+    item: {id: id, list: listId}, 
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
@@ -25,7 +25,7 @@ function CardDrag ({id, name, list}) {
 
   return (
     <div className="col">
-      { showDetail && <CardDetail id={ currentCardID } value={ showDetail } list={ list } onChange={cardDetailChange}/>}
+      { showDetail && <CardDetail id={ currentCardID } value={ showDetail } list={ listName } onChange={cardDetailChange}/>}
       {!isDragging ? <div className="col card-listview" ref={drag} onClick={() => viewCardDetail(id)}>{name}</div> : null}
 
     </div>

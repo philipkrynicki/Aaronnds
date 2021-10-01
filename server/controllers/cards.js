@@ -90,7 +90,7 @@ exports.moveCard = (req, res) => {
               // Send the card id, origin list id, and updated destination list
               res.status(200).send({
                 card: card._id,
-                originList: req.list._id,
+                originList: req.list,
                 updatedList: destinationList
               });
             })

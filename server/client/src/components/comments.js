@@ -9,9 +9,11 @@ const Comments = () => {
 
   const newCommentForm = () => {
     return (
-      <div className="comment-form">
-        <input type="text" className="form-control" placeholder="Enter new comment" onChange={ (e) => setNewComment(e.target.value) }></input>
-        <button type="button" className="button btn btn-primary btn-sm" onClick={ () => handleCommentSubmit()}>Post Comment</button>
+      <div className="comment-input-row">
+        <div className="comment-form input-group mb-3">
+          <input type="text" className="form-control" placeholder="Write new comment" onChange={ (e) => setNewComment(e.target.value) }></input>
+          <button type="button" className="button btn btn-primary btn-sm com-inp-btn" onClick={ () => handleCommentSubmit()}>Post</button>
+        </div>
       </div>
     )
   }
@@ -30,16 +32,21 @@ const Comments = () => {
   return (
 
     <div>
-      <ul>
+      <div className="col all-comments-col">
       {card.comments.map((comment) => {
           return (
-            <li>
-              {comment.text} -- Posted by {comment.userName} at {comment.created}
-            </li>
+              <div className="row ind-comment-row">
+                <div className="col rounded ind-comment-col">
+                  <p className="comment-username">{comment.user.name}</p>
+                  <p className="comment-time">{comment.created}</p>
+                  <hr/>
+                  <p className="comment-text">{comment.text}</p>
+                </div>
+              </div>
           )
         })
       }
-      </ul>
+      </div>
     
 
       <div>
