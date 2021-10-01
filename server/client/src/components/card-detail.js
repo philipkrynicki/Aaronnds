@@ -65,6 +65,7 @@ const CardDetail = (props) => {
                 <br/>
                 <div>
                   <u><strong>Comments:</strong></u>
+                  <Comments/>
                 </div>
               </div>
               <div className="col-1 second-card-detail-col text-end d-flex align-items-end">
@@ -143,8 +144,6 @@ const CardDetail = (props) => {
                   </div>
                 </div>
               </div>
-
-              <Comments/>
             </div>
           </div>
 
