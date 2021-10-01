@@ -35,7 +35,7 @@ const Comments = () => {
       <div className="col all-comments-col">
       {card.comments.map((comment) => {
           return (
-              <div className="row ind-comment-row">
+              <div className="row ind-comment-row" key={comment._id}>
                 <div className="col rounded ind-comment-col">
                   <p className="comment-username">{comment.user.name}</p>
                   <p className="comment-time">{comment.created}</p>
