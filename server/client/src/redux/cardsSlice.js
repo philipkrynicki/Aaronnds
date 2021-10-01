@@ -21,7 +21,6 @@ export const getCardAsync = createAsyncThunk(
   }
 )
 
-
 export const deleteCardAsync = createAsyncThunk(
     'cards/deleteCardAsync',
   async (id) => {
@@ -62,6 +61,16 @@ export const addCommentAsync = createAsyncThunk(
   }
 )
 
+export const editCommentAsync = createAsyncThunk(
+  'cards/editCommentAsync',
+  async (commentObj) => {
+    const response = await axios.put(`${ apiUrl }/comments/${commentObj.comment}`, commentObj)
+    
+    const data = response.data;
+    return { data };
+  }
+)
+
 const cardsSlice = createSlice({
   name: 'cards',
   initialState: {
@@ -85,8 +94,11 @@ const cardsSlice = createSlice({
       state.activities.push(action.payload.data)
     },
     [addCommentAsync.fulfilled]: (state, action) => {
-      
       state.comments.push(action.payload.data);
+    },
+    [editCommentAsync.fulfilled]: (state, action) => {
+      state.comments.splice((state.comments.indexOf(action.payload.data._id) -1), 1, action.payload.data)
+      
     }
   }
 });

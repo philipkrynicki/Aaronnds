@@ -5,7 +5,6 @@ const User = require('./user');
 const commentSchema = new Schema({
   text: String,
   created: String,
-  userName: String,
   user: {type: Schema.Types.ObjectId, ref: 'User'},
   card: {type: Schema.Types.ObjectId, ref: 'Card'}
 })
