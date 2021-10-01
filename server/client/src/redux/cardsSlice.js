@@ -34,9 +34,16 @@ export const deleteCardAsync = createAsyncThunk(
 export const editCardAsync = createAsyncThunk(
     'cards/editCardAsync',
   async (card) => {
-    const response = await axios.put(`${apiUrl}/cards/${card.id}`, card.name)
-    const data = response.data
-    return { data }
+    if (card.name){
+      const response = await axios.put(`${apiUrl}/cards/${card.id}`, card.name)
+      const data = response.data
+      return { data }
+    }
+    if (card.description){
+      const response = await axios.put(`${apiUrl}/cards/${card.id}`, card.description)
+      const data = response.data
+      return { data }
+    }
   }
 )
 
@@ -57,6 +64,11 @@ const cardsSlice = createSlice({
     [deleteCardAsync.fulfilled]: (state, action) => {
       //same as boardsSlice question
       return state.filter((card) => card.id !== action.payload.data.id);
+    },
+    [editCardAsync.fulfilled]: (state, action) => { 
+      const card = action.payload.data;
+      state.name = card.name;
+      state.description = card.description;
     }
   }
 });

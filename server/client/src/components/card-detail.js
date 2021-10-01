@@ -7,10 +7,13 @@ import Activities from "./activities.js";
 import { editIconUrl } from "../constants/constants.js";
 import { useParams } from "react-router";
 
+import { getListsAsync } from "../redux/listSlice.js";
+
 const CardDetail = (props) => {
   const [show, setShow] = useState(true)
   const dispatch = useDispatch();
   const card = useSelector(state => state.card);
+  const board = useSelector(state => state.board);
   const [currentCardId, setCurrentCardId] = useState('');
   const [showEditCardNameInput, setShowEditCardNameInput] = useState(false);
   const [showEditCardDescriptionInput, setShowEditCardDescriptionInput] = useState(false);
@@ -20,6 +23,7 @@ const CardDetail = (props) => {
   const handleModalClose = () => {
     setShow(false);
     props.onChange(false)
+    dispatch(getListsAsync(board._id))
   }
   useEffect(() => {    
     dispatch(getCardAsync(props.id));
@@ -42,9 +46,7 @@ const CardDetail = (props) => {
     setEditCardName(e.target.value)
 
     if (e.key === 'Enter' && e.target.value !== "") {
-      console.log(card._id)
-      console.log(editCardName)
-      dispatch(editCardAsync({id: card._id,  name: editCardName}))
+      dispatch(editCardAsync({id: card._id,  name: {name: editCardName}}));
       setShowEditCardNameInput(false);
       setEditCardName("")
     }
@@ -59,9 +61,7 @@ const CardDetail = (props) => {
     setEditCardDescription(e.target.value)
 
     if (e.key === 'Enter' && e.target.value !== "") {
-      console.log(card._id)
-      console.log(editCardDescription)
-      dispatch(editCardAsync({id: card._id,  description: editCardDescription}))
+      dispatch(editCardAsync({id: card._id,  description:{description: editCardDescription}}))
       setShowEditCardDescriptionInput(false);
       setEditCardDescription("")
     }
@@ -96,7 +96,7 @@ const CardDetail = (props) => {
     return (
       <p>
         {card.description}
-        <button class="description-edit mx-2" onClick={() => editCardDescriptionClickHandler(card)}>Edit</button>
+        <button class="description-edit mx-2" onClick={() => editCardDescriptionClickHandler(card)}>(Edit Description)</button>
       </p>
     )
   }
