@@ -39,6 +39,7 @@ export const editCardAsync = createAsyncThunk(
   }
 )
 
+
 export const addActivityAsync = createAsyncThunk(
   'cards/addActivityAsync',
   async (activityObj) => {
@@ -61,6 +62,7 @@ export const addCommentAsync = createAsyncThunk(
   }
 )
 
+
 export const editCommentAsync = createAsyncThunk(
   'cards/editCommentAsync',
   async (commentObj) => {
@@ -70,6 +72,7 @@ export const editCommentAsync = createAsyncThunk(
     return { data };
   }
 )
+
 
 const cardsSlice = createSlice({
   name: 'cards',

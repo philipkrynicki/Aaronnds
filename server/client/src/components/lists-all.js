@@ -1,11 +1,9 @@
 import { useSelector, useDispatch  } from "react-redux";
-import { xIconUrl, plusIconUrl } from '../constants/constants.js';
 import { useEffect, useState } from 'react';
 import DropWrapper from "./drop-wrapper.js";
 import { getListsAsync, addListAsync, deleteListAsync, addCardAsync, editListAsync } from '../redux/listSlice.js';
-import {  editCardAsync, addActivityAsync } from '../redux/cardsSlice.js';
 import CardDrag from './card-drag';
-import {Accessibility} from 'react-ionicons';
+import {AddCircleOutline, Close} from 'react-ionicons';
 
 
 const ListsAll = (props) => {
@@ -18,9 +16,8 @@ const ListsAll = (props) => {
   const [currentListID, setCurrentListID] = useState('');
 
   const lists = useSelector(state => state.lists);
-
   const dispatch = useDispatch();
-
+  
   useEffect(() => {
     dispatch(getListsAsync(props.boardId));
   }, [dispatch, props.boardId]);
@@ -29,7 +26,7 @@ const ListsAll = (props) => {
     setShowNewListInput(true);
   }
   
-  const addListInputButtonClickHandler = () => {
+  const submitAddListEventHandler = () => {
     if (newListName === "" ) {
       return alert("Please enter a name for your list.");
     }
@@ -37,7 +34,7 @@ const ListsAll = (props) => {
     setShowNewListInput(false);
     setNewListName("");
   }
-
+  
   const addListInputChangeHandler = (e) => {
     setNewListName(e.target.value);
   }
@@ -52,7 +49,12 @@ const ListsAll = (props) => {
   }
 
   const deleteListClickHandler = (list) => {
-    dispatch(deleteListAsync(list._id));
+    //eslint-disable-next-line
+    const isConfirmed = confirm("This will delete the selected list. Continue?");
+    
+    if (isConfirmed === true) {
+      dispatch(deleteListAsync(list._id));
+    };
   }
 
   const newCardLink = (list) => {
@@ -65,10 +67,12 @@ const ListsAll = (props) => {
   
   const newCardForm = (list) => {
     return (      
-      <div className="card-addView" id={list._id}>            
+      <div className="card-addView" id={list._id}> 
+      <form onSubmit={() => handleCardSubmit({list})}>           
         <input type="text" className="form-control new-card-input-field" placeholder="New card title" onChange={(e) => setNewCardName(e.target.value)}></input>
-        <button type="button" className="button btn btn-primary btn-sm new-card-btn" onClick={() => handleCardSubmit({list})}>Add card</button>  
-        <img src={xIconUrl} alt="x" className="sm-x-icon" onClick={cancelNewCard} />      
+        <button type="submit" className="button btn btn-primary btn-sm new-card-btn">Add card</button>
+        <Close className="x-icon" height="30px" width="30px" onClick={cancelNewCard}/>
+      </form>        
       </div>     
     )
   }
@@ -111,15 +115,18 @@ const ListsAll = (props) => {
     }
   }
 
+
   const renderNewListButton = () => {
     if (showNewListInput === true) {
       return (
         <div className="col-md-3">
           <div className="col new-list-input-col-outer">
             <div className="col new-list-input-col-inner">
-              <input type="text" className="form-control new-list-input-field" placeholder="New list title" onChange = {addListInputChangeHandler}></input>
-              <button type="button" className="btn btn-primary btn-sm new-list-input-button" onClick={addListInputButtonClickHandler}>Add list</button>
-              <img src={xIconUrl} alt="x" className="sm-x-icon" onClick={cancelAddListHandler} />
+              <form onSubmit={submitAddListEventHandler}>
+                <input type="text" className="form-control new-list-input-field" placeholder="New list title" onChange = {addListInputChangeHandler}></input>
+                <button type="submit" className="btn btn-primary btn-sm new-list-input-button">Add list</button>
+                <Close className="x-icon" height="30px" width="30px" onClick={cancelAddListHandler}/>
+              </form>
             </div>
           </div>
         </div>
@@ -130,7 +137,7 @@ const ListsAll = (props) => {
       <div className="col-md-3">
         <div className="col">
           <div className="col d-flex new-list-comp" onClick={addListClickHandler}>
-            <img src={plusIconUrl} alt="add" className="sm-plus-icon" />
+            <AddCircleOutline className="sm-plus-icon"/>
             <h5 className="add-listname-text">Add list</h5>
           </div>
         </div>
@@ -161,37 +168,32 @@ const ListsAll = (props) => {
     } else {
       
       return (
+
         <div className ="container list-container">
           <div className="row entire-list-row flex-row flex-nowrap mt-4 pb-4 pt-2">
             {lists.map((list) => {
               return (
-                <div className="col-md-3 single-list-col" key={list._id}>
+               <DropWrapper key={list._id}>
                   <div className="col list-comp">
-                    <div className="card bg-cust">
+                  <div className="card bg-cust">
                     <div className="row">
-
                       <div className="col-10 col-listname">
                         {renderListName(list)}
                       </div>
-
-                      <div className="col-2 text-center">
+                      <div className="col-2 text-start">
                         <div className="btn-group dropend">
-                          <button type="button" className="btn-sm dropdown-toggle list-drop-btn" data-bs-toggle="dropdown" aria-expanded="false">
-                      
-                          </button>
+                          <button type="button" className="btn-sm dropdown-toggle list-drop-btn" data-bs-toggle="dropdown" aria-expanded="false"></button>
                           <ul className="dropdown-menu">
                             <li><button className="dropdown-item" type="button" onClick={() => editListNameClickHandler(list)}>Edit list name</button></li>
                             <li><button className="dropdown-item" type="button" onClick={() => deleteListClickHandler(list)}>Delete list</button></li>
                           </ul>
                         </div>
                       </div>
-
-                      <div className="row">
-                        <div className="col">
-
+                        <div className="row">
+                          <div className="col">
                           {list.cards.map((card) => {
                               return(
-                                <CardDrag key={ card._id } id={ card._id } name={ card.name } list={list.name}/>
+                                <CardDrag key={ card._id } id={ card._id } name={ card.name } listName={list.name} listId={list._id}/>
                               )
                             })}
                         
@@ -202,14 +204,12 @@ const ListsAll = (props) => {
                       </div>
                     </div>
                   </div>
-                </div>
-                
-              </div>
+                </div>         
+              </DropWrapper>
               )})}
                 {renderNewListButton()}
             </div>
-
-          </div>
+         </div>
       )}}
 
   return (

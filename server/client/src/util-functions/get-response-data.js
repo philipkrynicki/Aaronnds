@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// Returns the relevent data from a POST request
+// Returns the relevent data from a POST or PUT request
 const getResponseData = async (url, body, httpMethod) => {
 
   // Data from a socket

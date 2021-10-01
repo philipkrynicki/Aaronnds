@@ -59,7 +59,7 @@ exports.moveCard = (req, res) => {
     return res.end();
   }
 
- List.findById(destinationListId)
+  List.findById(destinationListId)
  .exec((err, destinationList) => {
     // Make sure the destination list is in the db
     if (!destinationList) {
@@ -86,8 +86,8 @@ exports.moveCard = (req, res) => {
             
             // Send the card id, origin list id, and updated destination list
             res.status(200).send({
-              card: req.card._id,
-              originList: req.list._id,
+              card: req.card.id,
+              originList: req.list,
               updatedList: destinationList
             });
           })

@@ -6,7 +6,7 @@ const socket = require('socket.io');
 const router = require('./router');
 const passport = require("passport");
 
-mongoose.connect("mongodb://localhost/aaronnds");
+mongoose.connect('mongodb://localhost/aaronnds');
 
 const app = express();
 app.use(cors());
