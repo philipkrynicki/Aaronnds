@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from "react-router";
 import { useEffect, useState } from "react";
 import { getBoardsAsync, addBoardAsync } from "../redux/boardsSlice";
+import { getListsAsync } from '../redux/listSlice';
 import { Modal, Button } from "react-bootstrap";
 import {AddCircleOutline} from 'react-ionicons';
 
@@ -33,6 +34,7 @@ const BoardsAll = () => {
 
   const boardClickHandler = (id) => (event) => {
     history.push(`/board/${id}`);
+    dispatch(getListsAsync(id));
   };
 
   const newBoardInputChangeHandler = (e) => {
