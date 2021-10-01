@@ -7,6 +7,7 @@ import boardsReducer from './boardsSlice'
 import boardReducer from './boardSlice'
 import listsReducer from './listSlice'
 import cardsReducer from './cardsSlice'
+import userReducer from './userSlice';
 
 
 const reducers = combineReducers({
@@ -14,6 +15,7 @@ const reducers = combineReducers({
   board: boardReducer,
   lists: listsReducer,
   card: cardsReducer,
+  user: userReducer
  });
 
 const persistConfig = {

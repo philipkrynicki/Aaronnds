@@ -1,10 +1,26 @@
 import { useHistory } from "react-router";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { loginAsync } from "../redux/userSlice";
 
 const Login = () => {
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
   
   const history = useHistory();
+  const dispatch = useDispatch();
 
-  const loginClickHandler = () => {
+  const nameFieldInputHandler = (e) => {
+    setName(e.target.value);
+  }
+
+  const passwordFieldInputHandler = (e) => {
+    setPassword(e.target.value);
+  }
+
+  const loginFormSubmit = (e) => {
+    e.preventDefault();
+    dispatch(loginAsync({name: name, password: password}));
     history.push("/")
   }
 
@@ -22,12 +38,13 @@ const Login = () => {
 
       <div className="row login-input-row">
         <div className="col-md-4 offset-4">
-      
-          <input type="email" className="form-control login-username-input" placeholder="Username" />
-      
-          <input type="password" className="form-control login-password-input" placeholder="Password" />
+          <form onSubmit={loginFormSubmit}>
+            <input type="text" className="form-control login-username-input" placeholder="Username" onChange={nameFieldInputHandler}/>
+        
+            <input type="password" className="form-control login-password-input" placeholder="Password" onChange={passwordFieldInputHandler}/>
 
-          <button type="button" className="btn btn-primary login-button" onClick={loginClickHandler}>Sign In</button>
+            <button type="submit" className="btn btn-primary login-button">Sign In</button>
+          </form>
 
           <br></br>
           <br></br>

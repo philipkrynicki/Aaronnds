@@ -16,13 +16,19 @@ const getResponseData = async (url, body, httpMethod) => {
   
   let response = {};
 
+  const config = {
+    headers: {
+      Authorization: 'Bearer ' + localStorage.getItem('token')
+    }
+  }
+
   // Data from an http request
   if (httpMethod === 'POST') 
-    response = await axios.post(url, reqBody);
+    response = await axios.post(url, reqBody, config);
   else if (httpMethod === 'PUT') 
-   response = await axios.put(url, reqBody);
+    response = await axios.put(url, reqBody, config);
   
-  return response.data
+  return response.data;
 }
 
 export default getResponseData;
