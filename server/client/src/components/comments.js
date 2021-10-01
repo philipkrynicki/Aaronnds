@@ -28,7 +28,9 @@ const Comments = () => {
                   <p className="comment-time">{comment.created}</p>
                   <hr/>
                   <p className="comment-text">{comment.text}</p>
-                </div>
+        </div>
+        <button className="btn" onClick={ () => handleEditComment(comment) }><small><u>Edit</u></small></button>
+        <button className="btn" onClick={ () => handleDeleteComment() }><small><u>Delete</u></small></button>
               </div>
     )
   }
