@@ -4,7 +4,7 @@ const Activities = () => {
   const card = useSelector(state => state.card)
   
   return (
-    <div>
+    <ul>
       { card.activities.map((activity) => {
         return (
           <li>
@@ -12,7 +12,7 @@ const Activities = () => {
           </li>
         )
       })}
-    </div>
+    </ul>
   )
 }
 

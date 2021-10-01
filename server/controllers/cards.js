@@ -17,6 +17,12 @@ exports.getCard = (req, res) => {
 }
 
 exports.postCard = (req, res) => {
+  const today = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short'});
+
+  const now = new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+
+  const creationDate = "Card created at " + now + " on " + today;
+
   if (!req.body.name) {
     res.status(400).send("No name included in request")
     return res.end();
@@ -25,7 +31,7 @@ exports.postCard = (req, res) => {
   let newCard = new Card({
     name: req.body.name,
     description: req.body.description || null,
-    activities: [],
+    activities: [creationDate],
     labels: [],
     comments: [],
     list: req.params.list
@@ -53,7 +59,7 @@ exports.moveCard = (req, res) => {
     return res.end();
   }
 
- List.findById(destinationListId)
+  List.findById(destinationListId)
  .exec((err, destinationList) => {
     // Make sure the destination list is in the db
     if (!destinationList) {

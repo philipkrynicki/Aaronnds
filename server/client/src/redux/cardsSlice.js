@@ -40,11 +40,34 @@ export const editCardAsync = createAsyncThunk(
   }
 )
 
+export const addActivityAsync = createAsyncThunk(
+  'cards/addActivityAsync',
+  async (activityObj) => {
+    const response = await axios.post(`${ apiUrl }/cards/${ activityObj.card }/activity`, activityObj.activity)
+    
+    const data = response.data;
+
+    return { data }
+  }
+)
+
+export const addCommentAsync = createAsyncThunk(
+  'cards/addCommentAsync',
+  async (commentObj) => {
+    
+    const response = await axios.post(`${ apiUrl }/cards/${commentObj.card}/comments`, commentObj)
+    
+    const data = response.data
+    return { data }
+  }
+)
+
 const cardsSlice = createSlice({
   name: 'cards',
   initialState: {
     labels:[],
-    activities: []
+    activities: [],
+    comments: []
   },
   reducers: { },
   extraReducers: {
@@ -57,6 +80,13 @@ const cardsSlice = createSlice({
     [deleteCardAsync.fulfilled]: (state, action) => {
       //same as boardsSlice question
       return state.filter((card) => card.id !== action.payload.data.id);
+    },
+    [addActivityAsync.fulfilled]: (state, action) => {
+      state.activities.push(action.payload.data)
+    },
+    [addCommentAsync.fulfilled]: (state, action) => {
+      
+      state.comments.push(action.payload.data);
     }
   }
 });
