@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react';
 import DropWrapper from "./drop-wrapper.js";
 import { getListsAsync, addListAsync, deleteListAsync, addCardAsync, editListAsync } from '../redux/listSlice.js';
 import CardDrag from './card-drag';
-import {AddCircleOutline, Close} from 'react-ionicons';
-
 
 const ListsAll = (props) => {
   const [showNewListInput, setShowNewListInput] = useState(false);
@@ -14,8 +12,7 @@ const ListsAll = (props) => {
   const [addNewCard, setAddNewCard] = useState(false);
   const [newCardName, setNewCardName] = useState('');
   const [currentListID, setCurrentListID] = useState('');
-
-  const lists = useSelector(state => state.lists);
+  const lists = useSelector(state => state.lists); 
   const dispatch = useDispatch();
   
   useEffect(() => {
@@ -26,7 +23,7 @@ const ListsAll = (props) => {
     setShowNewListInput(true);
   }
   
-  const submitAddListEventHandler = () => {
+  const addListInputButtonClickHandler = () => {
     if (newListName === "" ) {
       return alert("Please enter a name for your list.");
     }
@@ -49,12 +46,7 @@ const ListsAll = (props) => {
   }
 
   const deleteListClickHandler = (list) => {
-    //eslint-disable-next-line
-    const isConfirmed = confirm("This will delete the selected list. Continue?");
-    
-    if (isConfirmed === true) {
-      dispatch(deleteListAsync(list._id));
-    };
+    dispatch(deleteListAsync(list._id));
   }
 
   const newCardLink = (list) => {
@@ -67,12 +59,10 @@ const ListsAll = (props) => {
   
   const newCardForm = (list) => {
     return (      
-      <div className="card-addView" id={list._id}> 
-      <form onSubmit={() => handleCardSubmit({list})}>           
+      <div className="card-addView" id={list._id}>            
         <input type="text" className="form-control new-card-input-field" placeholder="New card title" onChange={(e) => setNewCardName(e.target.value)}></input>
-        <button type="submit" className="button btn btn-primary btn-sm new-card-btn">Add card</button>
-        <Close className="x-icon" height="30px" width="30px" onClick={cancelNewCard}/>
-      </form>        
+        <button type="button" className="button btn btn-primary btn-sm new-card-btn" onClick={() => handleCardSubmit({list})}>Add card</button>  
+        <img src={'https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wiktionary.org%2Fwiki%2FX&psig=AOvVaw2wj7HGBDHdwqBMmG6wzQfD&ust=1633197023579000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCPjQ4pXjqfMCFQAAAAAdAAAAABAD'} alt="x" className="sm-x-icon" onClick={cancelNewCard} />      
       </div>     
     )
   }
@@ -84,18 +74,12 @@ const ListsAll = (props) => {
     setCurrentListID(list.list._id)
     setAddNewCard(true)
   };
-  // activities: [{ action: "Card created", time: today.getHours() + ":" + today.getMinutes(), date: today.getDate() + " " + today.getMonth() }]
+
   const handleCardSubmit = (list) => { 
     if (!newCardName) {
       return alert("Please enter a name for your card")
-    }   
-
-    //pass user into this dispatch function so the activity log can begin with a line like 'Card created by USER X on date'
-    dispatch(addCardAsync({
-      listID: currentListID,
-      nameObj: { name: newCardName }
-    }));
-
+    }         
+    dispatch(addCardAsync({listID: currentListID, nameObj: {name: newCardName}}));
     setNewCardName("");
     setAddNewCard(false);    
   }
@@ -104,7 +88,7 @@ const ListsAll = (props) => {
     setEditListName(e.target.value)
 
     if (e.key === 'Enter' && e.target.value !== "") {
-      dispatch(editListAsync({id: list._id , nameObj: {name: editListName}}))
+      dispatch(editListAsync({id: list._id , nameObj: {name: e.target.value}}))
       setShowEditListInput(false);
       setEditListName("");
     }
@@ -122,11 +106,9 @@ const ListsAll = (props) => {
         <div className="col-md-3">
           <div className="col new-list-input-col-outer">
             <div className="col new-list-input-col-inner">
-              <form onSubmit={submitAddListEventHandler}>
-                <input type="text" className="form-control new-list-input-field" placeholder="New list title" onChange = {addListInputChangeHandler}></input>
-                <button type="submit" className="btn btn-primary btn-sm new-list-input-button">Add list</button>
-                <Close className="x-icon" height="30px" width="30px" onClick={cancelAddListHandler}/>
-              </form>
+              <input type="text" className="form-control new-list-input-field" placeholder="New list title" onChange = {addListInputChangeHandler}></input>
+              <button type="button" className="btn btn-primary btn-sm new-list-input-button" onClick={addListInputButtonClickHandler}>Add list</button>
+              <img src={'https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wiktionary.org%2Fwiki%2FX&psig=AOvVaw2wj7HGBDHdwqBMmG6wzQfD&ust=1633197023579000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCPjQ4pXjqfMCFQAAAAAdAAAAABAD'} alt="x" className="sm-x-icon" onClick={cancelAddListHandler} />
             </div>
           </div>
         </div>
@@ -137,7 +119,7 @@ const ListsAll = (props) => {
       <div className="col-md-3">
         <div className="col">
           <div className="col d-flex new-list-comp" onClick={addListClickHandler}>
-            <AddCircleOutline className="sm-plus-icon"/>
+            <img src={'https://www.google.com/url?sa=i&url=https%3A%2F%2Fen.wiktionary.org%2Fwiki%2FX&psig=AOvVaw2wj7HGBDHdwqBMmG6wzQfD&ust=1633197023579000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCPjQ4pXjqfMCFQAAAAAdAAAAABAD'} alt="add" className="sm-plus-icon" />
             <h5 className="add-listname-text">Add list</h5>
           </div>
         </div>
@@ -168,48 +150,49 @@ const ListsAll = (props) => {
     } else {
       
       return (
-
-        <div className ="container list-container">
-          <div className="row entire-list-row flex-row flex-nowrap mt-4 pb-4 pt-2">
-            {lists.map((list) => {
-              return (
-               <DropWrapper key={list._id}>
+        <div className="row" >
+          {lists.map((list) => {
+            return (
+              <DropWrapper key={list._id}>
+                
                   <div className="col list-comp">
-                  <div className="card bg-cust">
                     <div className="row">
+
                       <div className="col-10 col-listname">
                         {renderListName(list)}
                       </div>
-                      <div className="col-2 text-start">
+
+                      <div className="col-2 text-center">
                         <div className="btn-group dropend">
-                          <button type="button" className="btn-sm dropdown-toggle list-drop-btn" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                          <button type="button" className="btn-sm dropdown-toggle list-drop-btn" data-bs-toggle="dropdown" aria-expanded="false">
+                      
+                          </button>
                           <ul className="dropdown-menu">
                             <li><button className="dropdown-item" type="button" onClick={() => editListNameClickHandler(list)}>Edit list name</button></li>
                             <li><button className="dropdown-item" type="button" onClick={() => deleteListClickHandler(list)}>Delete list</button></li>
                           </ul>
                         </div>
                       </div>
+
                         <div className="row">
                           <div className="col">
-                          {list.cards.map((card) => {
-                              return(
-                                <CardDrag key={ card._id } id={ card._id } name={ card.name } listName={list.name} listId={list._id}/>
-                              )
-                            })}
-                        
 
-                          {addNewCard && list._id === currentListID ? newCardForm(list._id): newCardLink(list)}
+                            {list.cards.map((card) => {
+                              return(
+                                  <CardDrag key={card._id} id={card._id} list={card.list} name={card.name}/>
+                                )
+                              })}
+                            
+                            {addNewCard && list._id === currentListID ? newCardForm(list._id): newCardLink(list)}
 
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>         
               </DropWrapper>
-              )})}
-                {renderNewListButton()}
-            </div>
-         </div>
+            )})}
+              {renderNewListButton()}
+          </div>
       )}}
 
   return (

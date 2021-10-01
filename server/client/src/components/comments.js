@@ -75,7 +75,7 @@ const Comments = () => {
 
   return (
 //add logic to show buttons to edit and delete only if current user made those comments? 
-
+    <div>
       <div className="col all-comments-col">
         { card.comments.map((comment) => {
           return editing && commentToEdit === comment._id ? editCommentForm(comment) : commentRegular(comment) 
