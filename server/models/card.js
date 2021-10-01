@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 const Schema = mongoose.Schema;
 
 const cardSchema = new Schema({
@@ -8,7 +9,10 @@ const cardSchema = new Schema({
   labels: [String],
   comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
   list: {type: Schema.Types.ObjectId, ref: 'List'},
+  position: Number
 })
+
+cardSchema.plugin(AutoIncrement, {id: 'card_position_seq', inc_field: 'position', reference_fields: ['list']});
 
 cardSchema.pre('deleteOne', {document: false, query: true}, async function(next) {
   const card = await this.model.findOne(this.getFilter());

@@ -36,6 +36,7 @@ exports.postComment = async (req, res) => {
 
   newComment.save((err, comment) => {
     if (err) next(err);
+    req.app.get('io').emit('postComment', newComment);
     res.status(200).json(comment);
   })
 }
@@ -63,11 +64,13 @@ exports.updateComment = (req, res) => {
     return res.end();
   } 
 
-  const update = req.body.text;
+  const update = { text: req.body.text };
 
   Comment.findOneAndUpdate({ _id: req.params.comment }, update, { new: true })
+    .populate('user')
     .exec((err, updatedComment) => {
       if (err) next(err)
+      req.app.get('io').emit('updateComment', updatedComment);
       res.status(200).json(updatedComment)
     })
 }

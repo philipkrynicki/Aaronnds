@@ -3,9 +3,9 @@ const List = require('../models/list');
 
 // Get all cards for a list
 exports.getCards = (req, res) => {
-
   Card
   .find({list: req.params.list})
+  .sort({position: 1})
   .exec((err, cards) => {
     if (err) throw err;
     res.status(200).json(cards)
@@ -80,16 +80,20 @@ exports.moveCard = (req, res) => {
           destinationList.save();
 
           // Update the card's list reference
-          Card.updateOne({_id: cardId}, {list: destinationList._id})
-          .exec(err => {
+          Card.findOneAndUpdate({_id: cardId}, {list: destinationList._id}, {new: true})
+          .exec((err, card) => {
             if (err) throw err;
             
-            // Send the card id, origin list id, and updated destination list
-            res.status(200).send({
-              card: req.card.id,
-              originList: req.list,
-              updatedList: destinationList
-            });
+            card.setNext('card_position_seq', (err, card) => {
+              if (err) throw err;
+
+              // Send the card id, origin list id, and updated destination list
+              res.status(200).send({
+                card: card._id,
+                originList: req.list,
+                updatedList: destinationList
+              });
+            })
           })
         } else {
           // Return 404 if the specified card wasn't part of the origin list
@@ -113,15 +117,61 @@ exports.deleteCard = (req, res) => {
 }
 
 exports.updateCard = (req, res) => {
-  if (!req.body.name || !req.body.description ||!req.body.list) {
+  // if (!req.body.name || !req.body.description ||!req.body.list) 
+  if (!req.body)
+  {
     res.status(400).send("No update information included in request body")
     return res.end();
   } 
+
   const update = req.body;
 
-  Card.findOneAndUpdate({_id: req.params.card}, update, { new: true })
+  Card.findOneAndUpdate({_id: req.card._id}, update, { new: true })
     .exec((err, updatedCard) => {
       if (err) next(err)
       res.status(200).json(updatedCard)
     })
+}
+
+// Change a card's position in a List, similar to moveList
+exports.updateCardPosition = (req, res) => {
+  const newPosition = parseInt(req.body.newPosition);
+  const oldPosition = req.card.position;
+
+  if (!newPosition) {
+    res.status(400).send("newPosition required in request body")
+    return res.end();
+  }
+
+  Card.findOneAndUpdate({_id: req.card._id}, {position: newPosition}, {new: true})
+  .exec((err, movedCard) => {
+    if (err) throw err;
+
+    if (newPosition < oldPosition) {
+      Card.find({list: movedCard.list, position: {$gte: newPosition, $lt: oldPosition}, _id: {$ne: movedCard._id}})
+      .exec((err, cards) => {
+        if (err) throw err;
+
+        cards.forEach(card => {
+          card.position += 1;
+          card.save();
+        })
+
+      })
+
+    } else if (newPosition > oldPosition) {
+      Card.find({list: movedCard.list, position: {$lte: newPosition, $gt: oldPosition}, _id: {$ne: movedCard._id}})
+      .exec((err, cards) => {
+        if (err) throw err;
+
+        cards.forEach(card => {
+          card.position -= 1;
+          card.save();
+        })        
+      })
+    }
+
+    res.status(200).json(movedCard);
+    
+  })
 }
