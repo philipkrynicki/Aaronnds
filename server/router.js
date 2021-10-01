@@ -143,7 +143,7 @@ module.exports = function(app) {
   app.delete('/api/cards/:card/labels', requireAuth, Labels.deleteLabel)
 
   app.get('/api/cards/:card/activity', Activities.getActivity);
-  app.post('/api/cards/:card/activity', requireAuth, Activities.postActivity);
+  app.post('/api/cards/:card/activity', Activities.postActivity);
 
   app.post('/auth/login', requireSignin, Authentication.login);
   app.post('/auth/logout', Authentication.logout)
