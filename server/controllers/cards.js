@@ -80,16 +80,20 @@ exports.moveCard = (req, res) => {
           destinationList.save();
 
           // Update the card's list reference
-          Card.updateOne({_id: cardId}, {list: destinationList._id})
-          .exec(err => {
+          Card.findOneAndUpdate({_id: cardId}, {list: destinationList._id}, {new: true})
+          .exec((err, card) => {
             if (err) throw err;
             
-            // Send the card id, origin list id, and updated destination list
-            res.status(200).send({
-              card: req.card._id,
-              originList: req.list._id,
-              updatedList: destinationList
-            });
+            card.setNext('card_position_seq', (err, card) => {
+              if (err) throw err;
+
+              // Send the card id, origin list id, and updated destination list
+              res.status(200).send({
+                card: card._id,
+                originList: req.list._id,
+                updatedList: destinationList
+              });
+            })
           })
         } else {
           // Return 404 if the specified card wasn't part of the origin list
