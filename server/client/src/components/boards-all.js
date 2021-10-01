@@ -35,7 +35,6 @@ const BoardsAll = () => {
 
   const boardClickHandler = (id) => (event) => {
     history.push(`/board/${id}`);
-    dispatch(getListsAsync(id));
   };
 
   const newBoardInputChangeHandler = (e) => {
