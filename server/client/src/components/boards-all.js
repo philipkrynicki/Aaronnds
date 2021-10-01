@@ -23,13 +23,14 @@ const BoardsAll = () => {
 
   const handleModalClose = () => setShow(false);
   const handleModalShow = () => setShow(true);
-  const handleModalAdd = () => {
+  const handleModalAdd = (e) => {
     if (newBoardName === "") {
       return alert("Please enter a name for your board.")
-    }
-      setShow(false);
-      dispatch(addBoardAsync({name: newBoardName}));
-      setNewBoardName("");
+    } 
+    e.preventDefault();
+    setShow(false);
+    dispatch(addBoardAsync({name: newBoardName}));
+    setNewBoardName("");
   }
 
   const boardClickHandler = (id) => (event) => {
