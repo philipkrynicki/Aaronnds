@@ -107,13 +107,16 @@ exports.deleteCard = (req, res) => {
 }
 
 exports.updateCard = (req, res) => {
-  if (!req.body.name || !req.body.description ||!req.body.list) {
+  // if (!req.body.name || !req.body.description ||!req.body.list) 
+  if (!req.body)
+  {
     res.status(400).send("No update information included in request body")
     return res.end();
   } 
+
   const update = req.body;
 
-  Card.findOneAndUpdate({_id: req.params.card}, update, { new: true })
+  Card.findOneAndUpdate({_id: req.card._id}, update, { new: true })
     .exec((err, updatedCard) => {
       if (err) next(err)
       res.status(200).json(updatedCard)
