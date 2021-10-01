@@ -85,6 +85,16 @@ export const editCommentAsync = createAsyncThunk(
   }
 )
 
+export const deleteCommentAsync = createAsyncThunk(
+  'cards/deleteCommentAsync',
+  async (commentObj) => {
+    const response = await axios.delete(`${ apiUrl }/comments/${ commentObj.comment }`, commentObj)
+    
+    const data = response.data;
+    return { data };
+    
+  }
+)
 
 const cardsSlice = createSlice({
   name: 'cards',
@@ -120,8 +130,10 @@ const cardsSlice = createSlice({
         state.comments.push(action.payload.data);
     },
     [editCommentAsync.fulfilled]: (state, action) => {
-      state.comments.splice((state.comments.indexOf(action.payload.data._id) -1), 1, action.payload.data)
-      
+      state.comments.splice((state.comments.indexOf(action.payload.data._id) -1), 1, action.payload.data) 
+    },
+    [deleteCommentAsync.fulfilled]: (state, action) => {
+      state.comments.splice((state.comments.indexOf(action.payload.data) - 1), 1)
     }
   }
 });
