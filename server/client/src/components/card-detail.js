@@ -1,13 +1,14 @@
 import { Modal } from "react-bootstrap";
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { getCardAsync, deleteCardAsync, editCardAsync } from '../redux/cardsSlice.js'
+import cardsSlice, { getCardAsync, deleteCardAsync, editCardAsync } from '../redux/cardsSlice.js'
 import { getListsAsync } from '../redux/listSlice.js'
 import Labels from "./labels"
-import { editIconUrl } from "../constants/constants.js";
-import { useParams } from "react-router";
+// import { useParams } from "react-router";
 import Activities from "./activities"
 import Comments from "./comments"
+
+const editIconUrl = 'https://img.icons8.com/material-outlined/24/000000/edit--v4.png';
 
 const CardDetail = (props) => {
   const [show, setShow] = useState(true)
@@ -44,11 +45,10 @@ const CardDetail = (props) => {
 
   const handleEditCardNameInputSubmit = (e, card) => {
     setEditCardName(e.target.value)
-
+    console.log(e.target.value)
     if (e.key === 'Enter' && e.target.value !== "") {
       dispatch(editCardAsync({id: card._id,  name: {name: editCardName}}));
       setShowEditCardNameInput(false);
-      setEditCardName("")
     }
 
     if (e.key === 'Enter' && e.target.value === "") {
@@ -63,7 +63,6 @@ const CardDetail = (props) => {
     if (e.key === 'Enter' && e.target.value !== "") {
       dispatch(editCardAsync({id: card._id,  description:{description: editCardDescription}}))
       setShowEditCardDescriptionInput(false);
-      setEditCardDescription("")
     }
 
     if (e.key === 'Enter' && e.target.value === "") {
@@ -187,7 +186,8 @@ const CardDetail = (props) => {
         <Modal.Header closeButton>
           <Modal.Title>
             <div>
-              <strong>{card.name}</strong>
+              {renderCardName(card)}
+              <img src={editIconUrl} alt="edit" className="edit-icon mx-1" onClick={() => editCardNameClickHandler(card)} />
               <h6 className="in-list-text">in list: <u><strong>{props.list}</strong></u></h6>
             </div>    
           </Modal.Title>
@@ -205,7 +205,7 @@ const CardDetail = (props) => {
                 <br/>
                 <div>
                   <u><strong>Description:</strong></u>  
-                  <p>{card.description}</p>
+                  {renderCardDescription(card)}
                 </div>
                 <br/>
                 <br/> 
