@@ -66,8 +66,8 @@ exports.updateComment = (req, res) => {
   const update = { text: req.body.text };
 
   Comment.findOneAndUpdate({ _id: req.params.comment }, update, { new: true })
+    .populate('user')
     .exec((err, updatedComment) => {
-      console.log(updatedComment)
       if (err) next(err)
       res.status(200).json(updatedComment)
     })

@@ -22,15 +22,16 @@ const Comments = () => {
 
   const commentRegular = (comment) => {
     return (
-       <div className="row ind-comment-row">
+       <div className="row ind-comment-row" key={comment._id}>
                 <div className="col rounded ind-comment-col">
                   <p className="comment-username">{comment.user.name}</p>
                   <p className="comment-time">{comment.created}</p>
                   <hr/>
-                  <p className="comment-text">{comment.text}</p>
-        </div>
-        <button className="btn" onClick={ () => handleEditComment(comment) }><small><u>Edit</u></small></button>
+          <p className="comment-text">{ comment.text }</p>
+          <button className="btn" onClick={ () => handleEditComment(comment) }><small><u>Edit</u></small></button>
         <button className="btn" onClick={ () => handleDeleteComment() }><small><u>Delete</u></small></button>
+        </div>
+        
               </div>
     )
   }
@@ -67,11 +68,17 @@ const Comments = () => {
 
   const editCommentForm = (comment) => {
     return (
-      <li key={ comment._id }>
-        <input type="text" className="form-control" defaultValue={comment.text} onChange={(e) => setNewComment(e.target.value)}>
+      <div className="row ind-comment-row" key={ comment._id }>
+          <div className="col rounded ind-comment-col">
+            <p className="comment-username">{comment.user.name}</p>
+            <p className="comment-time">{comment.created}</p>
+          <hr />
+          <input type="text" className="form-control" defaultValue={comment.text} onChange={(e) => setNewComment(e.target.value)}>
         </input>
         <button type="button" className=" btn  btn-sm " onClick={() => handleEditSubmit(comment)}>Submit Changes</button>
-      </li>
+                  
+        </div>
+      </div>
     )
   }
 
@@ -84,7 +91,6 @@ const Comments = () => {
         })
       }
       </div>
-
 
       <div>
         {newCommentForm()}
