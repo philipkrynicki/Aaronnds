@@ -1,6 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { apiUrl } from "../constants/constants";
+import socket from '../socket-connect';
+import store from './store'
+import checkDuplicateIds from '../util-functions/id-check';
+import getResponseData from '../util-functions/get-response-data';
+
+socket.on('postComment', comment => {
+  store.dispatch(addCommentAsync(comment));
+})
 
 export const getCardsAsync = createAsyncThunk(
   'cards/getCardsAsync',
@@ -20,7 +28,6 @@ export const getCardAsync = createAsyncThunk(
     return { data }
   }
 )
-
 
 export const deleteCardAsync = createAsyncThunk(
     'cards/deleteCardAsync',
@@ -47,11 +54,44 @@ export const editCardAsync = createAsyncThunk(
   }
 )
 
+
+export const addActivityAsync = createAsyncThunk(
+  'cards/addActivityAsync',
+  async (activityObj) => {
+    const response = await axios.post(`${ apiUrl }/cards/${ activityObj.card }/activity`, activityObj.activity)
+    
+    const data = response.data;
+
+    return { data }
+  }
+)
+
+export const addCommentAsync = createAsyncThunk(
+  'cards/addCommentAsync',
+  async (commentObj) => { 
+    const data = await getResponseData(`${ apiUrl }/cards/${commentObj.card}/comments`, commentObj, 'POST');
+    return { data };
+  }
+)
+
+
+export const editCommentAsync = createAsyncThunk(
+  'cards/editCommentAsync',
+  async (commentObj) => {
+    const response = await axios.put(`${ apiUrl }/comments/${commentObj.comment}`, commentObj)
+    
+    const data = response.data;
+    return { data };
+  }
+)
+
+
 const cardsSlice = createSlice({
   name: 'cards',
   initialState: {
     labels:[],
-    activities: []
+    activities: [],
+    comments: []
   },
   reducers: { },
   extraReducers: {
@@ -69,6 +109,19 @@ const cardsSlice = createSlice({
       const card = action.payload.data;
       state.name = card.name;
       state.description = card.description;
+    },
+    [addActivityAsync.fulfilled]: (state, action) => {
+      state.activities.push(action.payload.data)
+    },
+    [addCommentAsync.fulfilled]: (state, action) => {
+      if (checkDuplicateIds(state.comments, action.payload.data._id))
+        return state;
+      else
+        state.comments.push(action.payload.data);
+    },
+    [editCommentAsync.fulfilled]: (state, action) => {
+      state.comments.splice((state.comments.indexOf(action.payload.data._id) -1), 1, action.payload.data)
+      
     }
   }
 });

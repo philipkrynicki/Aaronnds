@@ -71,7 +71,11 @@ module.exports = function(app) {
   app.param('card', (req, res, next, id) => {
     Card.findById(id)
     .populate({
-      path: 'comments'
+      path: 'comments',
+      populate: {
+        path: 'user',
+        model: "User"
+      }
     })
     .exec((err, card) => {
 
@@ -119,6 +123,7 @@ module.exports = function(app) {
   app.post('/api/boards/:board/lists', Lists.postList)
   app.delete('/api/lists/:list', Lists.deleteList);
   app.put('/api/lists/:list', Lists.updateListName);
+  app.put('/api/lists/:list/move', Lists.moveList);
 
   app.get('/api/lists/:list/cards', Cards.getCards);
   app.get('/api/cards/:card', Cards.getCard);
@@ -126,6 +131,7 @@ module.exports = function(app) {
   app.put('/api/lists/:list/cards/:card', Cards.moveCard);
   app.delete('/api/cards/:card', Cards.deleteCard);
   app.put('/api/cards/:card', Cards.updateCard);
+  app.put('/api/cards/:card/position', Cards.updateCardPosition);
 
   app.post('/api/cards/:card/comments', Comments.postComment);
   app.get('/api/cards/:card/comments', Comments.getComments);

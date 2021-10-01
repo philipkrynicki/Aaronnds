@@ -21,22 +21,34 @@ code {
   cursor: pointer;
 }
 
+.nav-home-btn:hover {
+  text-decoration: underline;
+}
+
 .board-comp {
   border: solid black;
   height: 150px;
   width: 250px;
   margin-bottom: 50px;
-  background-color: rgb(19, 98, 218);
+  background-color: rgb(36, 85, 158);
   color: white;
   cursor: pointer;
+}
+
+.board-comp:hover {
+  background-color: rgb(19, 98, 218);
 }
 
 .new-board-comp {
   border: dotted black;
   height: 150px;
   width: 250px;
-  background-color: rgb(204, 248, 204);
+  background-color: rgb(245, 244, 244);
   cursor: pointer;
+}
+
+.new-board-comp:hover {
+  background-color: rgb(204, 248, 204);
 }
 
 .homescreen-title {
@@ -62,9 +74,13 @@ code {
 
 .new-list-comp {
   border: dotted black;
-  background-color: rgb(204, 248, 204);
+  background-color: rgb(245, 244, 244);
   cursor: pointer;
   padding-left: 10px;
+}
+
+.new-list-comp:hover {
+  background-color: rgb(204, 248, 204);
 }
 
 .listname-text {
@@ -96,52 +112,6 @@ code {
   background-color: rgb(245, 244, 244);
   border: solid thin black;
   margin-top: 10px;
-}
-
-.edit-icon {
-  height: 25px;
-  width: 25px;
-  margin-right: 40px;
-  mix-blend-mode: multiply;
-  cursor: pointer;
-}
-
-.delete-icon {
-  height: 25px;
-  width: 25px;
-  mix-blend-mode: multiply;
-  cursor: pointer;
-}
-
-.sm-x-icon {
-  height: 20px;
-  width: 20px;
-  margin-right: 5px;
-  mix-blend-mode: multiply;
-  cursor: pointer;
-}
-
-.sm-3dot-icon {
-  height: 32px;
-  width: 32px;
-  mix-blend-mode: multiply;
-  cursor: pointer;
-}
-
-.plus-icon {
-  height: 50px;
-  width: 50px;
-  margin-right: 5px;
-  margin-bottom: 5px;
-  mix-blend-mode: multiply;
-}
-
-.sm-plus-icon {
-  height: 25px;
-  width: 25px;
-  margin-top: 4px;
-  margin-right: 5px;
-  mix-blend-mode: multiply;
 }
 
 .homescreen-edit-icon-col {
@@ -182,6 +152,10 @@ code {
   line-height: 20px;
 }
 
+.card-listview:hover {
+  background: rgba(255, 255, 255, 0.863);
+}
+
 .card-addView {
   border: dotted thin rgb(20, 20, 199);
   border-radius: 5px;
@@ -200,6 +174,10 @@ code {
   margin: 5px;
   background-color: rgb(250, 239, 193);
   cursor: pointer;
+}
+
+.new-card-link:hover {
+  background-color: rgb(248, 231, 161);
 }
 
 .hide {
@@ -259,13 +237,17 @@ code {
 }
 
 .card-detail-modal .modal-content {
-  background-color: rgb(235, 233, 233);
+  background-color: rgb(247, 245, 245);
 }
 
 .list-drop-btn {
   margin-top: 2px;
   border: solid thin black;
   background-color: rgb(216, 214, 214);
+}
+
+.list-drop-btn:hover {
+  background-color: rgb(129, 129, 129);
 }
 
 .col-listname-edit-input {
@@ -276,6 +258,10 @@ code {
   border: dotted black;
   background-color: rgb(216, 214, 214);
   width: 100%;
+}
+
+.listname-edit-inp:hover {
+  background-color: rgb(230, 227, 227);
 }
 
 .entire-list-row {
@@ -295,4 +281,106 @@ code {
   cursor: pointer;
   color: blue;
   display: inline-flex;
+}
+
+.card-detail-btn {
+  width: 60px;
+  margin-top: 20px;
+}
+
+.in-list-text {
+  margin-top: 10px;
+}
+
+.labels-dropdown-options {
+  padding-left: 10px;
+}
+
+.move-dropdown-options {
+  padding-left: 10px;
+}
+
+.move-dropdown-save-btn {
+  margin-left: 45px;
+  margin-top: 10px;
+}
+
+.edit-icon {
+  height: 30px;
+  width: 30px;
+  margin-right: 40px;
+  cursor: pointer;
+}
+
+.plus-icon {
+  margin-bottom: 3px;
+  margin-right: 5px;
+}
+
+.sm-plus-icon {
+  margin-top: 2px;
+  margin-right: 5px;
+}
+
+.x-icon {
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.board-edit-icon {
+  cursor: pointer;
+  margin-right: 50px;
+}
+
+.board-edit-icon:hover {
+  transform: scale(1.25);
+}
+
+.board-delete-icon {
+  cursor: pointer;
+}
+
+.board-delete-icon:hover {
+  transform: scale(1.25);
+}
+
+.ind-comment-row {
+  width: 92%;
+}
+
+.ind-comment-col {
+  background: white;
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+  margin-left: 13px;
+  border: thin solid black;
+}
+
+.comment-input-row {
+  margin-top: 10px;
+  width: 88%;
+}
+
+.comment-username {
+  margin: 1px;
+  color: blue;
+}
+
+.comment-time {
+  font-size: 75%;
+  margin: 1px;
+}
+
+.comment-text {
+  margin-top: 5px;
+}
+
+.com-inp-btn {
+  width: 75px;
+}
+
+.all-comments-col {
+  margin-top: 10px;
+  max-height: 300px;
+  overflow-y: scroll;
 }

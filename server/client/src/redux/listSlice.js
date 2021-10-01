@@ -66,9 +66,19 @@ export const editListAsync = createAsyncThunk(
 export const addCardAsync = createAsyncThunk(
   'cards/addCardAsync',
   async (newCardObject) => {
+    console.log(newCardObject)
     const data = await getResponseData(`${apiUrl}/lists/${newCardObject.listID}/cards`, newCardObject, 'POST');
     return { data };
   });
+
+  export const moveCardAsync = createAsyncThunk(
+    'cards/moveCardAsync',
+    async (card) => {
+      const data = await getResponseData(`${apiUrl}/lists/${card.list}/cards/${card.id}`, card.destList, 'PUT')
+      store.dispatch(getListsAsync(data.updatedList.board))
+      
+    }
+  )
 
 const listsSlice = createSlice({
   name: 'lists',
