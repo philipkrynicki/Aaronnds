@@ -2,8 +2,6 @@ import { useSelector, useDispatch  } from "react-redux";
 import { useEffect, useState } from 'react';
 import DropWrapper from "./drop-wrapper.js";
 import { getListsAsync, addListAsync, deleteListAsync, addCardAsync, editListAsync } from '../redux/listSlice.js';
-import { useDrop } from "react-dnd";
-import {  editCardAsync, addActivityAsync } from '../redux/cardsSlice.js';
 import CardDrag from './card-drag';
 import {AddCircleOutline, Close} from 'react-ionicons';
 
@@ -176,11 +174,9 @@ const ListsAll = (props) => {
             {lists.map((list) => {
               return (
                <DropWrapper key={list._id}>
-                <div className="col-md-3 single-list-col" key={list._id}>
                   <div className="col list-comp">
-                    <div className="card bg-cust">
+                  <div className="card bg-cust">
                     <div className="row">
-
                       <div className="col-10 col-listname">
                         {renderListName(list)}
                       </div>
@@ -208,11 +204,8 @@ const ListsAll = (props) => {
                       </div>
                     </div>
                   </div>
-
-                </div>
-                
-              </div>
-</DropWrapper>
+                </div>         
+              </DropWrapper>
               )})}
                 {renderNewListButton()}
             </div>

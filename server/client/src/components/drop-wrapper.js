@@ -1,7 +1,7 @@
 import React from "react";
 import { useDrop } from "react-dnd";
 import { useDispatch } from "react-redux";
-import { getListsAsync, moveCardAsync } from "../redux/listSlice"
+import { moveCardAsync } from "../redux/listSlice"
 
 function DropWrapper(props) {
   const dispatch = useDispatch();
