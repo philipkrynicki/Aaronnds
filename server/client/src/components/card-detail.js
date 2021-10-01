@@ -1,13 +1,11 @@
 import { Modal } from "react-bootstrap";
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { editCardAsync, getCardAsync } from '../redux/cardsSlice.js'
+import { getCardAsync, deleteCardAsync, editCardAsync } from '../redux/cardsSlice.js'
+import { getListsAsync } from '../redux/listSlice.js'
 import Labels from "./labels"
-
 import { editIconUrl } from "../constants/constants.js";
 import { useParams } from "react-router";
-
-import { getListsAsync } from "../redux/listSlice.js";
 import Activities from "./activities"
 import Comments from "./comments"
 
@@ -107,57 +105,19 @@ const CardDetail = (props) => {
     console.log('Moving card!');
   }
 
-  const cardDeleteClickHandler = () => {
-    console.log('Deleting card!')
+  const cardDeleteClickHandler = (id) => {
+    //eslint-disable-next-line
+    const isConfirmed = confirm("This will delete the card. Continue?");
+    if (isConfirmed === true) {
+      dispatch(deleteCardAsync(id));
+      setShow(false);
+      dispatch(getListsAsync(board._id));
+    }
   }
 
- //need to pass list name in props from parent to display here
-  return (
-    <div>
-      <Modal className="card-detail-modal" show={show} onHide={handleModalClose} size="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>
-            <div>
-              {renderCardName(card)}
-                <img src={editIconUrl} alt="edit" className="edit-icon mx-1" onClick={() => editCardNameClickHandler(card)} />
-              <h6 className="in-list-text">in list: <u><strong>{props.list}</strong></u></h6>
-            </div>    
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-
-          <div className="container">
-            <div className="row">
-              <div className="col-11 first-card-detail-col">
-                <div>
-                  <h6><strong>labels:</strong></h6>
-                  <Labels />  
-                </div>
-                <br/>
-                <br/>
-                <div>
-                  <u><strong>Description:</strong></u>  
-                  {renderCardDescription(card)}
-                </div>
-                <br/>
-                <br/> 
-                <div>
-                  <u><strong>Activity:</strong></u>
-                  <Activities />
-                </div>
-                <br/>
-                <br/>
-                <div>
-                  <u><strong>Comments:</strong></u>
-                  <Comments/>
-                </div>
-              </div>
-              <div className="col-1 second-card-detail-col text-end d-flex align-items-end">
-                <div className="col">
-                  <div className="row">
-                    <div className="col">
-
-                      <div className="btn-group dropend">
+  const renderLabelsDropdown = () => {
+    return (
+      <div className="btn-group dropend">
                         <button type="button" className="btn btn-success card-detail-btn btn-sm dropdown-toggle" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Labels</button>
                         
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuClickableInside">
@@ -183,13 +143,12 @@ const CardDetail = (props) => {
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
+    )
+  }
 
-                  <div className="row">
-                    <div className="col">
-
-                      <div className="btn-group dropend">
+  const renderMoveDropdown = () => {
+    return (
+    <div className="btn-group dropend">
                           <button className="btn btn-primary card-detail-btn btn-sm dropdown-toggle" type="button" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Move</button>
 
                           <div className="dropdown-menu" aria-labelledby="dropdownMenuClickableInside">
@@ -218,12 +177,67 @@ const CardDetail = (props) => {
                             </div>
                           </div>
                         </div>
+    )
+  }
+
+ //need to pass list name in props from parent to display here
+  return (
+    <div>
+      <Modal className="card-detail-modal" show={show} onHide={handleModalClose} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>
+            <div>
+              <strong>{card.name}</strong>
+              <h6 className="in-list-text">in list: <u><strong>{props.list}</strong></u></h6>
+            </div>    
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+
+          <div className="container">
+            <div className="row">
+              <div className="col-11 first-card-detail-col">
+                <div>
+                  <h6><strong>labels:</strong></h6>
+                  <Labels />  
+                </div>
+                <br/>
+                <br/>
+                <div>
+                  <u><strong>Description:</strong></u>  
+                  <p>{card.description}</p>
+                </div>
+                <br/>
+                <br/> 
+                <div>
+                  <u><strong>Activity:</strong></u>
+                  <Activities />
+                </div>
+                <br/>
+                <br/>
+                <div>
+                  <u><strong>Comments:</strong></u>
+                  <Comments/>
+                </div>
+              </div>
+
+              <div className="col-1 second-card-detail-col text-end d-flex align-items-end">
+                <div className="col">
+                  <div className="row">
+                    <div className="col">
+                      {renderLabelsDropdown()}
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col">
+                      {renderMoveDropdown()}
                       </div>
                     </div>
 
                   <div className="row">
                     <div className="col">
-                      <button type="button" className="btn btn-danger card-detail-btn btn-sm" onClick={cardDeleteClickHandler}>Delete</button>
+                      <button type="button" className="btn btn-danger card-detail-btn btn-sm" onClick={() => cardDeleteClickHandler(card._id)}>Delete</button>
                     </div>
                   </div>
                 </div>

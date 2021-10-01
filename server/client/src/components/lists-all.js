@@ -50,7 +50,7 @@ const ListsAll = (props) => {
 
   const deleteListClickHandler = (list) => {
     //eslint-disable-next-line
-    const isConfirmed = confirm("This will delete the selected list. Continue?");
+    const isConfirmed = confirm("This will delete the entire list. Continue?");
     
     if (isConfirmed === true) {
       dispatch(deleteListAsync(list._id));
