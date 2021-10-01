@@ -2,6 +2,7 @@ import { useSelector, useDispatch  } from "react-redux";
 import { useEffect, useState } from 'react';
 import DropWrapper from "./drop-wrapper.js";
 import { getListsAsync, addListAsync, deleteListAsync, addCardAsync, editListAsync } from '../redux/listSlice.js';
+import { useDrop } from "react-dnd";
 import {  editCardAsync, addActivityAsync } from '../redux/cardsSlice.js';
 import CardDrag from './card-drag';
 import {AddCircleOutline, Close} from 'react-ionicons';
@@ -17,9 +18,8 @@ const ListsAll = (props) => {
   const [currentListID, setCurrentListID] = useState('');
 
   const lists = useSelector(state => state.lists);
-
   const dispatch = useDispatch();
-
+  
   useEffect(() => {
     dispatch(getListsAsync(props.boardId));
   }, [dispatch, props.boardId]);
@@ -36,7 +36,7 @@ const ListsAll = (props) => {
     setShowNewListInput(false);
     setNewListName("");
   }
-
+  
   const addListInputChangeHandler = (e) => {
     setNewListName(e.target.value);
   }
@@ -117,6 +117,7 @@ const ListsAll = (props) => {
     }
   }
 
+
   const renderNewListButton = () => {
     if (showNewListInput === true) {
       return (
@@ -169,10 +170,12 @@ const ListsAll = (props) => {
     } else {
       
       return (
+
         <div className ="container list-container">
           <div className="row entire-list-row flex-row flex-nowrap mt-4 pb-4 pt-2">
             {lists.map((list) => {
               return (
+               <DropWrapper key={list._id}>
                 <div className="col-md-3 single-list-col" key={list._id}>
                   <div className="col list-comp">
                     <div className="card bg-cust">
@@ -181,7 +184,6 @@ const ListsAll = (props) => {
                       <div className="col-10 col-listname">
                         {renderListName(list)}
                       </div>
-
                       <div className="col-2 text-start">
                         <div className="btn-group dropend">
                           <button type="button" className="btn-sm dropdown-toggle list-drop-btn" data-bs-toggle="dropdown" aria-expanded="false"></button>
@@ -191,10 +193,8 @@ const ListsAll = (props) => {
                           </ul>
                         </div>
                       </div>
-
-                      <div className="row">
-                        <div className="col">
-
+                        <div className="row">
+                          <div className="col">
                           {list.cards.map((card) => {
                               return(
                                 <CardDrag key={ card._id } id={ card._id } name={ card.name } list={list.name}/>
@@ -208,14 +208,15 @@ const ListsAll = (props) => {
                       </div>
                     </div>
                   </div>
+
                 </div>
                 
               </div>
+</DropWrapper>
               )})}
                 {renderNewListButton()}
             </div>
-
-          </div>
+         </div>
       )}}
 
   return (

@@ -12,7 +12,7 @@ function CardDrag ({id, name, list}) {
 
   const [{isDragging}, drag] = useDrag(() => ({
     type: "card",
-    item: {id: id},
+    item: {id: id, list: list}, 
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),

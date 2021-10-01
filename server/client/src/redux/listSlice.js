@@ -71,6 +71,16 @@ export const addCardAsync = createAsyncThunk(
     return { data };
   });
 
+  export const moveCardAsync = createAsyncThunk(
+    'cards/moveCardAsync',
+    async (card) => {
+      const response = await axios.put(`${apiUrl}/lists/${card.list}/cards/${card.id}`, card.destList)
+      
+      store.dispatch(getListsAsync(response.data.originList.board))
+      
+    }
+  )
+
 const listsSlice = createSlice({
   name: 'lists',
   initialState: [],

@@ -41,6 +41,7 @@ const BoardIndividual = (props) => {
     setUpdatedBoardName("");
   }
 
+
   const handleModalDelete = () => {
     setShow(false);
     dispatch(deleteBoardAsync({id: board._id}));
