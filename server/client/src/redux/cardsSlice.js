@@ -110,7 +110,8 @@ const cardsSlice = createSlice({
         state.comments.push(action.payload.data);
     },
     [editCommentAsync.fulfilled]: (state, action) => {
-      state.comments.splice((state.comments.indexOf(action.payload.data._id) -1), 1, action.payload.data)
+      const comment = action.payload.data;
+      state.comments[state.comments.findIndex(({ _id }) => _id === comment._id)].text = comment.text;
       
     }
   }
