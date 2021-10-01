@@ -34,7 +34,7 @@ export const deleteCardAsync = createAsyncThunk(
 export const editCardAsync = createAsyncThunk(
     'cards/editCardAsync',
   async (card) => {
-    const response = await axios.put(`${apiUrl}/cards/${card.id}`, card)
+    const response = await axios.put(`${apiUrl}/cards/${card.id}`, card.name)
     const data = response.data
     return { data }
   }

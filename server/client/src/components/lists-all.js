@@ -5,7 +5,7 @@ import DropWrapper from "./drop-wrapper.js";
 import { getListsAsync, addListAsync, deleteListAsync, addCardAsync, editListAsync } from '../redux/listSlice.js';
 import {  editCardAsync } from '../redux/cardsSlice.js';
 import CardDrag from './card-drag';
-import {Accessibility} from 'react-ionicons';
+// import {Accessibility} from 'react-ionicons';
 
 
 const ListsAll = (props) => {
