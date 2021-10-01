@@ -1,7 +1,7 @@
 import React from "react";
 import { useDrop } from "react-dnd";
 import { useDispatch } from "react-redux";
-import { moveCardAsync } from "../redux/cardsSlice"
+import { getListsAsync, moveCardAsync } from "../redux/listSlice"
 
 function DropWrapper(props) {
   const dispatch = useDispatch();
@@ -17,8 +17,6 @@ function DropWrapper(props) {
   }));
   
   const onDrop = (item, dest) => {
-    console.log(item)
-    console.log(dest)
     dispatch(moveCardAsync({list: item.list, id: item.id, destList: { destinationList: dest}}))
   }
 

@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { apiUrl } from "../constants/constants";
 import socket from '../socket-connect';
@@ -60,6 +60,16 @@ export const addCardAsync = createAsyncThunk(
     return { data }
   });
 
+  export const moveCardAsync = createAsyncThunk(
+    'cards/moveCardAsync',
+    async (card) => {
+      const response = await axios.put(`${apiUrl}/lists/${card.list}/cards/${card.id}`, card.destList)
+      
+      store.dispatch(getListsAsync(response.data.originList.board))
+      
+    }
+  )
+
 const listsSlice = createSlice({
   name: 'lists',
   initialState: [],
@@ -83,8 +93,7 @@ const listsSlice = createSlice({
     },
     [addCardAsync.fulfilled]: (state, action) => {
       state[state.findIndex(({ _id }) => _id === action.meta.arg.listID)].cards.push(action.payload.data)
-
-   },
+    }
   }
 });
 

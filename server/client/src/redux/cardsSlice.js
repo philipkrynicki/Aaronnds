@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { apiUrl } from "../constants/constants";
 
@@ -35,16 +35,7 @@ export const editCardAsync = createAsyncThunk(
   }
 )
 
-export const moveCardAsync = createAsyncThunk(
-  'cards/moveCardAsync',
-  async (card) => {
-    console.log(card)
-    const response = await axios.put(`${apiUrl}/lists/${card.list}/cards/${card.id}`, card.destList)
-    console.log(response.data)
-    const data = response.data
-    return { data } 
-  }
-)
+
 
 const cardsSlice = createSlice({
   name: 'cards',
@@ -67,9 +58,6 @@ const cardsSlice = createSlice({
       //same as boardsSlice question
       return state.filter((card) => card.id !== action.payload.data.id);
     },
-    [moveCardAsync.fulfilled]: (state, action) => {
-      return state
-    }
   }
 });
 
