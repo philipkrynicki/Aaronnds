@@ -28,7 +28,9 @@ const Comments = () => {
                   <p className="comment-time">{comment.created}</p>
                   <hr/>
                   <p className="comment-text">{comment.text}</p>
-                </div>
+        </div>
+        <button className="btn" onClick={ () => handleEditComment(comment) }><small><u>Edit</u></small></button>
+        <button className="btn" onClick={ () => handleDeleteComment() }><small><u>Delete</u></small></button>
               </div>
     )
   }
@@ -75,7 +77,7 @@ const Comments = () => {
 
   return (
 //add logic to show buttons to edit and delete only if current user made those comments? 
-
+    <div>
       <div className="col all-comments-col">
         { card.comments.map((comment) => {
           return editing && commentToEdit === comment._id ? editCommentForm(comment) : commentRegular(comment) 
