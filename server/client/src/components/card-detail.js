@@ -144,9 +144,11 @@ const CardDetail = (props) => {
                 </div>
               </div>
 
-
+              <Comments/>
             </div>
           </div>
+
+
 
         </Modal.Body>
       </Modal>
