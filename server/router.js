@@ -114,36 +114,36 @@ module.exports = function(app) {
   app.get('/generate-user', GenerateUser.generateUser);
 
   app.get('/api/workspace/boards', Boards.getBoards);
-  app.post('/api/workspace/boards', Boards.postBoard)
+  app.post('/api/workspace/boards', requireAuth, Boards.postBoard)
   app.get('/api/boards/:board', Boards.getBoard);
-  app.delete('/api/boards/:board', Boards.deleteBoard);
-  app.put('/api/boards/:board', Boards.updateBoardName);
+  app.delete('/api/boards/:board', requireAuth, Boards.deleteBoard);
+  app.put('/api/boards/:board', requireAuth, Boards.updateBoardName);
   
   app.get('/api/boards/:board/lists', Lists.getLists)
-  app.post('/api/boards/:board/lists', Lists.postList)
-  app.delete('/api/lists/:list', Lists.deleteList);
-  app.put('/api/lists/:list', Lists.updateListName);
-  app.put('/api/lists/:list/move', Lists.moveList);
+  app.post('/api/boards/:board/lists', requireAuth, Lists.postList)
+  app.delete('/api/lists/:list', requireAuth, Lists.deleteList);
+  app.put('/api/lists/:list', requireAuth, Lists.updateListName);
+  app.put('/api/lists/:list/move', requireAuth, Lists.moveList);
 
   app.get('/api/lists/:list/cards', Cards.getCards);
   app.get('/api/cards/:card', Cards.getCard);
-  app.post('/api/lists/:list/cards', Cards.postCard);
-  app.put('/api/lists/:list/cards/:card', Cards.moveCard);
-  app.delete('/api/cards/:card', Cards.deleteCard);
-  app.put('/api/cards/:card', Cards.updateCard);
-  app.put('/api/cards/:card/position', Cards.updateCardPosition);
+  app.post('/api/lists/:list/cards', requireAuth, Cards.postCard);
+  app.put('/api/lists/:list/cards/:card', requireAuth, Cards.moveCard);
+  app.delete('/api/cards/:card', requireAuth, Cards.deleteCard);
+  app.put('/api/cards/:card', requireAuth, Cards.updateCard);
+  app.put('/api/cards/:card/position', requireAuth, Cards.updateCardPosition);
 
-  app.post('/api/cards/:card/comments', Comments.postComment);
+  app.post('/api/cards/:card/comments', requireAuth, Comments.postComment);
   app.get('/api/cards/:card/comments', Comments.getComments);
-  app.delete('/api/comments/:comment', Comments.deleteComment);
-  app.put('/api/comments/:comment', Comments.updateComment);
+  app.delete('/api/comments/:comment', requireAuth, Comments.deleteComment);
+  app.put('/api/comments/:comment', requireAuth, Comments.updateComment);
 
   app.get('/api/cards/:card/labels', Labels.getLabels);
-  app.post('/api/cards/:card/labels', Labels.postLabel)
-  app.delete('/api/cards/:card/labels', Labels.deleteLabel)
+  app.post('/api/cards/:card/labels', requireAuth, Labels.postLabel)
+  app.delete('/api/cards/:card/labels', requireAuth, Labels.deleteLabel)
 
   app.get('/api/cards/:card/activity', Activities.getActivity);
-  app.post('/api/cards/:card/activity', Activities.postActivity);
+  app.post('/api/cards/:card/activity', requireAuth, Activities.postActivity);
 
   app.post('/auth/login', requireSignin, Authentication.login);
   app.post('/auth/logout', Authentication.logout)
