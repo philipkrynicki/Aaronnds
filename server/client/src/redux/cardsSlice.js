@@ -14,6 +14,10 @@ socket.on('updateComment', comment => {
   store.dispatch(editCommentAsync(comment));
 })
 
+socket.on('deleteComment', comment => {
+  store.dispatch(removeCommentAsync(comment));
+})
+
 export const getCardsAsync = createAsyncThunk(
   'cards/getCardsAsync',
   async (id) => {
@@ -90,11 +94,16 @@ export const editCommentAsync = createAsyncThunk(
 export const deleteCommentAsync = createAsyncThunk(
   'cards/deleteCommentAsync',
   async (commentObj) => {
-    const response = await axios.delete(`${ apiUrl }/comments/${ commentObj.comment }`, commentObj)
-    
+    const response = await axios.delete(`${ apiUrl }/comments/${ commentObj.comment }`, commentObj) 
     const data = response.data;
+    store.dispatch(removeCommentAsync(data));
+  }
+)
+
+export const removeCommentAsync = createAsyncThunk(
+  'cards/removeCommentAsync',
+  async (data) => {
     return { data };
-    
   }
 )
 
@@ -135,8 +144,8 @@ const cardsSlice = createSlice({
       const comment = action.payload.data;
       state.comments[state.comments.findIndex(({ _id }) => _id === comment._id)].text = comment.text;
     },
-    [deleteCommentAsync.fulfilled]: (state, action) => {
-      state.comments.splice((state.comments.indexOf(action.payload.data) - 1), 1)
+    [removeCommentAsync.fulfilled]: (state, action) => {
+      state.comments = state.comments.filter((comment) => comment._id !== action.payload.data);
     }
   }
 });
