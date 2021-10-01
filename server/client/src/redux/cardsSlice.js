@@ -2,15 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { apiUrl } from "../constants/constants";
 
-export const getCardsAsync = createAsyncThunk(
-  'cards/getCardsAsync',
-  async (id) => {
-    const response = await axios.get(`${apiUrl}/lists/${id}/cards`);
-    const data = response.data
-    return { data }
-  })
-
-
 export const getCardAsync = createAsyncThunk(
   'cards/getCardAsync',
   async (id) => {
@@ -45,8 +36,8 @@ export const addActivityAsync = createAsyncThunk(
   async (activityObj) => {
     const response = await axios.post(`${ apiUrl }/cards/${ activityObj.card }/activity`, activityObj.activity)
     
-    const data = response.data;
-
+    const data = response.data.activities;
+    
     return { data }
   }
 )
@@ -83,9 +74,6 @@ const cardsSlice = createSlice({
   },
   reducers: { },
   extraReducers: {
-    [getCardsAsync.fulfilled]: (state, action) => {
-      return action.payload.data
-    },
     [getCardAsync.fulfilled]: (state, action) => {
       return action.payload.data
     },
