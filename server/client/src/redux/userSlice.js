@@ -10,6 +10,13 @@ export const loginAsync = createAsyncThunk(
   }
 )
 
+export const logoutAsync = createAsyncThunk(
+  'user/logoutAsync',
+  async() => {
+    localStorage.setItem('token', '');
+  }
+)
+
 const userSlice = createSlice({
   name: 'user',
   initialState: {
@@ -20,9 +27,10 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: {
     [loginAsync.fulfilled]: (state, action) => {
-      return { ...state, authenticated: action.payload.token,
-        userName: action.payload.name || null
-      };
+      state.authenticated = localStorage.getItem('token');
+    },
+    [logoutAsync.fulfilled]: (state) => {
+      state.authenticated = '';
     }
   }
 })
