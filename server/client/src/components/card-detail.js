@@ -2,7 +2,8 @@ import { Modal } from "react-bootstrap";
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { getListsAsync, moveCardAsync } from '../redux/listSlice.js'
-import { getCardAsync, deleteCardAsync, editCardAsync } from '../redux/cardsSlice.js'
+import { getCardAsync, editCardAsync } from '../redux/cardsSlice.js'
+import { deleteCardAsync } from "../redux/listSlice.js";
 import Labels from "./labels"
 import Activities from "./activities"
 import Comments from "./comments"
