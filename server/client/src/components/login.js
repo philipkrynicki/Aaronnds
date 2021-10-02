@@ -2,10 +2,11 @@ import { useHistory } from "react-router";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { loginAsync } from "../redux/userSlice";
+import { username, password } from "../constants/constants";
 
 const Login = () => {
   const [name, setName] = useState('');
-  const [password, setPassword] = useState('');
+  const [formPassword, setFormPassword] = useState('');
   
   const history = useHistory();
   const dispatch = useDispatch();
@@ -15,12 +16,17 @@ const Login = () => {
   }
 
   const passwordFieldInputHandler = (e) => {
-    setPassword(e.target.value);
+    setFormPassword(e.target.value);
   }
 
+  // For simplicity's sake, the login form makes sure the username and password are correct.
+  // This sucks and would never be done in the real world.
   const loginFormSubmit = (e) => {
+    if (name !== username || formPassword !== password)
+      return alert('Invalid username or password');
+
     e.preventDefault();
-    dispatch(loginAsync({name: name, password: password}));
+    dispatch(loginAsync({name: name, password: formPassword}));
     history.push("/")
   }
 
