@@ -110,8 +110,7 @@ export const addLabelAsync = createAsyncThunk(
 export const deleteLabelAsync = createAsyncThunk(
   'cards/deleteLabelAsync',
   async (labelObj) => {
-    
-    const response = await axios.delete(`${ apiUrl }/cards/${ labelObj.card }/labels`, labelObj );
+    const response = await axios.delete(`${ apiUrl }/cards/${ labelObj.card }/labels`, {data: labelObj.data} );
     
     const data = response.data;
     return { data };
@@ -162,7 +161,7 @@ const cardsSlice = createSlice({
       state.labels.push(action.payload.data)
     },
     [deleteLabelAsync.fulfilled]: (state, action) => {
-      state.labels.splice((state.labels.indexOf(action.payload.data)-1), 1)
+      state.labels.splice((state.labels.indexOf(action.payload.data)), 1)
       
     }
   }

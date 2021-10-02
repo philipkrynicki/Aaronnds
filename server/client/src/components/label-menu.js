@@ -9,13 +9,16 @@ const LabelMenu = () => {
   const dispatch = useDispatch();
   
   const colors = ["brown", "blue", "black", "green", "red", "orange", "purple"];
-
+  console.log(card.labels)
   const alreadyChecked = colors.map(color => {
     return card.labels.includes(color)    
   })
+ 
+
+  const test = [true, false, true, false, false, false, true]
   const [checkedState, setCheckedState] = useState(alreadyChecked)
   
-  console.log(alreadyChecked) //loads once with all false and then a second time correctly. The buttons all load unchecked
+  console.log(alreadyChecked) //loads once with all false and then a second time correctly. The buttons all load unchecked. Every box click triggers two of these console.logs
  
 
   const submitLabel = (e, position) => {
@@ -26,10 +29,9 @@ const LabelMenu = () => {
     setCheckedState(updatedCheckedState);
     console.log (e.target.value)
     if (card.labels.includes(e.target.value)) {
-      //delete req not sending a req.body????
       dispatch(deleteLabelAsync({
         card: card._id,
-        label: e.target.value 
+        data: { data: e.target.value }
       }))
     } else {
       

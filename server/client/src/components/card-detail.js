@@ -22,7 +22,7 @@ const CardDetail = (props) => {
   const [showEditCardDescriptionInput, setShowEditCardDescriptionInput] = useState(false);
   const [editCardName, setEditCardName] = useState("");
   const [editCardDescription, setEditCardDescription] = useState("");
-
+  
   const handleModalClose = () => {
     setShow(false);
     props.onChange(false)
