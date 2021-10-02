@@ -28,21 +28,6 @@ export const getCardAsync = createAsyncThunk(
   }
 )
 
-export const deleteCardAsync = createAsyncThunk(
-    'cards/deleteCardAsync',
-  async (id) => {
-    const config = {
-      headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('token')
-      }
-    }
-    
-    const response = await axios.delete(`${apiUrl}/cards/${id}`, config)
-    const data = response.data
-    return { data }
-  }
-) 
-
 export const editCardAsync = createAsyncThunk(
     'cards/editCardAsync',
   async (card) => {
@@ -131,7 +116,6 @@ const cardsSlice = createSlice({
       state.name = card.name;
       state.description = card.description;
     },
-
     [addActivityAsync.fulfilled]: (state, action) => {
       state.activities.push(action.payload.data)
     },

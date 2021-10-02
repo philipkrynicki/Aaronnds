@@ -99,6 +99,21 @@ export const addCardAsync = createAsyncThunk(
     }
   )
 
+  export const deleteCardAsync = createAsyncThunk(
+    'cards/deleteCardAsync',
+  async (id) => {
+    const config = {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token')
+      }
+    }
+    
+    const response = await axios.delete(`${apiUrl}/cards/${id}`, config)
+    const data = response.data
+    return { data }
+  }
+) 
+
 const listsSlice = createSlice({
   name: 'lists',
   initialState: [],
@@ -129,6 +144,10 @@ const listsSlice = createSlice({
         cards.push(action.payload.data);
 
     },
+    [deleteCardAsync.fulfilled]: (state, action) => {
+      let list = state[state.findIndex(({ _id }) => _id === action.payload.data.list)];
+      list.cards = list.cards.filter(card => card._id !== action.payload.data.card);
+    }
   }
 });
 
