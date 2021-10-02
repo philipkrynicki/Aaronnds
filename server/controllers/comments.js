@@ -11,7 +11,7 @@ exports.postComment = async (req, res) => {
 
   const now = new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
 
-  const creationDate = now + " " + today;
+  const creationDate = today + ", " + now;
 
   if (!req.body.text) {
     res.status(400).send("No comment text included in request")
@@ -50,6 +50,7 @@ exports.deleteComment = (req, res) => {
       User.updateOne({_id: req.comment.user}, {'$pull': {'comments': req.comment._id}})
       .exec(err => {
         if (err) next(err)
+        req.app.get('io').emit('deleteComment', req.comment._id);
         res.status(200).send(req.comment._id)
       })
 
@@ -70,6 +71,7 @@ exports.updateComment = (req, res) => {
     .populate('user')
     .exec((err, updatedComment) => {
       if (err) next(err)
+      req.app.get('io').emit('updateComment', updatedComment);
       res.status(200).json(updatedComment)
     })
 }

@@ -21,7 +21,7 @@ exports.postCard = (req, res) => {
 
   const now = new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
 
-  const creationDate = "Card created at " + now + " on " + today;
+  const creationDate = "Card created -- " + today + ", " + now;
 
   if (!req.body.name) {
     res.status(400).send("No name included in request")
@@ -111,7 +111,10 @@ exports.deleteCard = (req, res) => {
     List.updateOne({_id: req.card.list}, {'$pull': {'cards': req.card._id}})
     .exec(err => {
       if (err) next(err)
-      res.status(200).send(req.card._id)
+      res.status(200).send({
+        card: req.card._id,
+        list: req.card.list
+      })
     })
   })
 }

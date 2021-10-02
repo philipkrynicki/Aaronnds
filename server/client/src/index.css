@@ -294,6 +294,7 @@ code {
 
 .in-list-text {
   margin-top: 10px;
+  margin-left: 42px;
 }
 
 .labels-dropdown-options {
@@ -307,13 +308,6 @@ code {
 .move-dropdown-save-btn {
   margin-left: 45px;
   margin-top: 10px;
-}
-
-.edit-icon {
-  height: 30px;
-  width: 30px;
-  margin-right: 40px;
-  cursor: pointer;
 }
 
 .plus-icon {
@@ -348,6 +342,25 @@ code {
   transform: scale(1.25);
 }
 
+.comment-edit-icon {
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.comment-delete-icon {
+  cursor: pointer;
+}
+
+.edit-cardname-icon {
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.card-desc-edit-icon {
+  cursor: pointer;
+  margin-right: 5px;
+}
+
 .ind-comment-row {
   width: 92%;
 }
@@ -361,7 +374,7 @@ code {
 }
 
 .comment-input-row {
-  margin-top: 10px;
+  margin-top: 15px;
   width: 88%;
 }
 
@@ -387,4 +400,16 @@ code {
   margin-top: 10px;
   max-height: 300px;
   overflow-y: scroll;
+}
+
+.carddescription-edit-inp {
+  width: 600px;
+}
+
+.card-desc-paragraph {
+  width: 600px;
+}
+
+.card-desc-paragraph:hover {
+  background-color: rgb(202, 202, 202);
 }

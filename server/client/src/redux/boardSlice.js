@@ -25,18 +25,18 @@ export const editBoardAsync = createAsyncThunk(
   }
 )
 
-  const boardSlice = createSlice({
-    name:'board',
-    initialState: { },
-    reducers: {},
-    extraReducers: {
-      [getBoardAsync.fulfilled]: (state, action) => {
-        return action.payload.data
-      },
-      [editBoardAsync.fulfilled]: (state, action) => {
-        return action.payload.data
-      }
+const boardSlice = createSlice({
+  name:'board',
+  initialState: { },
+  reducers: {},
+  extraReducers: {
+    [getBoardAsync.fulfilled]: (state, action) => {
+      return action.payload.data
+    },
+    [editBoardAsync.fulfilled]: (state, action) => {
+      return action.payload.data
     }
-  })
+  }
+})
 
  export default boardSlice.reducer; 

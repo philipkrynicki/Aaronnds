@@ -5,8 +5,6 @@ import { getBoardsAsync, addBoardAsync } from "../redux/boardsSlice";
 import { Modal, Button } from "react-bootstrap";
 import {AddCircleOutline} from 'react-ionicons';
 
-
-
 const BoardsAll = () => {
   const [show, setShow] = useState(false);
   const [newBoardName, setNewBoardName] = useState("");
@@ -19,16 +17,18 @@ const BoardsAll = () => {
   }, [dispatch]);
 
   const boards = useSelector(state => state.boards);
+  const user = useSelector(state => state.user);
 
   const handleModalClose = () => setShow(false);
   const handleModalShow = () => setShow(true);
-  const handleModalAdd = () => {
+  const handleModalAdd = (e) => {
     if (newBoardName === "") {
       return alert("Please enter a name for your board.")
-    }
-      setShow(false);
-      dispatch(addBoardAsync({name: newBoardName}));
-      setNewBoardName("");
+    } 
+    e.preventDefault();
+    setShow(false);
+    dispatch(addBoardAsync({name: newBoardName}));
+    setNewBoardName("");
   }
 
   const boardClickHandler = (id) => (event) => {
@@ -58,14 +58,14 @@ const BoardsAll = () => {
           return <div></div>
         })}
       
-        <div className="col-md-3 d-flex justify-content-center">
+        {user.authenticated && <div className="col-md-3 d-flex justify-content-center">
           <div className="new-board-comp d-flex align-items-center justify-content-center" onClick={handleModalShow}>
             
               <AddCircleOutline height="40px" width="40px" className="plus-icon"/>
               <h2>Add board</h2>
               
           </div>
-        </div>
+        </div>}
     
       </div>
     )

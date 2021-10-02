@@ -1,7 +1,7 @@
 import { useSelector, useDispatch  } from "react-redux";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import DropWrapper from "./drop-wrapper.js";
-import { getListsAsync, addListAsync, deleteListAsync, addCardAsync, editListAsync } from '../redux/listSlice.js';
+import { addListAsync, deleteListAsync, addCardAsync, editListAsync } from '../redux/listSlice.js';
 import CardDrag from './card-drag';
 import {AddCircleOutline, Close} from 'react-ionicons';
 
@@ -16,11 +16,9 @@ const ListsAll = (props) => {
   const [currentListID, setCurrentListID] = useState('');
 
   const lists = useSelector(state => state.lists);
+  const user = useSelector(state => state.user);
+
   const dispatch = useDispatch();
-  
-  useEffect(() => {
-    dispatch(getListsAsync(props.boardId));
-  }, [dispatch, props.boardId]);
 
   const addListClickHandler = () => {
     setShowNewListInput(true);
@@ -50,7 +48,7 @@ const ListsAll = (props) => {
 
   const deleteListClickHandler = (list) => {
     //eslint-disable-next-line
-    const isConfirmed = confirm("This will delete the selected list. Continue?");
+    const isConfirmed = confirm("This will delete the entire list. Continue?");
     
     if (isConfirmed === true) {
       dispatch(deleteListAsync(list._id));
@@ -59,9 +57,11 @@ const ListsAll = (props) => {
 
   const newCardLink = (list) => {
     return (
-      <div className="col new-card-link">
-        <div className=" col add-card-text" id={list._id} onClick={() => handleNewCardToggle({list})}>+ Add card</div>
-      </div>     
+      <div>
+        {user.authenticated && <div className="col new-card-link">
+          <div className=" col add-card-text" id={list._id} onClick={() => handleNewCardToggle({list})}>+ Add card</div>
+        </div>}  
+      </div>  
     )
   };
   
@@ -84,7 +84,7 @@ const ListsAll = (props) => {
     setCurrentListID(list.list._id)
     setAddNewCard(true)
   };
-  // activities: [{ action: "Card created", time: today.getHours() + ":" + today.getMinutes(), date: today.getDate() + " " + today.getMonth() }]
+
   const handleCardSubmit = (list) => { 
     if (!newCardName) {
       return alert("Please enter a name for your card")
@@ -115,6 +115,25 @@ const ListsAll = (props) => {
     }
   }
 
+  const handleEditListButtonSubmit = (list) => {
+
+    if (editListName !== "") {
+      dispatch(editListAsync({id: list._id , nameObj: {name: editListName}}))
+      setShowEditListInput(false);
+      setEditListName("");
+    }
+
+    if (editListName === "") {
+      setShowEditListInput(false);
+      setEditListName("");
+    }
+  }
+
+  const handleEditingCheck = () => {
+    if (showEditListInput) {
+      setShowEditListInput(false);
+    }
+  }
 
   const renderNewListButton = () => {
     if (showNewListInput === true) {
@@ -136,10 +155,10 @@ const ListsAll = (props) => {
     return (
       <div className="col-md-3">
         <div className="col">
-          <div className="col d-flex new-list-comp" onClick={addListClickHandler}>
+          {user.authenticated && <div className="col d-flex new-list-comp" onClick={addListClickHandler}>
             <AddCircleOutline className="sm-plus-icon"/>
             <h5 className="add-listname-text">Add list</h5>
-          </div>
+          </div>}
         </div>
       </div>
     )
@@ -149,7 +168,10 @@ const ListsAll = (props) => {
     if (showEditListInput === true && list._id === currentListID) {
       return (
         <div className="col col-listname-edit-input">
-          <input type="text" className="listname-edit-inp" placeholder={list.name} onKeyUp={(e) => handleEditListInputSubmit(e, list)} />
+          <div className="input-group mb-3">
+            <input type="text" className="form-control listname-edit-inp" defaultValue={list.name} aria-label={list.name} aria-describedby="button-addon" onKeyUp={(e) => handleEditListInputSubmit(e, list)} />
+            <button className="btn btn-sm btn-outline-dark" type="button" id="button-addon" onClick={() => handleEditListButtonSubmit(list)}>Save</button>
+          </div>
         </div>
       )
     }
@@ -181,13 +203,13 @@ const ListsAll = (props) => {
                         {renderListName(list)}
                       </div>
                       <div className="col-2 text-start">
-                        <div className="btn-group dropend">
-                          <button type="button" className="btn-sm dropdown-toggle list-drop-btn" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                        {user.authenticated && <div className="btn-group dropend">
+                          <button type="button" className="btn-sm dropdown-toggle list-drop-btn" data-bs-toggle="dropdown" aria-expanded="false" onClick={handleEditingCheck}></button>
                           <ul className="dropdown-menu">
                             <li><button className="dropdown-item" type="button" onClick={() => editListNameClickHandler(list)}>Edit list name</button></li>
                             <li><button className="dropdown-item" type="button" onClick={() => deleteListClickHandler(list)}>Delete list</button></li>
                           </ul>
-                        </div>
+                        </div>}
                       </div>
                         <div className="row">
                           <div className="col">
