@@ -2,13 +2,11 @@ import { Modal } from "react-bootstrap";
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { getListsAsync, moveCardAsync } from '../redux/listSlice.js'
-import cardsSlice, { getCardAsync, deleteCardAsync, editCardAsync } from '../redux/cardsSlice.js'
+import { getCardAsync, deleteCardAsync, editCardAsync } from '../redux/cardsSlice.js'
 import Labels from "./labels"
-// import { useParams } from "react-router";
 import Activities from "./activities"
 import Comments from "./comments"
-
-const editIconUrl = 'https://img.icons8.com/material-outlined/24/000000/edit--v4.png';
+import { CreateOutline, Create } from "react-ionicons"
 
 const CardDetail = (props) => {
   const [show, setShow] = useState(true)
@@ -41,18 +39,25 @@ const CardDetail = (props) => {
   )
 
   const editCardNameClickHandler = (card) => {
+    if (showEditCardNameInput)
+    {
+      return setShowEditCardNameInput(false);
+    }
     setCurrentCardId(card._id);
     setShowEditCardNameInput(true);
   }
 
   const editCardDescriptionClickHandler = (card) => {
+    if(showEditCardDescriptionInput) {
+      return setShowEditCardDescriptionInput(false);
+    }
+
     setCurrentCardId(card._id);
     setShowEditCardDescriptionInput(true)
   }
 
   const handleEditCardNameInputSubmit = (e, card) => {
     setEditCardName(e.target.value)
-    console.log(e.target.value)
     if (e.key === 'Enter' && e.target.value !== "") {
       dispatch(editCardAsync({id: card._id,  name: {name: editCardName}}));
       setShowEditCardNameInput(false);
@@ -81,9 +86,7 @@ const CardDetail = (props) => {
   const renderCardName = (card) => {
     if (showEditCardNameInput === true && card._id === currentCardId) {
       return (
-        <div>
           <input type="text" className="cardname-edit-inp" defaultValue={card.name} onKeyUp={(e) => handleEditCardNameInputSubmit(e, card)} />
-        </div>
       )
     }
     return (
@@ -100,11 +103,14 @@ const CardDetail = (props) => {
       )
     }
 
+    if (card.description === null || card.description === "") { 
+      return (
+        <p className="card-desc-paragraph"><em>Add a more detailed description...</em></p>
+      )
+    }
+    
     return (
-      <p>
-        {card.description}
-        {user.authenticated && <button className="description-edit mx-2" onClick={() => editCardDescriptionClickHandler(card)}>(Edit Description)</button>}
-      </p>
+      <p className="card-desc-paragraph">{card.description}</p>
     )
   }
 
@@ -173,6 +179,8 @@ const CardDetail = (props) => {
             <div className="dropdown-menu" aria-labelledby="dropdownMenuClickableInside">
               <div className="move-dropdown-options">
 
+                <p className="text-center"><u><strong>Move card to List:</strong></u></p>
+
                 {filteredList.map(list => {
                   return (
                     <div className="form-check" key={list._id}>
@@ -183,7 +191,6 @@ const CardDetail = (props) => {
                     </div>
                   )
                 })}
-                
                 <button type="button" className="btn-sm btn-primary move-dropdown-save-btn" onClick={() => moveListSubmitHandler()}>Move</button>
 
               </div>
@@ -199,9 +206,9 @@ const CardDetail = (props) => {
       <Modal className="card-detail-modal" show={show} onHide={handleModalClose} size="lg">
         <Modal.Header closeButton>
           <Modal.Title>
-            <div>
+            <div> 
+              {user.authenticated && <CreateOutline className="edit-cardname-icon" width="25px" height="25px" onClick={() => editCardNameClickHandler(card)} />}
               {renderCardName(card)}
-              {user.authenticated && <img src={editIconUrl} alt="edit" className="edit-icon mx-1" onClick={() => editCardNameClickHandler(card)} />}
               <h6 className="in-list-text">in list: <u><strong>{props.list}</strong></u></h6>
             </div>    
           </Modal.Title>
@@ -216,18 +223,17 @@ const CardDetail = (props) => {
                   <Labels />  
                 </div>
                 <br/>
-                <br/>
                 <div>
-                  <u><strong>Description:</strong></u>  
+                  {user.authenticated && 
+                  <Create className="card-desc-edit-icon" onClick={() => editCardDescriptionClickHandler(card)}/>}
+                  <u><strong>Description:</strong></u>
                   {renderCardDescription(card)}
                 </div>
-                <br/>
                 <br/> 
                 <div>
                   <u><strong>Activity:</strong></u>
                   <Activities />
                 </div>
-                <br/>
                 <br/>
                 <div>
                   <u><strong>Comments:</strong></u>
@@ -235,7 +241,7 @@ const CardDetail = (props) => {
                 </div>
               </div>
 
-              <div className="col-1 second-card-detail-col text-end d-flex align-items-end">
+              <div className="col-1 second-card-detail-col text-end d-flex align-items-top">
                 <div className="col">
                   <div className="row">
                     <div className="col">

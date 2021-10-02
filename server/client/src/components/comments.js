@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux"
 import { useState } from "react";
 import { addCommentAsync, editCommentAsync, deleteCommentAsync } from "../redux/cardsSlice";
+import {Create, Trash} from 'react-ionicons';
 
 const Comments = () => {
   const card = useSelector(state => state.card);
@@ -16,8 +17,8 @@ const Comments = () => {
       <div>
         {user.authenticated && <div className="comment-input-row">
           <div className="comment-form input-group mb-3">
-            <input type="text" className="form-control" placeholder="Write new comment" onChange={ (e) => setNewComment(e.target.value) }></input>
-            <button type="button" className="button btn btn-primary btn-sm com-inp-btn" onClick={ () => handleCommentSubmit()}>Post</button>
+            <input type="text" className="form-control" placeholder="Write new comment" onChange={ (e) => setNewComment(e.target.value)} onKeyUp={(e)=>handleCommentEnter(e)}></input>
+            <button type="button" className="button btn btn-dark btn-sm com-inp-btn" onClick={ () => handleCommentSubmit()}>Post</button>
           </div>
         </div>}
       </div>
@@ -28,14 +29,25 @@ const Comments = () => {
     return (
        <div className="row ind-comment-row" key={comment._id}>
           <div className="col rounded ind-comment-col">
-            <p className="comment-username">{comment.user.name}</p>
-            <p className="comment-time">{comment.created}</p>
+
+            <div className="row">
+              <div className="col-6">
+                <p className="comment-username">{comment.user.name}</p>
+                <p className="comment-time">{comment.created}</p>
+              </div>
+
+              <div className="col-6 text-end">
+
+                {user.authenticated && <div>
+                  <Create className="comment-edit-icon" onClick={() => handleEditComment(comment)}/>
+                  <Trash className="comment-delete-icon" onClick={() => handleDeleteComment(comment)}/>
+                </div> }
+              </div>
+
+            </div>
+
             <hr/>
           <p className="comment-text">{ comment.text }</p>
-          {user.authenticated && <div>
-            <button className="btn" onClick={ () => handleEditComment(comment) }><small><u>Edit</u></small></button>
-            <button className="btn" onClick={ () => handleDeleteComment(comment) }><small><u>Delete</u></small></button>
-          </div> }
         </div>       
       </div>
     )
@@ -53,15 +65,30 @@ const Comments = () => {
     setNewComment("");
   }
 
+  const handleCommentEnter = (e) => {
+    if(e.key === 'Enter') {
+      handleCommentSubmit();
+    }
+  }
+
   const handleEditComment = (comment) => {
     setEditing(true)
     setCommentToEdit(comment._id)
   }
 
+  const handleCloseEditComment = (comment) => {
+    setEditing(false);
+  }
+
   const handleDeleteComment = (comment) => {
-    dispatch(deleteCommentAsync({
-      comment: comment._id
-    }))
+    //eslint-disable-next-line
+    const isConfirmed = confirm('This will delete your comment. Continue?');
+
+    if (isConfirmed) {
+      dispatch(deleteCommentAsync({
+        comment: comment._id
+      }))
+   }
   }
 
   const handleEditSubmit = (comment) => {
@@ -75,14 +102,31 @@ const Comments = () => {
 
   const editCommentForm = (comment) => {
     return (
-      <div className="row ind-comment-row" key={ comment._id }>
+      <div className="row ind-comment-row" key={comment._id}>
           <div className="col rounded ind-comment-col">
-            <p className="comment-username">{comment.user.name}</p>
-            <p className="comment-time">{comment.created}</p>
+
+            <div className="row">
+              <div className="col-6">
+                <p className="comment-username">{comment.user.name}</p>
+                <p className="comment-time">{comment.created}</p>
+              </div>
+
+              <div className="col-6 text-end">
+
+                {user.authenticated && <div>
+                  <Create className="comment-edit-icon" onClick={() => handleCloseEditComment(comment)}/>
+                  <Trash className="comment-delete-icon" onClick={() => handleDeleteComment(comment)}/>
+                </div> }
+              </div>
+
+            </div>
+
           <hr />
-          <input type="text" className="form-control" defaultValue={comment.text} onChange={(e) => setNewComment(e.target.value)}>
-        </input>
-        <button type="button" className=" btn  btn-sm " onClick={() => handleEditSubmit(comment)}>Submit Changes</button>
+
+          <div className="input-group mb-3">
+            <input type="text" className="form-control" defaultValue={comment.text} aria-label={comment.text} aria-describedby="button-addon" onChange={(e) => setNewComment(e.target.value)} />
+            <button className="btn btn-outline-secondary btn-sm" type="button" id="button-addon" onClick={() => handleEditSubmit(comment)}>Save</button>
+          </div>
                   
         </div>
       </div>

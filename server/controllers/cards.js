@@ -21,7 +21,7 @@ exports.postCard = (req, res) => {
 
   const now = new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
 
-  const creationDate = "Card created at " + now + " on " + today;
+  const creationDate = "Card created -- " + today + ", " + now;
 
   if (!req.body.name) {
     res.status(400).send("No name included in request")
