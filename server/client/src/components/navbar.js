@@ -25,7 +25,7 @@ const Navbar = () => {
   }
 
   const renderLogInOutButton = () => {
-    if (history.location.pathname === "/login") {
+    if (user.authenticated) {
       //change this to return state and show different button on login screen
       return (
         <div className="col-md-6 d-flex align-items-center justify-content-end">
@@ -37,7 +37,6 @@ const Navbar = () => {
     return (
       <div className="col-md-6 d-flex align-items-center justify-content-end">
         <button type="button" className="btn btn-secondary" onClick={loginClickHandler}>Sign in</button>
-        <button type="button" className="btn btn-secondary" onClick={logOutClickHandler}>Sign out</button>
       </div>   
     )
   }

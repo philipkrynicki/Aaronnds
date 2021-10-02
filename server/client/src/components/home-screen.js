@@ -1,6 +1,5 @@
 import BoardsAll from './boards-all.js';
 
-
 const Homescreen = () => {
   
   return (

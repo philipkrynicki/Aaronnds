@@ -84,7 +84,7 @@ const ListsAll = (props) => {
     setCurrentListID(list.list._id)
     setAddNewCard(true)
   };
-  // activities: [{ action: "Card created", time: today.getHours() + ":" + today.getMinutes(), date: today.getDate() + " " + today.getMonth() }]
+
   const handleCardSubmit = (list) => { 
     if (!newCardName) {
       return alert("Please enter a name for your card")
@@ -115,6 +115,25 @@ const ListsAll = (props) => {
     }
   }
 
+  const handleEditListButtonSubmit = (list) => {
+
+    if (editListName !== "") {
+      dispatch(editListAsync({id: list._id , nameObj: {name: editListName}}))
+      setShowEditListInput(false);
+      setEditListName("");
+    }
+
+    if (editListName === "") {
+      setShowEditListInput(false);
+      setEditListName("");
+    }
+  }
+
+  const handleEditingCheck = () => {
+    if (showEditListInput) {
+      setShowEditListInput(false);
+    }
+  }
 
   const renderNewListButton = () => {
     if (showNewListInput === true) {
@@ -149,7 +168,10 @@ const ListsAll = (props) => {
     if (showEditListInput === true && list._id === currentListID) {
       return (
         <div className="col col-listname-edit-input">
-          <input type="text" className="listname-edit-inp" defaultValue={list.name} onKeyUp={(e) => handleEditListInputSubmit(e, list)} />
+          <div className="input-group mb-3">
+            <input type="text" className="form-control listname-edit-inp" defaultValue={list.name} aria-label={list.name} aria-describedby="button-addon" onKeyUp={(e) => handleEditListInputSubmit(e, list)} />
+            <button className="btn btn-sm btn-outline-dark" type="button" id="button-addon" onClick={() => handleEditListButtonSubmit(list)}>Save</button>
+          </div>
         </div>
       )
     }
@@ -182,7 +204,7 @@ const ListsAll = (props) => {
                       </div>
                       <div className="col-2 text-start">
                         {user.authenticated && <div className="btn-group dropend">
-                          <button type="button" className="btn-sm dropdown-toggle list-drop-btn" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                          <button type="button" className="btn-sm dropdown-toggle list-drop-btn" data-bs-toggle="dropdown" aria-expanded="false" onClick={handleEditingCheck}></button>
                           <ul className="dropdown-menu">
                             <li><button className="dropdown-item" type="button" onClick={() => editListNameClickHandler(list)}>Edit list name</button></li>
                             <li><button className="dropdown-item" type="button" onClick={() => deleteListClickHandler(list)}>Delete list</button></li>

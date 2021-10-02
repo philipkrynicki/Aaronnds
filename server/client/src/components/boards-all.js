@@ -5,8 +5,6 @@ import { getBoardsAsync, addBoardAsync } from "../redux/boardsSlice";
 import { Modal, Button } from "react-bootstrap";
 import {AddCircleOutline} from 'react-ionicons';
 
-
-
 const BoardsAll = () => {
   const [show, setShow] = useState(false);
   const [newBoardName, setNewBoardName] = useState("");

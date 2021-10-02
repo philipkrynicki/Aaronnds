@@ -1,7 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import ListsAll from './lists-all.js';
-import {CreateOutline} from 'react-ionicons';
-import {TrashOutline} from 'react-ionicons';
+import {CreateOutline, TrashOutline} from 'react-ionicons';
 import { Modal, Button } from "react-bootstrap";
 import { useState, useEffect } from 'react';
 import { editBoardAsync, getBoardAsync } from "../redux/boardSlice";

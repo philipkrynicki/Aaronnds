@@ -11,7 +11,7 @@ exports.postComment = async (req, res) => {
 
   const now = new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
 
-  const creationDate = now + " " + today;
+  const creationDate = today + ", " + now;
 
   if (!req.body.text) {
     res.status(400).send("No comment text included in request")

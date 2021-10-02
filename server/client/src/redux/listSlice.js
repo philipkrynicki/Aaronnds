@@ -86,7 +86,7 @@ export const addCardAsync = createAsyncThunk(
       store.dispatch(getListsAsync(data.updatedList.board))
       const today = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short'});
       const now = new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
-      store.dispatch(addActivityAsync({card: data.card , activity: {newActivity: `Moved to ${data.updatedList.name} at ${today} ${now}`}}))
+      store.dispatch(addActivityAsync({card: data.card , activity: {newActivity: `Moved to list: "${data.updatedList.name}" -- ${today}, ${now}`}}))
     }
   )
   export const reorderCardAsync = createAsyncThunk(
