@@ -12,10 +12,12 @@ const editIconUrl = 'https://img.icons8.com/material-outlined/24/000000/edit--v4
 
 const CardDetail = (props) => {
   const [show, setShow] = useState(true)
+
   const dispatch = useDispatch();
   const card = useSelector(state => state.card);
   const board = useSelector(state => state.board);
   const lists = useSelector(state => state.lists);
+  const user = useSelector(state => state.user);
 
   const [currentCardId, setCurrentCardId] = useState('');
 
@@ -101,7 +103,7 @@ const CardDetail = (props) => {
     return (
       <p>
         {card.description}
-        <button className="description-edit mx-2" onClick={() => editCardDescriptionClickHandler(card)}>(Edit Description)</button>
+        {user.authenticated && <button className="description-edit mx-2" onClick={() => editCardDescriptionClickHandler(card)}>(Edit Description)</button>}
       </p>
     )
   }
@@ -130,41 +132,41 @@ const CardDetail = (props) => {
   const renderLabelsDropdown = () => {
     return (
       <div className="btn-group dropend">
-                        <button type="button" className="btn btn-success card-detail-btn btn-sm dropdown-toggle" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Labels</button>
-                        
-                        <div className="dropdown-menu" aria-labelledby="dropdownMenuClickableInside">
-                          <div className="labels-dropdown-options">
+        {user.authenticated && <button type="button" className="btn btn-success card-detail-btn btn-sm dropdown-toggle" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Labels</button>}
+        
+        <div className="dropdown-menu" aria-labelledby="dropdownMenuClickableInside">
+          <div className="labels-dropdown-options">
 
 
-                            <div className="form-check">
-                              <input className="form-check-input" type="checkbox" value="red" id="flexCheckLabel1"></input>
-                              <label className="form-check-label" htmlFor="flexCheckLabel1">
-                                Label 1
-                              </label>
-                            </div>
-                            <div className="form-check">
-                              <input className="form-check-input" type="checkbox" value="blue" id="flexCheckLabel2"></input>
-                              <label className="form-check-label" htmlFor="flexCheckLabel2">
-                                Label 2
-                              </label>
-                            </div>
-                            <div className="form-check">
-                              <input className="form-check-input" type="checkbox" value="green" id="flexCheckLabel3"></input>
-                              <label className="form-check-label" htmlFor="flexCheckLabel3">
-                                Label 3...
-                              </label>
-                            </div>
+            <div className="form-check">
+              <input className="form-check-input" type="checkbox" value="red" id="flexCheckLabel1"></input>
+              <label className="form-check-label" htmlFor="flexCheckLabel1">
+                Label 1
+              </label>
+            </div>
+            <div className="form-check">
+              <input className="form-check-input" type="checkbox" value="blue" id="flexCheckLabel2"></input>
+              <label className="form-check-label" htmlFor="flexCheckLabel2">
+                Label 2
+              </label>
+            </div>
+            <div className="form-check">
+              <input className="form-check-input" type="checkbox" value="green" id="flexCheckLabel3"></input>
+              <label className="form-check-label" htmlFor="flexCheckLabel3">
+                Label 3...
+              </label>
+            </div>
 
-                          </div>
-                        </div>
-                      </div>
+          </div>
+        </div>
+      </div>
     )
   }
 
   const renderMoveDropdown = () => {
     const filteredList = lists.filter((list) => list._id !== card.list);
 
-    if (filteredList.length !== 0) {
+    if (filteredList.length !== 0 && user.authenticated) {
       return (
         <div className="btn-group dropend">
           <button className="btn btn-primary card-detail-btn btn-sm dropdown-toggle" type="button" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Move</button>
@@ -199,7 +201,7 @@ const CardDetail = (props) => {
           <Modal.Title>
             <div>
               {renderCardName(card)}
-              <img src={editIconUrl} alt="edit" className="edit-icon mx-1" onClick={() => editCardNameClickHandler(card)} />
+              {user.authenticated && <img src={editIconUrl} alt="edit" className="edit-icon mx-1" onClick={() => editCardNameClickHandler(card)} />}
               <h6 className="in-list-text">in list: <u><strong>{props.list}</strong></u></h6>
             </div>    
           </Modal.Title>
@@ -247,11 +249,11 @@ const CardDetail = (props) => {
                       </div>
                     </div>
 
-                  <div className="row">
+                  {user.authenticated && <div className="row">
                     <div className="col">
                       <button type="button" className="btn btn-danger card-detail-btn btn-sm" onClick={() => cardDeleteClickHandler(card._id)}>Delete</button>
                     </div>
-                  </div>
+                  </div>}
                 </div>
               </div>
             </div>

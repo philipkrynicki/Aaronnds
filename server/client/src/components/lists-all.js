@@ -1,7 +1,7 @@
 import { useSelector, useDispatch  } from "react-redux";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import DropWrapper from "./drop-wrapper.js";
-import { getListsAsync, addListAsync, deleteListAsync, addCardAsync, editListAsync } from '../redux/listSlice.js';
+import { addListAsync, deleteListAsync, addCardAsync, editListAsync } from '../redux/listSlice.js';
 import CardDrag from './card-drag';
 import {AddCircleOutline, Close} from 'react-ionicons';
 
@@ -16,6 +16,8 @@ const ListsAll = (props) => {
   const [currentListID, setCurrentListID] = useState('');
 
   const lists = useSelector(state => state.lists);
+  const user = useSelector(state => state.user);
+
   const dispatch = useDispatch();
 
   const addListClickHandler = () => {
@@ -55,9 +57,11 @@ const ListsAll = (props) => {
 
   const newCardLink = (list) => {
     return (
-      <div className="col new-card-link">
-        <div className=" col add-card-text" id={list._id} onClick={() => handleNewCardToggle({list})}>+ Add card</div>
-      </div>     
+      <div>
+        {user.authenticated && <div className="col new-card-link">
+          <div className=" col add-card-text" id={list._id} onClick={() => handleNewCardToggle({list})}>+ Add card</div>
+        </div>}  
+      </div>  
     )
   };
   
@@ -132,10 +136,10 @@ const ListsAll = (props) => {
     return (
       <div className="col-md-3">
         <div className="col">
-          <div className="col d-flex new-list-comp" onClick={addListClickHandler}>
+          {user.authenticated && <div className="col d-flex new-list-comp" onClick={addListClickHandler}>
             <AddCircleOutline className="sm-plus-icon"/>
             <h5 className="add-listname-text">Add list</h5>
-          </div>
+          </div>}
         </div>
       </div>
     )
@@ -177,13 +181,13 @@ const ListsAll = (props) => {
                         {renderListName(list)}
                       </div>
                       <div className="col-2 text-start">
-                        <div className="btn-group dropend">
+                        {user.authenticated && <div className="btn-group dropend">
                           <button type="button" className="btn-sm dropdown-toggle list-drop-btn" data-bs-toggle="dropdown" aria-expanded="false"></button>
                           <ul className="dropdown-menu">
                             <li><button className="dropdown-item" type="button" onClick={() => editListNameClickHandler(list)}>Edit list name</button></li>
                             <li><button className="dropdown-item" type="button" onClick={() => deleteListClickHandler(list)}>Delete list</button></li>
                           </ul>
-                        </div>
+                        </div>}
                       </div>
                         <div className="row">
                           <div className="col">

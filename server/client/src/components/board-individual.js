@@ -25,7 +25,8 @@ const BoardIndividual = (props) => {
     
     setUpdatedBoardName(e.target.value)
   }
-  const board = useSelector(state => state.board)
+  const board = useSelector(state => state.board);
+  const user = useSelector(state => state.user);
 
   socket.on('deleteBoard', id => {
     if (board._id === id) {
@@ -65,13 +66,14 @@ const BoardIndividual = (props) => {
         <h2 className="board-ind-title text-center">
           <strong>{board.name}</strong>
         </h2>
-      </div>  
-      <div className="col-md-4 d-flex align-items-center justify-contents-start board-ind-title-icons-col">
+      </div>
+
+      {user.authenticated && <div className="col-md-4 d-flex align-items-center justify-contents-start board-ind-title-icons-col">
 
         <CreateOutline height="30px" width="30px" className="board-edit-icon" onClick={handleModalShow} />
         <TrashOutline height="30px" width="30px" className="board-delete-icon" onClick={handleModalDeleteShow} />
 
-      </div> 
+      </div>} 
     </div> 
     )
   }
