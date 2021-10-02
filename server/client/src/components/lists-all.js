@@ -1,7 +1,7 @@
 import { useSelector, useDispatch  } from "react-redux";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import DropWrapper from "./drop-wrapper.js";
-import { getListsAsync, addListAsync, deleteListAsync, addCardAsync, editListAsync } from '../redux/listSlice.js';
+import { addListAsync, deleteListAsync, addCardAsync, editListAsync } from '../redux/listSlice.js';
 import CardDrag from './card-drag';
 import {AddCircleOutline, Close} from 'react-ionicons';
 
@@ -16,6 +16,7 @@ const ListsAll = (props) => {
   const [currentListID, setCurrentListID] = useState('');
 
   const lists = useSelector(state => state.lists);
+  const user = useSelector(state => state.user);
 
   const dispatch = useDispatch();
 
@@ -56,9 +57,11 @@ const ListsAll = (props) => {
 
   const newCardLink = (list) => {
     return (
-      <div className="col new-card-link">
-        <div className=" col add-card-text" id={list._id} onClick={() => handleNewCardToggle({list})}>+ Add card</div>
-      </div>     
+      <div>
+        {user.authenticated && <div className="col new-card-link">
+          <div className=" col add-card-text" id={list._id} onClick={() => handleNewCardToggle({list})}>+ Add card</div>
+        </div>}  
+      </div>  
     )
   };
   
@@ -133,10 +136,10 @@ const ListsAll = (props) => {
     return (
       <div className="col-md-3">
         <div className="col">
-          <div className="col d-flex new-list-comp" onClick={addListClickHandler}>
+          {user.authenticated && <div className="col d-flex new-list-comp" onClick={addListClickHandler}>
             <AddCircleOutline className="sm-plus-icon"/>
             <h5 className="add-listname-text">Add list</h5>
-          </div>
+          </div>}
         </div>
       </div>
     )
