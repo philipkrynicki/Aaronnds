@@ -15,12 +15,16 @@ const Comments = () => {
   const newCommentForm = () => {
     return (
       <div>
-        {user.authenticated && <div className="comment-input-row">
-          <div className="comment-form input-group mb-3">
-            <input type="text" className="form-control" placeholder="Write new comment" onChange={ (e) => setNewComment(e.target.value)} onKeyUp={(e)=>handleCommentEnter(e)}></input>
-            <button type="button" className="button btn btn-dark btn-sm com-inp-btn" onClick={ () => handleCommentSubmit()}>Post</button>
-          </div>
-        </div>}
+        {user.authenticated && 
+          <form onSubmit={handleCommentSubmit} >
+            <div className="comment-input-row">
+              <div className="comment-form input-group mb-3">
+                <input type="text" className="form-control" value={newComment} placeholder="Write new comment" onChange={ (e) => setNewComment(e.target.value)}></input>
+                <button type="submit" className="button btn btn-dark btn-sm com-inp-btn">Post</button>
+              </div>
+            </div>
+          </form>
+        }
       </div>
     )
   }
@@ -53,22 +57,17 @@ const Comments = () => {
     )
   }
 
-  const handleCommentSubmit = () => {
+  const handleCommentSubmit = (e) => {
     if (!newComment) {
       return alert("Please enter comment text")
     }
-    
+    e.preventDefault();
+
     dispatch(addCommentAsync({
       card: card._id,
       text: newComment
     }))
     setNewComment("");
-  }
-
-  const handleCommentEnter = (e) => {
-    if(e.key === 'Enter') {
-      handleCommentSubmit();
-    }
   }
 
   const handleEditComment = (comment) => {
