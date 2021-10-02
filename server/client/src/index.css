@@ -212,8 +212,8 @@ code {
   border-radius: 5px;
 }
 
-.yellow {
-  background: yellow;
+.brown {
+  background: brown;
 }
 
 .blue {
@@ -234,6 +234,10 @@ code {
 
 .purple {
   background: purple;
+}
+
+.orange {
+  background: orange;
 }
 
 .card-detail-modal .modal-content {

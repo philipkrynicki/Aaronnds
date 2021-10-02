@@ -88,12 +88,35 @@ export const editCommentAsync = createAsyncThunk(
 export const deleteCommentAsync = createAsyncThunk(
   'cards/deleteCommentAsync',
   async (commentObj) => {
-    const response = await axios.delete(`${ apiUrl }/comments/${ commentObj.comment }`, commentObj)
+    const response = await axios.delete(`${ apiUrl }/comments/${ commentObj.comment }`, commentObj);
     
     const data = response.data;
     return { data };
     
   }
+)
+
+export const addLabelAsync = createAsyncThunk(
+  'cards/addLabelAsync',
+  async (labelObj) => {
+    const response = await axios.post(`${ apiUrl }/cards/${ labelObj.card }/labels`, labelObj.label);
+    
+    const data = response.data;
+    return { data };
+  }
+
+)
+
+export const deleteLabelAsync = createAsyncThunk(
+  'cards/deleteLabelAsync',
+  async (labelObj) => {
+    
+    const response = await axios.delete(`${ apiUrl }/cards/${ labelObj.card }/labels`, labelObj );
+    
+    const data = response.data;
+    return { data };
+  }
+
 )
 
 const cardsSlice = createSlice({
@@ -134,6 +157,13 @@ const cardsSlice = createSlice({
     },
     [deleteCommentAsync.fulfilled]: (state, action) => {
       state.comments.splice((state.comments.indexOf(action.payload.data) - 1), 1)
+    },
+    [addLabelAsync.fulfilled]: (state, action) => {
+      state.labels.push(action.payload.data)
+    },
+    [deleteLabelAsync.fulfilled]: (state, action) => {
+      state.labels.splice((state.labels.indexOf(action.payload.data)-1), 1)
+      
     }
   }
 });

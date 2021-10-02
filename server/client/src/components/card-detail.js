@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { editCardAsync, getCardAsync } from '../redux/cardsSlice.js'
 import Labels from "./labels"
+import LabelMenu from "./label-menu.js";
 
 import { editIconUrl } from "../constants/constants.js";
 import { useParams } from "react-router";
@@ -157,32 +158,7 @@ const CardDetail = (props) => {
                   <div className="row">
                     <div className="col">
 
-                      <div className="btn-group dropend">
-                        <button type="button" className="btn btn-success card-detail-btn btn-sm dropdown-toggle" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Labels</button>
-                        
-                        <div className="dropdown-menu" aria-labelledby="dropdownMenuClickableInside">
-                          <div className="labels-dropdown-options">
-                            <div className="form-check">
-                              <input className="form-check-input" type="checkbox" value="red" id="flexCheckLabel1"></input>
-                              <label className="form-check-label" htmlFor="flexCheckLabel1">
-                                Label 1
-                              </label>
-                            </div>
-                            <div className="form-check">
-                              <input className="form-check-input" type="checkbox" value="blue" id="flexCheckLabel2"></input>
-                              <label className="form-check-label" htmlFor="flexCheckLabel2">
-                                Label 2
-                              </label>
-                            </div>
-                            <div className="form-check">
-                              <input className="form-check-input" type="checkbox" value="green" id="flexCheckLabel3"></input>
-                              <label className="form-check-label" htmlFor="flexCheckLabel3">
-                                Label 3...
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      <LabelMenu />
                     </div>
                   </div>
 
