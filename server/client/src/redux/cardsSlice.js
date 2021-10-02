@@ -101,7 +101,7 @@ export const deleteCommentAsync = createAsyncThunk(
       }
     }
 
-    const response = await axios.delete(`${ apiUrl }/comments/${ commentObj.comment }`, commentObj, config) 
+    const response = await axios.delete(`${ apiUrl }/comments/${ commentObj.comment }`, config) 
     const data = response.data;
     store.dispatch(removeCommentAsync(data));
   }
