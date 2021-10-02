@@ -9,13 +9,17 @@ const Comments = () => {
   const [commentToEdit, setCommentToEdit] = useState('');
   const dispatch = useDispatch();
 
+  const user = useSelector(state => state.user);
+
   const newCommentForm = () => {
     return (
-      <div className="comment-input-row">
-        <div className="comment-form input-group mb-3">
-          <input type="text" className="form-control" placeholder="Write new comment" onChange={ (e) => setNewComment(e.target.value) }></input>
-          <button type="button" className="button btn btn-primary btn-sm com-inp-btn" onClick={ () => handleCommentSubmit()}>Post</button>
-        </div>
+      <div>
+        {user.authenticated && <div className="comment-input-row">
+          <div className="comment-form input-group mb-3">
+            <input type="text" className="form-control" placeholder="Write new comment" onChange={ (e) => setNewComment(e.target.value) }></input>
+            <button type="button" className="button btn btn-primary btn-sm com-inp-btn" onClick={ () => handleCommentSubmit()}>Post</button>
+          </div>
+        </div>}
       </div>
     )
   }
@@ -23,16 +27,17 @@ const Comments = () => {
   const commentRegular = (comment) => {
     return (
        <div className="row ind-comment-row" key={comment._id}>
-                <div className="col rounded ind-comment-col">
-                  <p className="comment-username">{comment.user.name}</p>
-                  <p className="comment-time">{comment.created}</p>
-                  <hr/>
+          <div className="col rounded ind-comment-col">
+            <p className="comment-username">{comment.user.name}</p>
+            <p className="comment-time">{comment.created}</p>
+            <hr/>
           <p className="comment-text">{ comment.text }</p>
-          <button className="btn" onClick={ () => handleEditComment(comment) }><small><u>Edit</u></small></button>
-        <button className="btn" onClick={ () => handleDeleteComment(comment) }><small><u>Delete</u></small></button>
-        </div>
-        
-              </div>
+          {user.authenticated && <div>
+            <button className="btn" onClick={ () => handleEditComment(comment) }><small><u>Edit</u></small></button>
+            <button className="btn" onClick={ () => handleDeleteComment(comment) }><small><u>Delete</u></small></button>
+          </div> }
+        </div>       
+      </div>
     )
   }
 

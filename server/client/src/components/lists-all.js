@@ -181,13 +181,13 @@ const ListsAll = (props) => {
                         {renderListName(list)}
                       </div>
                       <div className="col-2 text-start">
-                        <div className="btn-group dropend">
+                        {user.authenticated && <div className="btn-group dropend">
                           <button type="button" className="btn-sm dropdown-toggle list-drop-btn" data-bs-toggle="dropdown" aria-expanded="false"></button>
                           <ul className="dropdown-menu">
                             <li><button className="dropdown-item" type="button" onClick={() => editListNameClickHandler(list)}>Edit list name</button></li>
                             <li><button className="dropdown-item" type="button" onClick={() => deleteListClickHandler(list)}>Delete list</button></li>
                           </ul>
-                        </div>
+                        </div>}
                       </div>
                         <div className="row">
                           <div className="col">
