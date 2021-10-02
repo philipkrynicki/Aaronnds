@@ -2,7 +2,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from "react-router";
 import { useEffect, useState } from "react";
 import { getBoardsAsync, addBoardAsync } from "../redux/boardsSlice";
-import { getListsAsync } from '../redux/listSlice';
 import { Modal, Button } from "react-bootstrap";
 import {AddCircleOutline} from 'react-ionicons';
 
@@ -20,6 +19,7 @@ const BoardsAll = () => {
   }, [dispatch]);
 
   const boards = useSelector(state => state.boards);
+  const user = useSelector(state => state.user);
 
   const handleModalClose = () => setShow(false);
   const handleModalShow = () => setShow(true);
@@ -60,14 +60,14 @@ const BoardsAll = () => {
           return <div></div>
         })}
       
-        <div className="col-md-3 d-flex justify-content-center">
+        {user.authenticated && <div className="col-md-3 d-flex justify-content-center">
           <div className="new-board-comp d-flex align-items-center justify-content-center" onClick={handleModalShow}>
             
               <AddCircleOutline height="40px" width="40px" className="plus-icon"/>
               <h2>Add board</h2>
               
           </div>
-        </div>
+        </div>}
     
       </div>
     )

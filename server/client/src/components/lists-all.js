@@ -16,6 +16,7 @@ const ListsAll = (props) => {
   const [currentListID, setCurrentListID] = useState('');
 
   const lists = useSelector(state => state.lists);
+
   const dispatch = useDispatch();
 
   const addListClickHandler = () => {
