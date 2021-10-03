@@ -10,7 +10,7 @@ socket.on('updatedBoard', board => {
 })
 
 export const getBoardAsync = createAsyncThunk(
-  'getBoardAsync',
+  'board/getBoardAsync',
   async (id) => {
     const response = await axios.get(`api/boards/${id}`);
     const data = response.data
@@ -18,7 +18,7 @@ export const getBoardAsync = createAsyncThunk(
   })
 
 export const editBoardAsync = createAsyncThunk(
-  'editBoardAsync',
+  'board/editBoardAsync',
   async (board) => {
     const data = await getResponseData(`api/boards/${board.id}`, board, 'PUT');
     return { data }
