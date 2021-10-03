@@ -84,10 +84,13 @@ exports.moveCard = (req, res) => {
           .exec((err, card) => {
             if (err) throw err;
             
+            // Set the card's position to last in the new list
             card.setNext('card_position_seq', (err, card) => {
               if (err) throw err;
 
               // Send the card id, origin list id, and updated destination list
+              req.app.get('io').emit('moveCard', req.list.board);
+
               res.status(200).send({
                 card: card._id,
                 originList: req.list,
@@ -178,6 +181,7 @@ exports.updateCardPosition = (req, res) => {
       })
     }
 
+    req.app.get('io').emit('moveCard', movedCard.list.board);
     res.status(200).json(movedCard);
     
   })

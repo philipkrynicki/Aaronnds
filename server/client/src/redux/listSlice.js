@@ -27,6 +27,10 @@ socket.on('deleteCard', data => {
   store.dispatch(removeCardAsync(data));
 })
 
+socket.on('moveCard', board => {
+  store.dispatch(getListsAsync(board));
+})
+
 export const getListsAsync = createAsyncThunk(
   'lists/getListsAsync',
   async (id) => {
