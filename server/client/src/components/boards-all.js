@@ -32,7 +32,7 @@ const BoardsAll = () => {
   }
 
   const boardClickHandler = (id) => (event) => {
-    history.push(`/${id}`);
+    history.push(`/board/${id}`);
   };
 
   const newBoardInputChangeHandler = (e) => {
