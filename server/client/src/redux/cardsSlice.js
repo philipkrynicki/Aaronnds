@@ -105,7 +105,7 @@ export const removeCommentAsync = createAsyncThunk(
 export const addLabelAsync = createAsyncThunk(
   'cards/addLabelAsync',
   async (labelObj) => {
-    const response = await axios.post(`${ apiUrl }/cards/${ labelObj.card }/labels`, labelObj.label);
+    const response = await getResponseData(`${ apiUrl }/cards/${ labelObj.card }/labels`, labelObj.label, 'POST');
     
     const data = response.data;
     return { data };
@@ -153,9 +153,6 @@ const cardsSlice = createSlice({
     [editCommentAsync.fulfilled]: (state, action) => {
       const comment = action.payload.data;
       state.comments[state.comments.findIndex(({ _id }) => _id === comment._id)].text = comment.text;
-    },
-    [deleteCommentAsync.fulfilled]: (state, action) => {
-      state.comments.splice((state.comments.indexOf(action.payload.data) - 1), 1)
     },
     [addLabelAsync.fulfilled]: (state, action) => {
       state.labels.push(action.payload.data)
