@@ -56,9 +56,7 @@ const LabelMenu = () => {
         })}
      </div> 
     )
-    
   }
-
   
     return (
       <div className="btn-group dropend">
