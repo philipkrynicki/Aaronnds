@@ -53,7 +53,7 @@ export const editCardAsync = createAsyncThunk(
 export const addActivityAsync = createAsyncThunk(
   'cards/addActivityAsync',
   async (activityObj) => {
-    const response = await axios.post(`${ apiUrl }/cards/${ activityObj.card }/activity`, activityObj.activity)
+    const response = await axios.post(`cards/${ activityObj.card }/activity`, activityObj.activity)
     
     const data = response.data.activities;
     
@@ -64,7 +64,7 @@ export const addActivityAsync = createAsyncThunk(
 export const addCommentAsync = createAsyncThunk(
   'cards/addCommentAsync',
   async (commentObj) => { 
-    const data = await getResponseData(`${ apiUrl }/cards/${commentObj.card}/comments`, commentObj, 'POST');
+    const data = await getResponseData(`cards/${commentObj.card}/comments`, commentObj, 'POST');
     return { data };
   }
 )
@@ -72,7 +72,7 @@ export const addCommentAsync = createAsyncThunk(
 export const editCommentAsync = createAsyncThunk(
   'cards/editCommentAsync',
   async (commentObj) => {
-    const data = await getResponseData(`${ apiUrl }/comments/${commentObj.comment}`, commentObj, 'PUT');
+    const data = await getResponseData(`comments/${commentObj.comment}`, commentObj, 'PUT');
     return { data };
   }
 )
@@ -86,7 +86,7 @@ export const deleteCommentAsync = createAsyncThunk(
       }
     }
 
-    const response = await axios.delete(`${ apiUrl }/comments/${ commentObj.comment }`, config) 
+    const response = await axios.delete(`comments/${ commentObj.comment }`, config) 
     const data = response.data;
     store.dispatch(removeCommentAsync(data));
   }
