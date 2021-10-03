@@ -8,6 +8,7 @@ import Labels from "./labels"
 import Activities from "./activities"
 import Comments from "./comments"
 import { CreateOutline, Create } from "react-ionicons"
+import socket from '../socket-connect.js';
 
 const CardDetail = (props) => {
   const [show, setShow] = useState(true)
@@ -32,12 +33,17 @@ const CardDetail = (props) => {
     props.onChange(false)
     dispatch(getListsAsync(board._id))
   }
+
   useEffect(() => {    
     dispatch(getCardAsync(props.id));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }
   ,[dispatch, props.id]
   )
+
+  socket.on('deleteCard', () => {
+    handleModalClose();
+  })
 
   const editCardNameClickHandler = (card) => {
     if (showEditCardNameInput)

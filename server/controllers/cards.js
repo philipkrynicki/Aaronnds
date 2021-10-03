@@ -111,10 +111,14 @@ exports.deleteCard = (req, res) => {
     List.updateOne({_id: req.card.list}, {'$pull': {'cards': req.card._id}})
     .exec(err => {
       if (err) next(err)
-      res.status(200).send({
+      
+      const deleteData = {
         card: req.card._id,
         list: req.card.list
-      })
+      }
+
+      req.app.get('io').emit('deleteCard', deleteData);
+      res.status(200).send(deleteData)
     })
   })
 }

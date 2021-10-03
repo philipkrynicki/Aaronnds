@@ -23,6 +23,10 @@ socket.on('newCard', card => {
   store.dispatch(addCardAsync(card));
 })
 
+socket.on('deleteCard', data => {
+  store.dispatch(removeCardAsync(data));
+})
+
 export const getListsAsync = createAsyncThunk(
   'lists/getListsAsync',
   async (id) => {
@@ -99,8 +103,8 @@ export const addCardAsync = createAsyncThunk(
     }
   )
 
-  export const deleteCardAsync = createAsyncThunk(
-    'cards/deleteCardAsync',
+export const deleteCardAsync = createAsyncThunk(
+  'cards/deleteCardAsync',
   async (id) => {
     const config = {
       headers: {
@@ -110,9 +114,16 @@ export const addCardAsync = createAsyncThunk(
     
     const response = await axios.delete(`${apiUrl}/cards/${id}`, config)
     const data = response.data
-    return { data }
+    store.dispatch(removeCardAsync(data));
   }
-) 
+)
+
+const removeCardAsync = createAsyncThunk(
+  'cards/removeCardAsync',
+  async(data) => {
+    return { data };
+  }
+)
 
 const listsSlice = createSlice({
   name: 'lists',
@@ -144,7 +155,7 @@ const listsSlice = createSlice({
         cards.push(action.payload.data);
 
     },
-    [deleteCardAsync.fulfilled]: (state, action) => {
+    [removeCardAsync.fulfilled]: (state, action) => {
       let list = state[state.findIndex(({ _id }) => _id === action.payload.data.list)];
       list.cards = list.cards.filter(card => card._id !== action.payload.data.card);
     }

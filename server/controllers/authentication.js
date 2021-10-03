@@ -4,7 +4,8 @@ const tokenForUser = (user) => {
   return jwt.encode({ 
     sub: user._id,
     iat: Math.round(Date.now() / 1000),
-    exp: Math.round(Date.now() / 1000 + 5 * 60 * 60)}, 'verysecret')
+    }, 
+    'verysecret')
 };
 
 
