@@ -146,39 +146,6 @@ const CardDetail = (props) => {
     }
   }
 
-  const renderLabelsDropdown = () => {
-    return (
-      <div className="btn-group dropend">
-        {user.authenticated && <button type="button" className="btn btn-success card-detail-btn btn-sm dropdown-toggle" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Labels</button>}
-        
-        <div className="dropdown-menu" aria-labelledby="dropdownMenuClickableInside">
-          <div className="labels-dropdown-options">
-
-
-            <div className="form-check">
-              <input className="form-check-input" type="checkbox" value="red" id="flexCheckLabel1"></input>
-              <label className="form-check-label" htmlFor="flexCheckLabel1">
-                Label 1
-              </label>
-            </div>
-            <div className="form-check">
-              <input className="form-check-input" type="checkbox" value="blue" id="flexCheckLabel2"></input>
-              <label className="form-check-label" htmlFor="flexCheckLabel2">
-                Label 2
-              </label>
-            </div>
-            <div className="form-check">
-              <input className="form-check-input" type="checkbox" value="green" id="flexCheckLabel3"></input>
-              <label className="form-check-label" htmlFor="flexCheckLabel3">
-                Label 3...
-              </label>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    )
-  }
 
   const renderMoveDropdown = () => {
     const filteredList = lists.filter((list) => list._id !== card.list);
@@ -211,7 +178,7 @@ const CardDetail = (props) => {
     }
   }
 
- //need to pass list name in props from parent to display here
+ 
   return (
     <div>
       <Modal className="card-detail-modal" show={show} onHide={handleModalClose} size="lg">
@@ -256,7 +223,7 @@ const CardDetail = (props) => {
                 <div className="col">
                   <div className="row">
                     <div className="col">
-
+                    
                       <LabelMenu />
                     </div>
                   </div>
