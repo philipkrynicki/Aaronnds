@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { apiUrl } from "../constants/constants";
 import socket from '../socket-connect';
@@ -164,7 +164,7 @@ const listsSlice = createSlice({
 
     },
     [removeCardAsync.fulfilled]: (state, action) => {
-      let list = state[state.findIndex(({ _id }) => _id === action.payload.data.list)];
+      let list = state[state.findIndex(({ _id }) => _id === action.payload.data.list._id)];
       list.cards = list.cards.filter(card => card._id !== action.payload.data.card);
     }
   }
