@@ -6,6 +6,7 @@ import store from './store';
 import checkDuplicateIds from '../util-functions/id-check';
 import getResponseData from '../util-functions/get-response-data';
 import { addActivityAsync } from "./cardsSlice"
+import { useSelector } from 'react-redux';
 
 socket.on('newList', list => {
   store.dispatch(addListAsync(list));
@@ -40,6 +41,8 @@ export const getListsAsync = createAsyncThunk(
   async (id) => {
     const response = await axios.get(`${apiUrl}/boards/${id}/lists`);
     const data = response.data
+    data.sort((fI, sI) =>  fI.position - sI.position)
+    data.map(list => list.cards.sort((fI, sI) =>  fI.position - sI.position))
     return { data }
   })
 
@@ -101,13 +104,13 @@ export const addCardAsync = createAsyncThunk(
       store.dispatch(addActivityAsync({card: data.card , activity: {newActivity: `Moved to list: "${data.updatedList.name}" -- ${today}, ${now}`}}))
     }
   )
+
   export const reorderCardAsync = createAsyncThunk(
     'cards/reorderCardsAsync',
     async (cardInfo) => {
-      const data = await getResponseData(`${apiUrl}/cards/${cardInfo.id}/position`, cardInfo.newPosition, 'PUT')
-      
-      store.dispatch(getListsAsync(data.updatedList.board))
-      
+      const data = await getResponseData(`${apiUrl}/cards/${cardInfo.id}/position`, cardInfo.newPosObj, 'PUT')
+      const board = useSelector(state => state.board)
+      store.dispatch(getListsAsync(board._id))
     }
   )
 
