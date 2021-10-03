@@ -54,7 +54,7 @@ const ListsAll = (props) => {
       dispatch(deleteListAsync(list._id));
     };
   }
-
+ 
   const newCardLink = (list) => {
     return (
       <div>
@@ -195,8 +195,8 @@ const ListsAll = (props) => {
           <div className="row entire-list-row flex-row flex-nowrap mt-4 pb-4 pt-2">
             {lists.map((list) => {
               return (
-               <DropWrapper key={list._id}>
-                  <div className="col list-comp">
+    
+                  <div className="col list-comp col-md-3" key={list._id}>
                   <div className="card bg-cust">
                     <div className="row">
                       <div className="col-10 col-listname">
@@ -213,21 +213,25 @@ const ListsAll = (props) => {
                       </div>
                         <div className="row">
                           <div className="col">
+                          {!list.card ? <DropWrapper><br className={list._id}></br></DropWrapper> : null}
                           {list.cards.map((card) => {
-                              return(
-                                <CardDrag key={ card._id } id={ card._id } name={ card.name } listName={list.name} listId={list._id}/>
+                              return( 
+                              <DropWrapper key={ card._id }>
+                                <CardDrag  id={ card._id } name={ card.name } listName={list.name} listId={list._id} position={ card.position }/>
+                              </DropWrapper>
+                                
                               )
                             })}
                         
 
                           {addNewCard && list._id === currentListID ? newCardForm(list._id): newCardLink(list)}
-
+                        
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>         
-              </DropWrapper>
+                </div> 
+
               )})}
                 {renderNewListButton()}
             </div>

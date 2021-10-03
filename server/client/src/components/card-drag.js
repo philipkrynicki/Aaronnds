@@ -2,7 +2,7 @@ import { useDrag } from "react-dnd";
 import CardDetail from "./card-detail.js"
 import { useState } from "react";
 
-function CardDrag ({id, name, listName, listId}) {
+function CardDrag ({id, name, listName, listId, position}) {
   const [showDetail, setShowDetail] = useState(false);
   const [currentCardID, setCurrentCardID] = useState('');
 
@@ -12,7 +12,7 @@ function CardDrag ({id, name, listName, listId}) {
 
   const [{isDragging}, drag] = useDrag(() => ({
     type: "card",
-    item: {id: id, list: listId}, 
+    item: {id: id, list: listId, position: position}, 
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
