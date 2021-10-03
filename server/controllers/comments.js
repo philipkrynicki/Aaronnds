@@ -23,7 +23,6 @@ exports.postComment = async (req, res) => {
   const newComment = new Comment({
     text: req.body.text,
     user: user._id,
-    userName: user.name,
     card: req.body.card,
     created: creationDate
   });
@@ -33,8 +32,9 @@ exports.postComment = async (req, res) => {
 
   req.card.comments.push(newComment);
   req.card.save();
-
-  newComment.save((err, comment) => {
+  newComment.populate('user')
+  newComment
+    .save((err, comment) => {
     if (err) next(err);
     req.app.get('io').emit('postComment', newComment);
     res.status(200).json(comment);

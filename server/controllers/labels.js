@@ -1,8 +1,11 @@
+const Card = require("../models/card");
+
 exports.getLabels = (req, res) => {
   res.status(200).json(req.card.labels);
 }
 
 exports.postLabel = (req, res) => {
+  
   const newLabel = req.body.label
   if (!newLabel) {
       res.status(400).send('Label required')
@@ -15,15 +18,17 @@ exports.postLabel = (req, res) => {
       req.card.labels.push(req.body.label);
       req.card.save((err, card) => {
       if (err) throw err;
-      res.status(200).json(card.labels);
+      res.status(200).json(newLabel);
     })}
   }
 }
 
 exports.deleteLabel = (req, res) => {
-  req.card.labels.pull(req.body.label)
+  req.card.labels.pull(req.body.data)
+  
   req.card.save((err, card) => {
     if (err) throw err;
-    res.status(200).json(req.body.label);
+    
+    res.status(200).json(req.body.data);
   })
 }
