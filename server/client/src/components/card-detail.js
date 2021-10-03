@@ -66,7 +66,7 @@ const CardDetail = (props) => {
   const handleEditCardNameInputSubmit = (e, card) => {
     setEditCardName(e.target.value)
     if (e.key === 'Enter' && e.target.value !== "") {
-      dispatch(editCardAsync({id: card._id,  name: {name: editCardName}}));
+      dispatch(editCardAsync({_id: card._id,  name: {name: editCardName}}));
       setShowEditCardNameInput(false);
     }
 
@@ -80,7 +80,7 @@ const CardDetail = (props) => {
     setEditCardDescription(e.target.value)
 
     if (e.key === 'Enter' && e.target.value !== "") {
-      dispatch(editCardAsync({id: card._id,  description:{description: editCardDescription}}))
+      dispatch(editCardAsync({_id: card._id,  description:{description: editCardDescription}}))
       setShowEditCardDescriptionInput(false);
     }
 

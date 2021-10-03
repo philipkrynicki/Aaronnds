@@ -139,6 +139,12 @@ exports.updateCard = (req, res) => {
   Card.findOneAndUpdate({_id: req.card._id}, update, { new: true })
     .exec((err, updatedCard) => {
       if (err) next(err)
+           
+      req.app.get('io').emit('updateCard', {
+        updatedCard: updatedCard,
+        board: req.card.list.board
+      });
+
       res.status(200).json(updatedCard)
     })
 }

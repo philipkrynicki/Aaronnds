@@ -31,6 +31,10 @@ socket.on('moveCard', board => {
   store.dispatch(getListsAsync(board));
 })
 
+socket.on('updateCard', data => {
+  store.dispatch(getListsAsync(data.board));
+})
+
 export const getListsAsync = createAsyncThunk(
   'lists/getListsAsync',
   async (id) => {

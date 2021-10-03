@@ -18,6 +18,10 @@ socket.on('deleteComment', comment => {
   store.dispatch(removeCommentAsync(comment));
 })
 
+socket.on('updateCard', data => {
+  store.dispatch(updateCardAsync(data.updatedCard));
+})
+
 export const getCardAsync = createAsyncThunk(
   'cards/getCardAsync',
   async (id) => {
@@ -29,24 +33,23 @@ export const getCardAsync = createAsyncThunk(
 )
 
 export const editCardAsync = createAsyncThunk(
-    'cards/editCardAsync',
+  'cards/editCardAsync',
   async (card) => {
-    const config = {
-      headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('token')
-      }
-    }
-
     if (card.name){
-      const response = await axios.put(`${apiUrl}/cards/${card.id}`, card.name, config)
-      const data = response.data
-      return { data }
+      const data = await getResponseData(`${apiUrl}/cards/${card._id}`, card.name, 'PUT');
+      store.dispatch(updateCardAsync(data));
     }
     if (card.description){
-      const response = await axios.put(`${apiUrl}/cards/${card.id}`, card.description, config)
-      const data = response.data
-      return { data }
+      const data = await getResponseData(`${apiUrl}/cards/${card._id}`, card.description, 'PUT');
+      store.dispatch(updateCardAsync(data));
     }
+  }
+)
+
+const updateCardAsync = createAsyncThunk(
+  'card/updateCardAsync',
+  async(data) => {
+    return { data };
   }
 )
 
@@ -111,7 +114,7 @@ const cardsSlice = createSlice({
     [getCardAsync.fulfilled]: (state, action) => {
       return action.payload.data
     },
-    [editCardAsync.fulfilled]: (state, action) => { 
+    [updateCardAsync.fulfilled]: (state, action) => { 
       const card = action.payload.data;
       state.name = card.name;
       state.description = card.description;
