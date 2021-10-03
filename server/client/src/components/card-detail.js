@@ -119,10 +119,9 @@ const CardDetail = (props) => {
     }
     
     return (
-      <p>
+      <p className="card-desc-paragraph-filled">
         {card.description}
       </p>
-      
     )
   }
 

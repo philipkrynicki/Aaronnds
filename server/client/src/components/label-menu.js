@@ -25,6 +25,7 @@ const LabelMenu = () => {
     );
 
     setCheckedState(updatedCheckedState);
+    console.log('here:' + card._id);
     console.log (e.target.value)
     if (card.labels.includes(e.target.value)) {
       dispatch(deleteLabelAsync({
