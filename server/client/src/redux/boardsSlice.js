@@ -24,7 +24,7 @@ socket.on('deleteBoard', data => {
 export const getBoardsAsync = createAsyncThunk(
   'boards/getBoardsAsync',
   async () => {
-    const response = await axios.get(`${apiUrl}/workspace/boards`);
+    const response = await axios.get(`api/workspace/boards`);
     const data = response.data
     return { data }
   })
@@ -32,7 +32,7 @@ export const getBoardsAsync = createAsyncThunk(
 export const addBoardAsync = createAsyncThunk(
   'boards/addBoardAsync',
   async (board) => {
-    const data = await getResponseData(`${apiUrl}/workspace/boards/`, board, 'POST');
+    const data = await getResponseData(`api/workspace/boards/`, board, 'POST');
     return { data };
   }
 )
@@ -46,7 +46,7 @@ export const deleteBoardAsync = createAsyncThunk(
       }
     }
 
-    const response = await axios.delete(`${apiUrl}/boards/${board.id}`, config);
+    const response = await axios.delete(`api/boards/${board.id}`, config);
     const data = response.data;
     store.dispatch(removeBoardAsync(data));
   }

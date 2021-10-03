@@ -21,7 +21,7 @@ socket.on('deleteComment', comment => {
 export const getCardAsync = createAsyncThunk(
   'cards/getCardAsync',
   async (id) => {
-    const response = await axios.get(`${apiUrl}/cards/${id}`)
+    const response = await axios.get(`api/cards/${id}`)
 
     const data = response.data
     return { data }
@@ -38,12 +38,12 @@ export const editCardAsync = createAsyncThunk(
     }
 
     if (card.name){
-      const response = await axios.put(`${apiUrl}/cards/${card.id}`, card.name, config)
+      const response = await axios.put(`api/cards/${card.id}`, card.name, config)
       const data = response.data
       return { data }
     }
     if (card.description){
-      const response = await axios.put(`${apiUrl}/cards/${card.id}`, card.description, config)
+      const response = await axios.put(`api/cards/${card.id}`, card.description, config)
       const data = response.data
       return { data }
     }
