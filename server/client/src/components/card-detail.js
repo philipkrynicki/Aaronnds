@@ -125,7 +125,6 @@ const CardDetail = (props) => {
     return (
       <p>
         {card.description}
-        <button className="description-edit mx-2" onClick={() => editCardDescriptionClickHandler(card)}>(Edit Description)</button>
       </p>
       
     )
