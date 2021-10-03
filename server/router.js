@@ -77,6 +77,7 @@ module.exports = function(app) {
         model: "User"
       }
     })
+    .populate('list')
     .exec((err, card) => {
 
       if(!card) {
