@@ -1,27 +1,19 @@
 import { useSelector, useDispatch } from "react-redux"
-import {useState } from "react"
+import {useState, useEffect } from "react"
 import { addLabelAsync, deleteLabelAsync } from "../redux/cardsSlice";
+const colors = ["brown", "blue", "black", "green", "red", "orange", "purple"];
 
 const LabelMenu = () => {
   const card = useSelector(state => state.card);
- 
+  const [colorSelections, setColorSelections] = useState([])
   const dispatch = useDispatch();
-  
-  const colors = ["brown", "blue", "black", "green", "red", "orange", "purple"];
 
-  
-  const alreadyChecked = colors.map(color => {
-    return card.labels.includes(color)    
-  })
-
-  const [checkedState, setCheckedState] = useState(alreadyChecked)  
+  useEffect(() => {
+    setColorSelections(colors.map(color => card.labels.includes(color)))
+  }, [card.labels])
 
   const submitLabel = (e, position) => {
-    const updatedCheckedState = checkedState.map((item, index) =>
-    index === position ? !item : item
-    );
-
-    setCheckedState(updatedCheckedState);
+    setColorSelections(prevColors => prevColors.map((color, i) => i === position ? !color : color))
 
     if (card.labels.includes(e.target.value)) {
       dispatch(deleteLabelAsync({
@@ -41,11 +33,10 @@ const LabelMenu = () => {
     return (
       <div>
         {colors.map((color, index) => {
-            
           return (
             <div className="form-check" key={ index }>
-              <input onChange={ (e) => submitLabel(e, index) } className="form-check-input" type="checkbox" value={ color } name={ color } checked={ checkedState[index] } id="flexCheckLabel1"></input>
-              <label style={ { color: color } } className="form-check-label" htmlFor="flexCheckLabel1">
+              <input onChange={ (e) => submitLabel(e, index) } className="form-check-input" type="checkbox" value={ color } name={ color } checked={ colorSelections[index] ?? false } id="flexCheckLabel1"></input>
+              <label style={{ color }} className="form-check-label" htmlFor="flexCheckLabel1">
                 { color }
               </label>
             </div>
