@@ -7,10 +7,6 @@ import { deleteCardAsync } from "../redux/listSlice.js";
 import Labels from "./labels"
 import LabelMenu from "./label-menu.js";
 
-import { editIconUrl } from "../constants/constants.js";
-import { useParams } from "react-router";
-
-
 import Activities from "./activities"
 import Comments from "./comments"
 import { CreateOutline, Create } from "react-ionicons"
@@ -123,11 +119,9 @@ const CardDetail = (props) => {
     }
     
     return (
-      <p>
+      <p className="card-desc-paragraph-filled">
         {card.description}
-        <button className="description-edit mx-2" onClick={() => editCardDescriptionClickHandler(card)}>(Edit Description)</button>
       </p>
-      
     )
   }
 
@@ -136,7 +130,7 @@ const CardDetail = (props) => {
       //eslint-disable-next-line
       const isConfirmed = confirm(`Move this card to ${selectedListToMove.name}?`);
       if (isConfirmed === true) {
-        dispatch(moveCardAsync({list: card.list, id:card._id, destList: {destinationList: selectedListToMove._id}}));
+        dispatch(moveCardAsync({list: card.list._id, id:card._id, destList: {destinationList: selectedListToMove._id}}));
         setSelectedListToMove("");
     }
   }
@@ -154,8 +148,10 @@ const CardDetail = (props) => {
 
 
   const renderMoveDropdown = () => {
-    const filteredList = lists.filter((list) => list._id !== card.list);
+    console.log(props)
 
+    const filteredList = lists.filter((list) => list.name !== props.list);
+    
     if (filteredList.length !== 0 && user.authenticated) {
       return (
         <div className="btn-group dropend">
@@ -229,8 +225,8 @@ const CardDetail = (props) => {
                 <div className="col">
                   <div className="row">
                     <div className="col">
-                    
-                      <LabelMenu />
+                    {user.authenticated && 
+                      <LabelMenu /> }
                     </div>
                   </div>
 

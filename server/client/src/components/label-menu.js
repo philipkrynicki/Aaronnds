@@ -22,7 +22,7 @@ const LabelMenu = () => {
     );
 
     setCheckedState(updatedCheckedState);
-    
+
     if (card.labels.includes(e.target.value)) {
       dispatch(deleteLabelAsync({
         card: card._id,
@@ -53,9 +53,7 @@ const LabelMenu = () => {
         })}
      </div> 
     )
-    
   }
-
   
     return (
       <div className="btn-group dropend">

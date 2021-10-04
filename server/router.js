@@ -140,8 +140,9 @@ module.exports = function(app) {
   app.put('/api/comments/:comment', requireAuth, Comments.updateComment);
 
   app.get('/api/cards/:card/labels', Labels.getLabels);
-  app.post('/api/cards/:card/labels',   Labels.postLabel)
-  app.delete('/api/cards/:card/labels',   Labels.deleteLabel)
+  app.post('/api/cards/:card/labels',  Labels.postLabel)
+  app.delete('/api/cards/:card/labels',  Labels.deleteLabel)
+
 
   app.get('/api/cards/:card/activity', Activities.getActivity);
   app.post('/api/cards/:card/activity', Activities.postActivity);
