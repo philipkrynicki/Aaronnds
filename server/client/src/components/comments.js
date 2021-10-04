@@ -6,6 +6,7 @@ import {Create, Trash} from 'react-ionicons';
 const Comments = () => {
   const card = useSelector(state => state.card);
   const [newComment, setNewComment] = useState('');
+  const [editComment, setEditComment] = useState('');
   const [editing, setEditing] = useState(false);
   const [commentToEdit, setCommentToEdit] = useState('');
   const dispatch = useDispatch();
@@ -93,7 +94,7 @@ const Comments = () => {
   const handleEditSubmit = (comment) => {
     dispatch(editCommentAsync({
       comment: comment._id,
-      text: newComment
+      text: editComment
     }))
     setEditing(false);
     setCommentToEdit('');
@@ -123,7 +124,7 @@ const Comments = () => {
           <hr />
 
           <div className="input-group mb-3">
-            <input type="text" className="form-control" defaultValue={comment.text} aria-label={comment.text} aria-describedby="button-addon" onChange={(e) => setNewComment(e.target.value)} />
+            <input type="text" className="form-control" defaultValue={comment.text} aria-label={comment.text} aria-describedby="button-addon" onChange={(e) => setEditComment(e.target.value)} />
             <button className="btn btn-outline-secondary btn-sm" type="button" id="button-addon" onClick={() => handleEditSubmit(comment)}>Save</button>
           </div>
                   

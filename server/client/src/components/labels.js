@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 
 const Labels = () => {
     const card = useSelector(state => state.card)
-
+  
   return (
     <div>
       {card.labels.map((label) => {

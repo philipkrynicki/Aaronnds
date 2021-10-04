@@ -143,6 +143,7 @@ module.exports = function(app) {
   app.post('/api/cards/:card/labels',  Labels.postLabel)
   app.delete('/api/cards/:card/labels',  Labels.deleteLabel)
 
+
   app.get('/api/cards/:card/activity', Activities.getActivity);
   app.post('/api/cards/:card/activity', Activities.postActivity);
 
