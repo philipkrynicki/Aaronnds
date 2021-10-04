@@ -105,7 +105,7 @@ export const removeCommentAsync = createAsyncThunk(
 export const addLabelAsync = createAsyncThunk(
   'cards/addLabelAsync',
   async (labelObj) => {
-    const response = await getResponseData(`${ apiUrl }/cards/${ labelObj.card }/labels`, labelObj.label, 'POST');
+    const response = await getResponseData(`api/cards/${ labelObj.card }/labels`, labelObj.label, 'POST');
     
     const data = response.data;
     return { data };
@@ -116,7 +116,7 @@ export const addLabelAsync = createAsyncThunk(
 export const deleteLabelAsync = createAsyncThunk(
   'cards/deleteLabelAsync',
   async (labelObj) => {
-    const response = await axios.delete(`${ apiUrl }/cards/${ labelObj.card }/labels`, {data: labelObj.data} );
+    const response = await axios.delete(`api/cards/${ labelObj.card }/labels`, {data: labelObj.data} );
     
     const data = response.data;
     return { data };
