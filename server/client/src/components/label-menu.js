@@ -9,15 +9,12 @@ const LabelMenu = () => {
   
   const colors = ["brown", "blue", "black", "green", "red", "orange", "purple"];
 
-  console.log(card.labels)
+  
   const alreadyChecked = colors.map(color => {
     return card.labels.includes(color)    
   })
 
-  const [checkedState, setCheckedState] = useState(alreadyChecked)
-  
-  console.log(alreadyChecked) //loads once with all false and then a second time correctly. The buttons all load unchecked. Every box click triggers two of these console.logs 
-  
+  const [checkedState, setCheckedState] = useState(alreadyChecked)  
 
   const submitLabel = (e, position) => {
     const updatedCheckedState = checkedState.map((item, index) =>
@@ -25,7 +22,7 @@ const LabelMenu = () => {
     );
 
     setCheckedState(updatedCheckedState);
-    console.log (e.target.value)
+    
     if (card.labels.includes(e.target.value)) {
       dispatch(deleteLabelAsync({
         card: card._id,
@@ -66,7 +63,8 @@ const LabelMenu = () => {
     
         <div className="dropdown-menu" aria-labelledby="dropdownMenuClickableInside">
           <div className="labels-dropdown-options">
-            {labelForm()}
+            {labelForm()} 
+            
           </div>
         </div>
       </div>
