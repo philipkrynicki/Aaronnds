@@ -212,8 +212,8 @@ code {
   border-radius: 5px;
 }
 
-.yellow {
-  background: yellow;
+.brown {
+  background: brown;
 }
 
 .blue {
@@ -234,6 +234,10 @@ code {
 
 .purple {
   background: purple;
+}
+
+.orange {
+  background: orange;
 }
 
 .card-detail-modal .modal-content {
@@ -407,5 +411,9 @@ code {
 }
 
 .card-desc-paragraph:hover {
+  background-color: rgb(202, 202, 202);
+}
+
+.card-desc-paragraph-filled:hover {
   background-color: rgb(202, 202, 202);
 }

@@ -2,14 +2,14 @@ import { useSelector } from "react-redux";
 
 const Labels = () => {
     const card = useSelector(state => state.card)
-
+  
   return (
     <div>
       {card.labels.map((label) => {
             switch (label) {
-              case "yellow":
+              case "brown":
                 return (
-                  <div className="label yellow" key={label}></div>
+                  <div className="label brown" key={label}></div>
                 )
               case "blue":
                 return (
@@ -30,6 +30,10 @@ const Labels = () => {
               case "purple":
                 return (
                   <div className="label purple" key={label}></div>
+                )
+              case "orange":
+                return (
+                  <div className="label orange" key={label}></div>
                 )
               default:
                 return null

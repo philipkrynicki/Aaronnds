@@ -18,6 +18,10 @@ socket.on('deleteComment', comment => {
   store.dispatch(removeCommentAsync(comment));
 })
 
+socket.on('updateCard', data => {
+  store.dispatch(updateCardAsync(data.updatedCard));
+})
+
 export const getCardAsync = createAsyncThunk(
   'cards/getCardAsync',
   async (id) => {
@@ -29,24 +33,23 @@ export const getCardAsync = createAsyncThunk(
 )
 
 export const editCardAsync = createAsyncThunk(
-    'cards/editCardAsync',
+  'cards/editCardAsync',
   async (card) => {
-    const config = {
-      headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('token')
-      }
-    }
-
     if (card.name){
-      const response = await axios.put(`api/cards/${card.id}`, card.name, config)
-      const data = response.data
-      return { data }
+      const data = await getResponseData(`api/cards/${card._id}`, card.name, 'PUT');
+      store.dispatch(updateCardAsync(data));
     }
     if (card.description){
-      const response = await axios.put(`api/cards/${card.id}`, card.description, config)
-      const data = response.data
-      return { data }
+      const data = await getResponseData(`api/cards/${card._id}`, card.description, 'PUT');
+      store.dispatch(updateCardAsync(data));
     }
+  }
+)
+
+const updateCardAsync = createAsyncThunk(
+  'card/updateCardAsync',
+  async(data) => {
+    return { data };
   }
 )
 
@@ -99,6 +102,28 @@ export const removeCommentAsync = createAsyncThunk(
   }
 )
 
+export const addLabelAsync = createAsyncThunk(
+  'cards/addLabelAsync',
+  async (labelObj) => {
+    const response = await getResponseData(`${ apiUrl }/cards/${ labelObj.card }/labels`, labelObj.label, 'POST');
+    
+    const data = response.data;
+    return { data };
+  }
+
+)
+
+export const deleteLabelAsync = createAsyncThunk(
+  'cards/deleteLabelAsync',
+  async (labelObj) => {
+    const response = await axios.delete(`${ apiUrl }/cards/${ labelObj.card }/labels`, {data: labelObj.data} );
+    
+    const data = response.data;
+    return { data };
+  }
+
+)
+
 const cardsSlice = createSlice({
   name: 'cards',
   initialState: {
@@ -111,7 +136,7 @@ const cardsSlice = createSlice({
     [getCardAsync.fulfilled]: (state, action) => {
       return action.payload.data
     },
-    [editCardAsync.fulfilled]: (state, action) => { 
+    [updateCardAsync.fulfilled]: (state, action) => { 
       const card = action.payload.data;
       state.name = card.name;
       state.description = card.description;
@@ -129,6 +154,13 @@ const cardsSlice = createSlice({
       const comment = action.payload.data;
       state.comments[state.comments.findIndex(({ _id }) => _id === comment._id)].text = comment.text;
     },
+    [addLabelAsync.fulfilled]: (state, action) => {
+      state.labels.push(action.payload.data)
+    },
+    [deleteLabelAsync.fulfilled]: (state, action) => {
+      state.labels.splice((state.labels.indexOf(action.payload.data)), 1)
+    },
+      
     [removeCommentAsync.fulfilled]: (state, action) => {
       state.comments = state.comments.filter((comment) => comment._id !== action.payload.data);
     }

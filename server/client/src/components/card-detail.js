@@ -5,6 +5,8 @@ import { getListsAsync, moveCardAsync } from '../redux/listSlice.js'
 import { getCardAsync, editCardAsync } from '../redux/cardsSlice.js'
 import { deleteCardAsync } from "../redux/listSlice.js";
 import Labels from "./labels"
+import LabelMenu from "./label-menu.js";
+
 import Activities from "./activities"
 import Comments from "./comments"
 import { CreateOutline, Create } from "react-ionicons"
@@ -27,7 +29,7 @@ const CardDetail = (props) => {
   const [showEditCardDescriptionInput, setShowEditCardDescriptionInput] = useState(false);
   const [editCardName, setEditCardName] = useState("");
   const [editCardDescription, setEditCardDescription] = useState("");
-
+  
   const handleModalClose = () => {
     setShow(false);
     props.onChange(false)
@@ -66,7 +68,7 @@ const CardDetail = (props) => {
   const handleEditCardNameInputSubmit = (e, card) => {
     setEditCardName(e.target.value)
     if (e.key === 'Enter' && e.target.value !== "") {
-      dispatch(editCardAsync({id: card._id,  name: {name: editCardName}}));
+      dispatch(editCardAsync({_id: card._id,  name: {name: editCardName}}));
       setShowEditCardNameInput(false);
     }
 
@@ -80,7 +82,7 @@ const CardDetail = (props) => {
     setEditCardDescription(e.target.value)
 
     if (e.key === 'Enter' && e.target.value !== "") {
-      dispatch(editCardAsync({id: card._id,  description:{description: editCardDescription}}))
+      dispatch(editCardAsync({_id: card._id,  description:{description: editCardDescription}}))
       setShowEditCardDescriptionInput(false);
     }
 
@@ -117,7 +119,9 @@ const CardDetail = (props) => {
     }
     
     return (
-      <p className="card-desc-paragraph">{card.description}</p>
+      <p className="card-desc-paragraph-filled">
+        {card.description}
+      </p>
     )
   }
 
@@ -126,7 +130,7 @@ const CardDetail = (props) => {
       //eslint-disable-next-line
       const isConfirmed = confirm(`Move this card to ${selectedListToMove.name}?`);
       if (isConfirmed === true) {
-        dispatch(moveCardAsync({list: card.list, id:card._id, destList: {destinationList: selectedListToMove._id}}));
+        dispatch(moveCardAsync({list: card.list._id, id:card._id, destList: {destinationList: selectedListToMove._id}}));
         setSelectedListToMove("");
     }
   }
@@ -142,43 +146,12 @@ const CardDetail = (props) => {
     }
   }
 
-  const renderLabelsDropdown = () => {
-    return (
-      <div className="btn-group dropend">
-        {user.authenticated && <button type="button" className="btn btn-success card-detail-btn btn-sm dropdown-toggle" id="dropdownMenuClickableInside" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Labels</button>}
-        
-        <div className="dropdown-menu" aria-labelledby="dropdownMenuClickableInside">
-          <div className="labels-dropdown-options">
-
-
-            <div className="form-check">
-              <input className="form-check-input" type="checkbox" value="red" id="flexCheckLabel1"></input>
-              <label className="form-check-label" htmlFor="flexCheckLabel1">
-                Label 1
-              </label>
-            </div>
-            <div className="form-check">
-              <input className="form-check-input" type="checkbox" value="blue" id="flexCheckLabel2"></input>
-              <label className="form-check-label" htmlFor="flexCheckLabel2">
-                Label 2
-              </label>
-            </div>
-            <div className="form-check">
-              <input className="form-check-input" type="checkbox" value="green" id="flexCheckLabel3"></input>
-              <label className="form-check-label" htmlFor="flexCheckLabel3">
-                Label 3...
-              </label>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    )
-  }
 
   const renderMoveDropdown = () => {
-    const filteredList = lists.filter((list) => list._id !== card.list);
+    console.log(props)
 
+    const filteredList = lists.filter((list) => list.name !== props.list);
+    
     if (filteredList.length !== 0 && user.authenticated) {
       return (
         <div className="btn-group dropend">
@@ -207,7 +180,7 @@ const CardDetail = (props) => {
     }
   }
 
- //need to pass list name in props from parent to display here
+ 
   return (
     <div>
       <Modal className="card-detail-modal" show={show} onHide={handleModalClose} size="lg">
@@ -252,7 +225,8 @@ const CardDetail = (props) => {
                 <div className="col">
                   <div className="row">
                     <div className="col">
-                      {renderLabelsDropdown()}
+                    {user.authenticated && 
+                      <LabelMenu /> }
                     </div>
                   </div>
 
