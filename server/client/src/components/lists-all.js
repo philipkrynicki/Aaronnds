@@ -195,8 +195,8 @@ const ListsAll = (props) => {
           <div className="row entire-list-row flex-row flex-nowrap mt-4 pb-4 pt-2">
             {lists.map((list) => {
               return (
-    
-                  <div className="col list-comp col-md-3" key={list._id}>
+                <div className="col-md-3">
+                <div className="col list-comp" key={list._id}>
                   <div className="card bg-cust">
                     <div className="row">
                       <div className="col-10 col-listname">
@@ -219,10 +219,8 @@ const ListsAll = (props) => {
                               <DropWrapper key={ card._id }>
                                 <CardDrag  id={ card._id } name={ card.name } listName={list.name} listId={list._id} position={ card.position }/>
                               </DropWrapper>
-                                
                               )
                             })}
-                        
 
                           {addNewCard && list._id === currentListID ? newCardForm(list._id): newCardLink(list)}
                         
@@ -231,7 +229,7 @@ const ListsAll = (props) => {
                     </div>
                   </div>
                 </div> 
-
+                </div>
               )})}
                 {renderNewListButton()}
             </div>

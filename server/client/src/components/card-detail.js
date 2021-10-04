@@ -146,7 +146,6 @@ const CardDetail = (props) => {
     }
   }
 
-
   const renderMoveDropdown = () => {
     console.log(props)
 
@@ -180,7 +179,6 @@ const CardDetail = (props) => {
     }
   }
 
- 
   return (
     <div>
       <Modal className="card-detail-modal" show={show} onHide={handleModalClose} size="lg">
@@ -245,8 +243,6 @@ const CardDetail = (props) => {
               </div>
             </div>
           </div>
-
-
 
         </Modal.Body>
       </Modal>
