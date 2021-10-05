@@ -39,7 +39,7 @@ socket.on('updateCard', data => {
 export const getListsAsync = createAsyncThunk(
   'lists/getListsAsync',
   async (id) => {
-    const response = await axios.get(`${apiUrl}/boards/${id}/lists`);
+    const response = await axios.get(`api/boards/${id}/lists`);
     const data = response.data
     data.sort((fI, sI) =>  fI.position - sI.position)
     data.map(list => list.cards.sort((fI, sI) =>  fI.position - sI.position))
@@ -49,7 +49,7 @@ export const getListsAsync = createAsyncThunk(
 export const addListAsync = createAsyncThunk(
   'lists/addListAsync',
   async (newListObject) => {
-    const data = await getResponseData(`${apiUrl}/boards/${newListObject.id}/lists`, newListObject, 'POST')
+    const data = await getResponseData(`api/boards/${newListObject.id}/lists`, newListObject, 'POST')
     return { data }
   }
 );
@@ -63,7 +63,7 @@ export const deleteListAsync = createAsyncThunk(
       }
     }
 
-    const response = await axios.delete(`${apiUrl}/lists/${id}`, config);
+    const response = await axios.delete(`api/lists/${id}`, config);
     const data = response.data;
     store.dispatch(removeListAsync(data)); // dispatch removeListAsync with the response id
   }
@@ -80,7 +80,7 @@ const removeListAsync = createAsyncThunk(
 export const editListAsync = createAsyncThunk(
   'lists/editListAsync',
   async (listObj) => {
-    const data = await getResponseData(`${apiUrl}/lists/${listObj.id}`, listObj, 'PUT');
+    const data = await getResponseData(`api/lists/${listObj.id}`, listObj, 'PUT');
     return { data }
   }
 );
@@ -89,7 +89,7 @@ export const addCardAsync = createAsyncThunk(
   'cards/addCardAsync',
   async (newCardObject) => {
     
-    const data = await getResponseData(`${apiUrl}/lists/${newCardObject.listID}/cards`, newCardObject, 'POST');
+    const data = await getResponseData(`api/lists/${newCardObject.listID}/cards`, newCardObject, 'POST');
     
     return { data };
   });
@@ -97,7 +97,7 @@ export const addCardAsync = createAsyncThunk(
   export const moveCardAsync = createAsyncThunk(
     'cards/moveCardAsync',
     async (card) => {
-      const data = await getResponseData(`${apiUrl}/lists/${card.list}/cards/${card.id}`, card.destList, 'PUT')
+      const data = await getResponseData(`api/lists/${card.list}/cards/${card.id}`, card.destList, 'PUT')
       store.dispatch(getListsAsync(data.updatedList.board))
       const today = new Date().toLocaleDateString('en-US', { day: 'numeric', month: 'short'});
       const now = new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
@@ -108,7 +108,7 @@ export const addCardAsync = createAsyncThunk(
   export const reorderCardAsync = createAsyncThunk(
     'cards/reorderCardsAsync',
     async (cardInfo) => {
-      const data = await getResponseData(`${apiUrl}/cards/${cardInfo.id}/position`, cardInfo.newPosObj, 'PUT')
+      const data = await getResponseData(`api/cards/${cardInfo.id}/position`, cardInfo.newPosObj, 'PUT')
       const board = useSelector(state => state.board)
       store.dispatch(getListsAsync(board._id))
     }
@@ -123,7 +123,7 @@ export const deleteCardAsync = createAsyncThunk(
       }
     }
     
-    const response = await axios.delete(`${apiUrl}/cards/${id}`, config)
+    const response = await axios.delete(`api/cards/${id}`, config)
     const data = response.data
     store.dispatch(removeCardAsync(data));
   }

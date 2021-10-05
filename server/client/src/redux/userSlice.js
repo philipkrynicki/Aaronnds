@@ -4,7 +4,7 @@ import getResponseData from '../util-functions/get-response-data';
 export const loginAsync = createAsyncThunk(
   'user/loginAsync',
   async(user) => {
-    const data = await getResponseData(`http://localhost:5000/auth/login`, user, 'POST');
+    const data = await getResponseData(`auth/login`, user, 'POST');
     localStorage.setItem('token', data.token);
     return { data };
   }

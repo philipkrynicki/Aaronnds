@@ -25,7 +25,7 @@ socket.on('updateCard', data => {
 export const getCardAsync = createAsyncThunk(
   'cards/getCardAsync',
   async (id) => {
-    const response = await axios.get(`${apiUrl}/cards/${id}`)
+    const response = await axios.get(`api/cards/${id}`)
 
     const data = response.data
     return { data }
@@ -36,11 +36,11 @@ export const editCardAsync = createAsyncThunk(
   'cards/editCardAsync',
   async (card) => {
     if (card.name){
-      const data = await getResponseData(`${apiUrl}/cards/${card._id}`, card.name, 'PUT');
+      const data = await getResponseData(`api/cards/${card._id}`, card.name, 'PUT');
       store.dispatch(updateCardAsync(data));
     }
     if (card.description){
-      const data = await getResponseData(`${apiUrl}/cards/${card._id}`, card.description, 'PUT');
+      const data = await getResponseData(`api/cards/${card._id}`, card.description, 'PUT');
       store.dispatch(updateCardAsync(data));
     }
   }
@@ -56,7 +56,7 @@ const updateCardAsync = createAsyncThunk(
 export const addActivityAsync = createAsyncThunk(
   'cards/addActivityAsync',
   async (activityObj) => {
-    const response = await axios.post(`${ apiUrl }/cards/${ activityObj.card }/activity`, activityObj.activity)
+    const response = await axios.post(`api/cards/${ activityObj.card }/activity`, activityObj.activity)
     
     const data = response.data.activities;
     
@@ -67,7 +67,7 @@ export const addActivityAsync = createAsyncThunk(
 export const addCommentAsync = createAsyncThunk(
   'cards/addCommentAsync',
   async (commentObj) => { 
-    const data = await getResponseData(`${ apiUrl }/cards/${commentObj.card}/comments`, commentObj, 'POST');
+    const data = await getResponseData(`api/cards/${commentObj.card}/comments`, commentObj, 'POST');
     return { data };
   }
 )
@@ -75,7 +75,7 @@ export const addCommentAsync = createAsyncThunk(
 export const editCommentAsync = createAsyncThunk(
   'cards/editCommentAsync',
   async (commentObj) => {
-    const data = await getResponseData(`${ apiUrl }/comments/${commentObj.comment}`, commentObj, 'PUT');
+    const data = await getResponseData(`api/comments/${commentObj.comment}`, commentObj, 'PUT');
     return { data };
   }
 )
@@ -89,7 +89,7 @@ export const deleteCommentAsync = createAsyncThunk(
       }
     }
 
-    const response = await axios.delete(`${ apiUrl }/comments/${ commentObj.comment }`, config) 
+    const response = await axios.delete(`api/comments/${ commentObj.comment }`, config) 
     const data = response.data;
     store.dispatch(removeCommentAsync(data));
   }
@@ -105,7 +105,7 @@ export const removeCommentAsync = createAsyncThunk(
 export const addLabelAsync = createAsyncThunk(
   'cards/addLabelAsync',
   async (labelObj) => {
-    const response = await axios.post(`${ apiUrl }/cards/${ labelObj.card }/labels`, labelObj.label);
+    const response = await axios.post(`api/cards/${ labelObj.card }/labels`, labelObj.label);
     
     const data = response.data;
     return { data };
@@ -116,7 +116,7 @@ export const addLabelAsync = createAsyncThunk(
 export const deleteLabelAsync = createAsyncThunk(
   'cards/deleteLabelAsync',
   async (labelObj) => {
-    const response = await axios.delete(`${ apiUrl }/cards/${ labelObj.card }/labels`, {data: labelObj.data} );
+    const response = await axios.delete(`api/cards/${ labelObj.card }/labels`, {data: labelObj.data} );
     
     const data = response.data;
     return { data };
